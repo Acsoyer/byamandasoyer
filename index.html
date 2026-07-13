@@ -54,9 +54,11 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:calc(var(--topbar) + 8px) 22px 16px;text-align:center}
+  .hero{min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--topbar) + 10px) 22px 20px;text-align:center}
+  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%}
+  .hero-id{display:flex;flex-direction:column;align-items:center;gap:4px}
   .biglogo-btn{border:none;background:none;padding:0;cursor:pointer;display:block;margin:0 auto}
-  .hero .biglogo{width:262px;max-width:78%;margin:0 auto;filter:drop-shadow(0 8px 20px rgba(115,8,44,.12))}
+  .hero .biglogo{width:252px;max-width:74%;margin:0 auto;filter:drop-shadow(0 8px 20px rgba(115,8,44,.12))}
   .hero .lede{font-family:var(--serif);font-size:16.5px;font-weight:500;color:var(--brand);margin:0 auto;max-width:300px;line-height:1.35}
   .meta{font-size:13px;color:var(--gray-soft);line-height:1.7;margin-bottom:0}
   .meta b{color:var(--gray);font-weight:600}
@@ -69,19 +71,20 @@
 
   .peek{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:0}
   .peek button{padding:0;border:none;background:none;cursor:pointer;border-radius:14px;overflow:hidden;
-    box-shadow:var(--shadow-sm);aspect-ratio:1/1}
+    box-shadow:var(--shadow-sm);aspect-ratio:4/5}
   .peek img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
   .peek button:active img{transform:scale(1.05)}
 
-  .cta-row{display:flex;flex-direction:column;gap:10px}
+  .cta-row{display:flex;flex-direction:column;gap:10px; width: 100%; margin-top: 5px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
-    font-family:var(--sans);font-weight:600;font-size:15px;padding:14px;border-radius:14px;transition:transform .15s}
+    font-family:var(--sans);font-weight:600;font-size:16px;padding:14px;border-radius:14px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
   .cta.primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(115,8,44,.24)}
   .cta.ghost{background:var(--card);color:var(--brand);border:1.5px solid var(--line);box-shadow:var(--shadow-sm)}
 
   /* ---------- sections ---------- */
   section{padding:34px 24px 10px;scroll-margin-top:var(--topbar)}
+  #inspiration{margin-top:20px}
   .eyebrow{font-family:var(--script);font-size:33px;color:var(--brand);line-height:1;margin:0 0 -2px}
   .sec-title{font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:-.01em;margin:0 0 6px}
   .sec-intro{color:var(--gray-soft);font-size:13.5px;margin:0 0 16px;max-width:340px}
@@ -214,10 +217,13 @@
 
   <!-- hero -->
   <header class="hero">
-    <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
+    <div class="hero-inner">
+      <div class="hero-id">
+        <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
       <img class="biglogo" src="byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
     </button>
-    <p class="lede"><span class="i-en">Home-based cake studio.</span><span class="i-pt">Estúdio de bolos caseiro.</span></p>
+        <p class="lede"><span class="i-en">Home-based cake studio.</span><span class="i-pt">Estúdio de bolos caseiro.</span></p>
+      </div>
 
     <div class="meta">
       <div><b><span class="i-en">Wed–Fri</span><span class="i-pt">Qua–Sex</span></b> 11:00–20:00 &nbsp;·&nbsp; <b><span class="i-en">Sat–Sun</span><span class="i-pt">Sáb–Dom</span></b> 11:00–19:00</div>
@@ -253,6 +259,7 @@
       <button class="cta ghost" onclick="goTo('faq')">
         <span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span>
       </button>
+    </div>
     </div>
   </header>
 
