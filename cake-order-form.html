@@ -718,7 +718,7 @@ R.allergies=()=>{
   B().innerHTML=head(lg("Dietary restrictions & allergies","Alergias e/ou restrições alimentares"))+
     `<button class="opt multi ${S.noAllergy?'sel':''}" id="noAll">
        <span class="ic"><span style="font-size:20px">👍🏻</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions or allergies':'Não tenho restrições alimentares nem alergias'}</span></span>
+       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions <br> or allergies':'Não tenho restrições alimentares <br> nem alergias'}</span></span>
        <span class="chk">${tick()}</span></button>
      <div id="allBox" style="${S.noAllergy?'display:none':''};margin-top:14px">
        <div class="field"><label>${lang==='en'?'Please list any restrictions or allergies':'Por favor, indique abaixo ou escreva «nenhuma»'}</label>
