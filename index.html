@@ -22,7 +22,7 @@
     --gray:#545454; --gray-soft:#8C8C8C; --line:#E6E2DC;
     --serif:'Playfair Display',Georgia,serif; --script:'Great Vibes',cursive; --sans:'Montserrat',system-ui,sans-serif;
     --shadow:0 10px 30px rgba(20,20,20,.08); --shadow-sm:0 3px 12px rgba(20,20,20,.06);
-    --col:500px; --topbar:64px;
+    --col:500px; --topbar:56px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{scroll-behavior:smooth}
@@ -54,29 +54,28 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{padding:calc(var(--topbar) + 16px) 24px 14px;text-align:center}
+  .hero{min-height:100svh;display:flex;flex-direction:column;padding:calc(var(--topbar) + 12px) 22px 22px;text-align:center}
   .biglogo-btn{border:none;background:none;padding:0;cursor:pointer;display:block;margin:0 auto}
-  .hero .biglogo{width:290px;max-width:80%;margin:0 auto;filter:drop-shadow(0 8px 20px rgba(115,8,44,.12))}
-  .hero .tagline{font-family:var(--script);font-size:40px;line-height:1;color:var(--brand);margin:6px 0 8px}
-  .hero .lede{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--brand);margin:0 auto 16px;max-width:300px;line-height:1.35}
-  .meta{font-size:12.5px;color:var(--gray-soft);line-height:1.7;margin-bottom:16px}
+  .hero .biglogo{width:212px;max-width:62%;margin:0 auto;filter:drop-shadow(0 8px 20px rgba(115,8,44,.12))}
+  .hero .lede{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--brand);margin:8px auto 12px;max-width:300px;line-height:1.35}
+  .meta{font-size:12.5px;color:var(--gray-soft);line-height:1.7;margin-bottom:14px}
   .meta b{color:var(--gray);font-weight:600}
 
-  .socials{display:flex;justify-content:center;gap:16px;margin:2px 0 22px}
-  .socials a{width:48px;height:48px;border-radius:50%;background:var(--card);border:1px solid var(--line);
+  .socials{display:flex;justify-content:center;gap:15px;margin:2px 0 16px}
+  .socials a{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:var(--shadow-sm);transition:transform .15s}
   .socials a:active{transform:scale(.9)}
-  .socials svg{width:23px;height:23px}
+  .socials svg{width:22px;height:22px}
 
-  .peek{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+  .peek{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
   .peek button{padding:0;border:none;background:none;cursor:pointer;border-radius:14px;overflow:hidden;
-    box-shadow:var(--shadow-sm);aspect-ratio:4/5}
-  .peek img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    box-shadow:var(--shadow-sm);aspect-ratio:1/1}
+  .peek img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
   .peek button:active img{transform:scale(1.05)}
 
-  .cta-row{display:flex;flex-direction:column;gap:11px}
+  .cta-row{display:flex;flex-direction:column;gap:10px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
-    font-family:var(--sans);font-weight:600;font-size:15.5px;padding:16px;border-radius:15px;transition:transform .15s}
+    font-family:var(--sans);font-weight:600;font-size:15px;padding:14px;border-radius:14px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
   .cta.primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(115,8,44,.24)}
   .cta.ghost{background:var(--card);color:var(--brand);border:1.5px solid var(--line);box-shadow:var(--shadow-sm)}
@@ -91,10 +90,12 @@
   .carousel-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
     padding:4px 24px 6px;margin:0 -24px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .carousel-track::-webkit-scrollbar{display:none}
-  .slide{flex:0 0 84%;scroll-snap-align:center}
+  .slide{flex:0 0 84%}
+  .c-spacer{flex:0 0 0}
 
-  /* inspiration (small cards) */
-  #inspoTrack .slide{flex:0 0 57%}
+  /* inspiration — small cards, LEFT-aligned */
+  #inspoTrack{scroll-padding-left:24px}
+  #inspoTrack .slide{flex:0 0 58%;scroll-snap-align:start}
   .inspo-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
   .inspo-card img{width:100%;aspect-ratio:4/5;object-fit:cover}
   .inspo-body{padding:10px 12px 13px}
@@ -115,7 +116,8 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials — no card, corner quote marks */
-  #testiTrack .slide{flex:0 0 86%}
+  #testiTrack{padding-left:0;padding-right:0;margin:0}
+  #testiTrack .slide{flex:0 0 86%;scroll-snap-align:center}
   .quote{position:relative;padding:40px 30px 44px;text-align:center;min-height:180px;
     display:flex;flex-direction:column;justify-content:center}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:var(--brand);opacity:.22;pointer-events:none}
@@ -215,7 +217,6 @@
     <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
       <img class="biglogo" src="byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
     </button>
-    <div class="tagline"><span class="i-en">Let's make your cake</span><span class="i-pt">Vamos fazer o seu bolo</span></div>
     <p class="lede"><span class="i-en">Home-based cake studio.</span><span class="i-pt">Estúdio de bolos caseiro.</span></p>
 
     <div class="meta">
@@ -257,18 +258,16 @@
 
   <!-- inspiration -->
   <section id="inspiration">
-    <p class="eyebrow"><span class="i-en">made by hand</span><span class="i-pt">feito à mão</span></p>
     <h2 class="sec-title"><span class="i-en">Inspiration</span><span class="i-pt">Inspiração</span></h2>
     <p class="sec-intro"><span class="i-en">A few cakes I've made — yours will be designed just for you.</span><span class="i-pt">Alguns bolos que fiz — o seu será desenhado só para si.</span></p>
     <div class="carousel" data-carousel>
-      <div class="carousel-track" id="inspoTrack"></div>
+      <div class="carousel-track" id="inspoTrack" data-align="start"></div>
       <div class="dots" id="inspoDots"></div>
     </div>
   </section>
 
   <!-- our story -->
   <section id="story">
-    <p class="eyebrow"><span class="i-en">hello</span><span class="i-pt">olá</span></p>
     <h2 class="sec-title"><span class="i-en">Our Story</span><span class="i-pt">A Nossa História</span></h2>
     <img class="story-photo" src="ourstory.jpg" alt="Amanda Soyer with one of her cakes">
     <div class="story-body">
@@ -293,18 +292,16 @@
 
   <!-- testimonials (PLACEHOLDER — replace with real reviews) -->
   <section id="testimonials">
-    <p class="eyebrow"><span class="i-en">kind words</span><span class="i-pt">palavras doces</span></p>
     <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Testemunhos</span></h2>
     <p class="sec-intro"><span class="i-en">What sweet customers are saying.</span><span class="i-pt">O que dizem os clientes.</span></p>
     <div class="carousel" data-carousel>
-      <div class="carousel-track" id="testiTrack"></div>
+      <div class="carousel-track" id="testiTrack" data-align="center"></div>
       <div class="dots" id="testiDots"></div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section id="faq">
-    <p class="eyebrow"><span class="i-en">good to know</span><span class="i-pt">é bom saber</span></p>
     <h2 class="sec-title"><span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span></h2>
     <div id="faqList" style="margin-top:8px"></div>
     <div class="ask">
@@ -318,7 +315,6 @@
 
   <!-- guides + care -->
   <section id="guides">
-    <p class="eyebrow"><span class="i-en">before you slice</span><span class="i-pt">antes de servir</span></p>
     <h2 class="sec-title"><span class="i-en">Guides &amp; Care</span><span class="i-pt">Guias &amp; Cuidados</span></h2>
     <div id="guidesList" style="margin-top:8px"></div>
   </section>
@@ -563,7 +559,24 @@ document.getElementById('guidesList').addEventListener('click',accToggle);
 document.querySelectorAll('[data-carousel]').forEach(function(root){
   var track=root.querySelector('.carousel-track');
   var dotsWrap=root.querySelector('.dots');
-  var slides=[].slice.call(track.children);
+  var align=track.getAttribute('data-align')||'start';
+  var PAD=24,GAP=14;
+  var slides=[].slice.call(track.querySelectorAll('.slide'));
+  if(!slides.length)return;
+  var lead=null,tail=document.createElement('div');
+  tail.className='c-spacer';tail.setAttribute('aria-hidden','true');
+  if(align==='center'){lead=document.createElement('div');lead.className='c-spacer';lead.setAttribute('aria-hidden','true');track.insertBefore(lead,slides[0]);}
+  track.appendChild(tail);
+  function measure(){
+    var half=(track.clientWidth - slides[0].getBoundingClientRect().width)/2;
+    if(align==='center'){
+      lead.style.flex='0 0 '+(half-GAP>0?half-GAP:0)+'px';
+      tail.style.flex='0 0 '+(half+GAP>0?half+GAP:0)+'px';
+    }else{
+      var need=track.clientWidth - slides[0].getBoundingClientRect().width - PAD - GAP;
+      tail.style.flex='0 0 '+(need>0?need:0)+'px';
+    }
+  }
   slides.forEach(function(s,i){
     var d=document.createElement('button');d.className='dot'+(i===0?' on':'');
     d.setAttribute('aria-label','Slide '+(i+1));
@@ -573,18 +586,24 @@ document.querySelectorAll('[data-carousel]').forEach(function(root){
   var dots=[].slice.call(dotsWrap.children);
   var idx=0,timer=null,idleT=null;
   function setDot(i){idx=i;dots.forEach(function(d,j){d.classList.toggle('on',j===i);});}
-  function go(i){idx=(i+slides.length)%slides.length;track.scrollTo({left:slides[idx].offsetLeft,behavior:reduce()?'auto':'smooth'});setDot(idx);}
+  function delta(s){
+    var tr=track.getBoundingClientRect(),sr=s.getBoundingClientRect();
+    return align==='center' ? (sr.left-tr.left)-(tr.width-sr.width)/2 : (sr.left-tr.left)-PAD;
+  }
+  function go(i){idx=(i+slides.length)%slides.length;var x=track.scrollLeft+delta(slides[idx]);track.scrollTo({left:x<0?0:x,behavior:reduce()?'auto':'smooth'});setDot(idx);}
   function play(){if(reduce()||slides.length<2)return;stop();timer=setInterval(function(){go(idx+1);},3800);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function pause(){stop();clearTimeout(idleT);idleT=setTimeout(play,6000);}
   var st;
   track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){
-    var best=0,bd=1e9;
-    slides.forEach(function(s,j){var d=Math.abs(s.offsetLeft-track.scrollLeft);if(d<bd){bd=d;best=j;}});
+    var tr=track.getBoundingClientRect(),ref=align==='center'?tr.left+tr.width/2:tr.left+PAD,best=0,bd=1e9;
+    slides.forEach(function(s,j){var sr=s.getBoundingClientRect();var pt=align==='center'?sr.left+sr.width/2:sr.left;var dd=Math.abs(pt-ref);if(dd<bd){bd=dd;best=j;}});
     setDot(best);
   },90);},{passive:true});
   track.addEventListener('pointerdown',pause);
-  play();
+  measure();
+  window.addEventListener('resize',measure);
+  setDot(0);play();
 });
 </script>
 </body>
