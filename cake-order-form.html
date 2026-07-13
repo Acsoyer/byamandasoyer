@@ -82,6 +82,7 @@
   .opt.multi .chk{display:flex}
   .opt.multi.sel .chk{background:var(--accent);border-color:var(--accent)}
   .opt.multi .chk svg{opacity:0}.opt.multi.sel .chk svg{opacity:1}
+  .opt.optin-wide .tx{padding-right:28px}
   .opt.grid-card{flex-direction:column;align-items:center;gap:9px;padding:16px 12px;text-align:center}
   .opt.grid-card .ic{width:64px;height:64px}
 
@@ -89,6 +90,9 @@
   .ptag{flex:0 0 auto;font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--ink);
     background:#F0E6DE;border-radius:9px;padding:4px 10px}
   .atag{flex:0 0 auto;font-weight:600;font-size:13.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .opt.multi .atag{margin-right:26px}
+  .opt .qtag{flex:0 0 auto;font-weight:600;font-size:12.5px;color:var(--ink-soft);background:#F0E6DE;border-radius:8px;padding:3px 9px}
+  .opt.multi .qtag{margin-right:26px}
 
   /* tiers */
   .tier{font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--ink);margin:24px 0 11px;display:flex;align-items:center;gap:10px}
@@ -108,7 +112,8 @@
   .sw .nm{font-size:9.5px;color:var(--ink-soft);text-align:center;line-height:1.1}
   .sw.sel .nm{color:var(--ink);font-weight:600}
   .pigment-card{border:1.5px solid #F0D3DC;border-radius:18px;padding:13px 13px 4px;margin-top:22px;background:var(--card);box-shadow:0 0 16px rgba(209,77,114,.20)}
-  .pig-head{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:11px}
+  .pig-head{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:6px}
+  .pig-desc{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:0 0 11px}
   .pickcount{font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;text-align:center}
 
   /* fields */
@@ -142,6 +147,7 @@
   .fdp-dow{text-align:center;font-size:10.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;padding:2px 0}
   .fdp-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink)}
   .fdp-cell.past{color:var(--ink-faint);opacity:.35;cursor:default}
+  .fdp-cell.off{color:var(--ink-faint);opacity:.3;cursor:default;text-decoration:line-through}
   .fdp-cell.empty{cursor:default}
   .fdp-cell.sel{background:var(--accent);color:#fff}
   .tslot{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:8px 0;text-align:center;font-size:12.5px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
@@ -153,6 +159,15 @@
   .drop .big{font-size:30px}
   .drop .t1{font-weight:600;font-size:15px;margin-top:8px}
   .drop .t2{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4}
+  .photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .photo-thumb{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;border:1.5px solid var(--pistachio);box-shadow:var(--shadow-sm)}
+  .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo-rm{position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(67,33,46,.72);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+  .photo-add{aspect-ratio:1;border:2px dashed #E0C9BE;border-radius:16px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:inherit;color:var(--ink-soft);padding:6px}
+  .photo-add:active{transform:scale(.97)}
+  .photo-add .big{font-size:26px;line-height:1;color:var(--accent)}
+  .photo-add .t1{font-size:12px;font-weight:600;color:var(--ink)}
+  .photo-add .t2{font-size:10.5px;color:var(--ink-soft)}
   .mini-upload{border:1.5px dashed #E0C9BE;border-radius:13px;background:var(--card);padding:11px;text-align:center;cursor:pointer;font-size:13px;color:var(--ink-soft);font-weight:600;margin-top:12px}
   .mini-upload.has{border-style:solid;border-color:var(--pistachio);color:var(--pistachio)}
 
@@ -189,6 +204,18 @@
   #next:disabled{opacity:.4;box-shadow:none}
   #next.pist{background:var(--pistachio);box-shadow:0 8px 22px rgba(143,166,124,.32)}
 
+  .modal{position:absolute;inset:0;z-index:60;background:rgba(67,33,46,.42);display:none;align-items:flex-end;justify-content:center;padding:0}
+  .modal.show{display:flex}
+  .modal-card{background:var(--bg);width:100%;max-height:88%;border-radius:24px 24px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(67,33,46,.28);animation:sheetUp .3s cubic-bezier(.4,0,.2,1)}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 10px;flex:0 0 auto}
+  .modal-title{font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:var(--ink)}
+  .modal-close{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:19px;color:var(--ink);cursor:pointer;line-height:1;flex:0 0 auto}
+  .modal-body{overflow-y:auto;padding:4px 20px 26px;-webkit-overflow-scrolling:touch}
+  .modal-body::-webkit-scrollbar{display:none}
+  .modal-body h4{font-family:'Fraunces',serif;font-size:14.5px;font-weight:600;color:var(--accent);margin:16px 0 4px}
+  .modal-body p{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:0 0 6px}
+  .modal-body .muted{font-size:11.5px;color:var(--ink-faint)}
   #done{position:absolute;inset:0;background:linear-gradient(160deg,#FBF6F0,#F1F5EC);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px;text-align:center}
   #done.show{display:flex}
   #done .big{font-size:62px;margin-bottom:16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
@@ -236,6 +263,16 @@
     <p id="doneP2" style="font-size:13px"></p>
     <button class="again" onclick="location.reload()" id="doneAgain"></button>
   </div>
+
+  <div id="privacy" class="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span class="modal-title" id="privTitle"></span>
+        <button type="button" class="modal-close" onclick="closePrivacy()" aria-label="close">×</button>
+      </div>
+      <div class="modal-body" id="privBody"></div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -257,7 +294,7 @@ const t=k=>T[k][lang];
 
 /* ---------- Data ---------- */
 const D={
-  size:{q:lg("What size?","Que tamanho?"),
+  size:{q:lg("Choose your cake size","Escolha o tamanho do bolo"),
     opts:[
       {id:"XS",price:30,lvl:1,t:lg("XS Bento","XS Bento"),d:lg("4–6 portions","4–6 porções"),bento:true},
       {id:"S",price:40,lvl:2,t:lg("S","S"),d:lg("6–8 portions","6–8 porções")},
@@ -265,6 +302,8 @@ const D={
       {id:"L",price:80,lvl:4,t:lg("L","L"),d:lg("16–20 portions","16–20 porções")},
       {id:"XL",price:110,lvl:5,t:lg("XL","XL"),d:lg("24–28 portions","24–28 porções")},
       {id:"30+",price:null,lvl:5,t:lg("30+ portions","30+ porções"),d:lg("Custom quote","Orçamento personalizado")},
+      {id:"sm",price:null,lvl:4,twoTier:true,t:lg("S + M","S + M"),d:lg("18–20 portions","18–20 porções")},
+      {id:"ml",price:null,lvl:5,twoTier:true,t:lg("M + L","M + L"),d:lg("35–40 portions","35–40 porções")},
     ]},
   shapeBento:[{id:"round",price:0,t:lg("Round","Redondo")},{id:"heart",price:5,t:lg("Heart","Coração")}],
   shapeCustom:[{id:"round",price:0,t:lg("Round","Redondo")},{id:"heart",price:5,t:lg("Heart","Coração")},
@@ -275,40 +314,44 @@ const D={
     {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
   ],
   flavCustom:[
-    {tier:lg("The Classics","Clássicos"),items:[
+    {tier:lg("Classics","Clássicos"),items:[
       {id:"vb",price:0,t:lg("Vanilla Berry","Vanilla Berry"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mixed berry compote · white chocolate (fillings)","Compota de Frutos Vermelhos + Chocolate Branco"),c:"#D98BA6"},
       {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
       {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
-      {id:"lr",price:0,t:lg("Lemon Raspberry","Lemon Raspberry"),ck:lg("Lemon (cake)","Massa de Limão"),fi:lg("white chocolate · raspberry compote (fillings)","Chocolate Branco + Compota de Framboesa"),c:"#EDD97A"},
+      {id:"lr",price:0,t:lg("Lemon Raspberry","Lemon Raspberry"),ck:lg("Lemon (cake)","Massa de Limão"),fi:lg("lemon cream · raspberry compote (fillings)","Creme de Limão + Compota de Framboesa"),c:"#EDD97A"},
     ]},
     {tier:lg("Chocolate Lovers","Chocolate Lovers"),items:[
       {id:"cbb",price:0,t:lg("Chocolate Berry Bliss","Chocolate Berry Bliss"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate · berry compote (fillings)","Chocolate de Leite + Compota de Frutos Vermelhos"),c:"#7A4A55"},
       {id:"csc",price:0,t:lg("Chocolate Salted Caramel","Chocolate Salted Caramel"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate · salted caramel (fillings)","Chocolate de Leite + Caramelo Salgado"),c:"#8A5A3C"},
       {id:"cc",price:0,t:lg("Cookies and Cream","Cookies and Cream"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("cream cheese · crushed Oreo (fillings)","Queijo Creme + Oreo Trituradas"),c:"#4B3B3B"},
     ]},
-    {tier:lg("Premium","Sabores Premium"),items:[
-      {id:"bc",price:6,t:lg("Berry Cheesecake","Berry Cheesecake"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mascarpone · berry compote (fillings)","Mascarpone Creme + Compota de Frutos Vermelhos"),c:"#C77B93"},
-      {id:"ps",price:8,t:lg("Pistachio Strawberry Cream","Pistachio Strawberry Cream"),ck:lg("Pistachio (cake)","Massa de Pistáchios"),fi:lg("white chocolate · strawberry (fillings)","Chocolate Branco + Compota de Morango"),c:"#9DB07E"},
-      {id:"scp",price:5,t:lg("Salted Caramel Peanut","Salted Caramel Peanut"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("salted caramel · peanut butter (fillings)","Caramelo Salgado + Creme de Manteiga de Amendoim"),c:"#B07A3C"},
+    {tier:lg("Signature","Signature"),items:[
+      {id:"bc",sig:true,t:lg("Berry Cheesecake","Berry Cheesecake"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mascarpone · berry compote (fillings)","Mascarpone Creme + Compota de Frutos Vermelhos"),c:"#C77B93"},
+      {id:"ps",sig:true,t:lg("Pistachio Strawberry","Pistachio Strawberry"),ck:lg("Pistachio (cake)","Massa de Pistáchios"),fi:lg("pistachio cream · strawberry (fillings)","Creme de Pistáchio + Morango"),c:"#9DB07E"},
+      {id:"scp",sig:true,t:lg("Salted Caramel Peanut","Salted Caramel Peanut"),ck:lg("Caramel (cake)","Massa de Caramelo"),fi:lg("salted caramel · peanut butter cream · crushed peanuts (fillings)","Caramelo Salgado + Creme de Manteiga de Amendoim + Amendoins Triturados"),c:"#B07A3C"},
+      {id:"biscoff",sig:true,t:lg("Biscoff","Biscoff"),ck:lg("Caramel (cake)","Massa de Caramelo"),fi:lg("lotus biscoff cream · crushed biscoff cookies (fillings)","Creme de Biscoff Lotus + Bolachas Biscoff Trituradas"),c:"#C8853F"},
+      {id:"coconut",sig:true,t:lg("Coconut Passion","Coconut Passion"),ck:lg("Coconut (cake)","Massa de Coco"),fi:lg("milk chocolate · passion fruit curd (fillings)","Chocolate de Leite + Curd de Maracujá"),c:"#E7DCC4"},
     ]},
   ],
   colors:[
     {h:"#FFFFFF",t:lg("White","Branco")},{h:"#F3ECE0",t:lg("Ivory","Marfim")},{h:"#F3C9D3",t:lg("Blush","Blush")},{h:"#EFA9BE",t:lg("Pink","Rosa")},
     {h:"#E86A8E",t:lg("Rose","Rosa forte")},{h:"#C62828",t:lg("Red","Vermelho")},{h:"#7A2233",t:lg("Burgundy","Bordô")},{h:"#F0B57A",t:lg("Peach","Pêssego")},
-    {h:"#E38B4E",t:lg("Orange","Laranja")},{h:"#EDD97A",t:lg("Yellow","Amarelo")},{h:"#C9A227",t:lg("Gold","Dourado")},{h:"#B7D6A0",t:lg("Sage","Sálvia")},
+    {h:"#E38B4E",t:lg("Orange","Laranja")},{h:"#EDD97A",t:lg("Yellow","Amarelo")},{h:"#B7D6A0",t:lg("Sage","Sálvia")},
     {h:"#5F7A4E",t:lg("Green","Verde")},{h:"#CFE9DD",t:lg("Mint","Menta")},{h:"#9CC7D4",t:lg("Sky","Azul-céu")},{h:"#2F4A6E",t:lg("Navy","Marinho")},
     {h:"#C7B7E0",t:lg("Lilac","Lilás")},{h:"#8A72C0",t:lg("Purple","Roxo")},{h:"#8A6B52",t:lg("Brown","Castanho")},{h:"#1A1A1A",t:lg("Black","Preto")},
   ],
   pigment:[
     {id:"black",t:lg("Black","Preto"),c:"#111"},{id:"navy",t:lg("Navy blue","Azul-marinho"),c:"#1e3a5f"},
     {id:"red",t:lg("Red","Vermelho"),c:"#c62828"},{id:"green",t:lg("Dark green","Verde-escuro"),c:"#1e5631"},
-    {id:"neon",t:lg("Neon","Néon"),c:"#39ff14"},
+    {id:"neongreen",t:lg("Neon green","Verde néon"),c:"#39ff14"},
+    {id:"neonyellow",t:lg("Neon yellow","Amarelo néon"),c:"#eaff00"},
+    {id:"neonorange",t:lg("Neon orange","Laranja néon"),c:"#ff6a00"},
   ],
   writeMethods:[
-    {id:"ref",t:lg("Similar to my reference photo","Parecido com a foto de referência"),ic:"📷"},
-    {id:"piping",t:lg("Piping","Piping (bico)"),ic:"✍️"},
-    {id:"fondant",t:lg("Fondant letters","Letras de fondant"),ic:"🔤"},
-    {id:"cutout",t:lg("Cutout image","Imagem recortada"),ic:"🖼️"},
+    {id:"piping",t:lg("Handwritten Cursive Text","Texto Cursivo à Mão"),ic:"✍️"},
+    {id:"fondant",t:lg("Fondant Letters","Letras de Fondant"),ic:"🔤"},
+    {id:"cutout",t:lg("Cutout Letters","Letras Recortadas"),ic:"🖼️"},
+    {id:"none",t:lg("None","Nenhuma"),ic:"⬜"},
   ],
   cupcakes:[
     {id:"none",price:0,t:lg("No cupcakes","Sem cupcakes"),d:lg("","")},
@@ -316,23 +359,26 @@ const D={
     {id:"12",price:30,t:lg("12 Cupcakes","12 Cupcakes"),d:lg("Same theme & flavour","Tema e sabor iguais aos do bolo")},
   ],
   decor:[
-    {id:"none",t:lg("No decoration","Sem decoração"),ic:"⬜"},
-    {id:"fondant",t:lg("Fondant text or design","Texto ou decoração em pasta de açúcar"),ic:"🎨"},
-    {id:"print",t:lg("Edible print","Impressão comestível"),ic:"🖼️"},
-    {id:"ball",t:lg("Ball toppers","Esferas decorativas"),ic:"🔮"},
-    {id:"bows",t:lg("Bows","Laços"),ic:"🎀"},
-    {id:"butterflies",t:lg("Paper butterflies","Borboletas em papel"),ic:"🦋"},
-    {id:"sprinkles",t:lg("Premium sprinkles","Sprinkles (Granulados) premium"),ic:"✨"},
-    {id:"cherries",t:lg("Maraschino cherries","Cerejas Maraschino"),ic:"🍒"},
-    {id:"cherriesg",t:lg("Cherries + glitter","Cerejas Maraschino + glitters"),ic:"🍒"},
-    {id:"flowers",t:lg("Buttercream flowers","Flores em buttercream"),ic:"🌸"},
+    {id:"none",t:lg("None","Nenhum"),ic:"⬜"},
+    {id:"bows",t:lg("Bows","Laços"),ic:"🎀",sm:3,lxl:5},
+    {id:"prints",t:lg("Edible prints","Impressões comestíveis"),ic:"🖼️",sm:10,lxl:15},
+    {id:"customimg",t:lg("Custom themed images","Imagens temáticas personalizadas"),ic:"🎨",quote:true},
+    {id:"butterflies",t:lg("Paper butterflies","Borboletas de papel"),ic:"🦋",sm:5,lxl:8},
+    {id:"cherries",t:lg("Maraschino cherries","Cerejas Maraschino"),ic:"🍒",sm:6,lxl:8},
+    {id:"cherriesg",t:lg("Maraschino cherries + glitter","Cerejas Maraschino + glitter"),ic:"🍒",sm:8,lxl:10},
+    {id:"disco",t:lg("Disco balls","Bolas de disco"),ic:"🪩",quote:true},
+    {id:"flowers",t:lg("Fresh edible flowers","Flores comestíveis frescas"),ic:"🌸",quote:true},
+    {id:"fruits",t:lg("Fresh fruits","Frutas frescas"),ic:"🍓",quote:true},
+    {id:"goldshapes",t:lg("Gold or silver star, sun, moon","Estrela, sol ou lua (dourado/prateado)"),ic:"⭐",quote:true},
+    {id:"custom",t:lg("Custom","Personalizado"),ic:"✨",quote:true},
   ],
   heard:[
     {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),ic:"🔍"},
+    {id:"tiktok",t:lg("TikTok","TikTok"),ic:"🎵"},
     {id:"igad",t:lg("Meta ad","Anúncio no Meta"),ic:"📣"},
     {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),ic:"👥"},
     {id:"returning",t:lg("Returning customer","Cliente anterior"),ic:"💝"},
-    {id:"referral",t:lg("Referral","Indicação"),ic:"🗣️"},
+    {id:"referral",t:lg("Referred by a friend","Indicado por um amigo"),ic:"🗣️"},
   ],
   countries:[
     {iso:"PT",c:"+351"},{iso:"BR",c:"+55"},{iso:"AO",c:"+244"},{iso:"US",c:"+1"},{iso:"TR",c:"+90"},
@@ -365,28 +411,47 @@ function shapeIcon(id){
 /* ---------- State ---------- */
 let lang="en", step=0;
 const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
-  writeMethods:[],writing:"",writeExample:false,writingColor:"#1A1A1A",writingRef:false,
-  cupcakes:"none",decor:["none"],candles:"yes",photo:false,photoFile:null,photoPreview:"",photoNote:"",
+  writeMethods:[],writing:"",writingColor:"#1A1A1A",writingRef:false,
+  cupcakes:"none",decor:["none"],candles:"yes",photo:false,photoFiles:[],photoPreviews:[],photoNote:"",
   noAllergy:false,allergies:"",notes:"",name:"",wcode:"+351",wcodeCustom:false,wnum:"",instagram:"",
   pdate:"",ptime:"",heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
 let S=DEF();
 
 const STEPS=['size','shape','flavor','color','writing','wcolor','cupcakes','decor','candles','photo','allergies','notes','policies','contact','pickup','heard','email','review'];
 const isBento=()=>S.size==='XS';
-const isCustomQuote=()=>S.size==='30+';
+const sizeOpt=()=>D.size.opts.find(o=>o.id===S.size);
+const isCustomQuote=()=>{const o=sizeOpt();return !!o&&o.price==null;};
 const allFlav=()=>isBento()?D.flavBento:D.flavCustom.flatMap(g=>g.items);
+const bigSize=()=>(S.size==='L'||S.size==='XL');
+/* size-dependent surcharges */
+function shapePrice(id){
+  if(id==='round')return 0;
+  if(id==='heart'||id==='square')return bigSize()?8:5;
+  if(id==='rect')return bigSize()?10:8;
+  return 0;
+}
+function sigPrice(){ if(S.size==='XL')return 10; if(S.size==='L')return 8; return 6; }
+function flavPrice(o){ return o&&o.sig?sigPrice():(o&&o.price?o.price:0); }
+function writeMethodPrice(id){
+  if(id==='fondant')return bigSize()?6:5;
+  if(id==='cutout')return bigSize()?10:8;
+  return 0;
+}
+function decorPrice(o){ if(!o||o.quote)return null; return bigSize()?o.lxl:o.sm; }
 
 /* ---------- Price ---------- */
 function calc(){
   if(isCustomQuote())return{custom:true};
   let sum=0,range=false;
-  const sz=D.size.opts.find(o=>o.id===S.size); if(sz&&sz.price!=null)sum+=sz.price;
-  const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape); if(sh)sum+=sh.price;
-  const fl=allFlav().find(o=>o.id===S.flavor); if(fl)sum+=fl.price;
+  const sz=sizeOpt(); if(sz&&sz.price!=null)sum+=sz.price;
+  const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape); if(sh)sum+=shapePrice(sh.id);
+  const fl=allFlav().find(o=>o.id===S.flavor); if(fl)sum+=flavPrice(fl);
   if(S.colors.length>2)sum+=(S.colors.length-2)*5;
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes); if(cup)sum+=cup.price;
-  if(S.pigment.length){const pp=(S.size==='L'||S.size==='XL')?8:5;sum+=S.pigment.length*pp;}
-  const dc=S.decor.filter(d=>d!=='none'); if(dc.length){sum+=dc.length*3;range=true;}
+  if(S.pigment.length){const pp=bigSize()?7:5;sum+=S.pigment.length*pp;}
+  S.writeMethods.filter(id=>id!=='none').forEach(id=>sum+=writeMethodPrice(id));
+  const dc=S.decor.filter(d=>d!=='none');
+  if(dc.length){range=true;dc.forEach(id=>{const p=decorPrice(D.decor.find(x=>x.id===id));if(p)sum+=p;});}
   return{sum,range};
 }
 const priceNow=()=>{const c=calc();return c.custom?0:c.sum;};
@@ -430,13 +495,20 @@ const addTag=p=>p&&p>0?`<span class="atag">+€${p}</span>`:'';
 
 const R={};
 R.size=()=>{
-  B().innerHTML=head(D.size.q,lg("Base price shown — flavour & design are added on top.","Os preços apresentados são preços base e incluem uma decoração minimalista (bordas, laterais e até duas cores). O preço final poderá aumentar consoante os sabores escolhidos e a complexidade da decoração."))+
-    `<div class="opts">`+D.size.opts.map(o=>`
-    <button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}">
+  let firstTwoTier=true;
+  const cards=D.size.opts.map(o=>{
+    let pre='';
+    if(o.twoTier&&firstTwoTier){firstTwoTier=false;
+      pre=`<div class="tier"><span>${lang==='en'?'Two-tier cakes':'Bolos de dois andares'}</span><span class="ln"></span></div>`;
+    }
+    return pre+`<button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic">${sizeCake(o.lvl)}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.d[lang]}</span></span>
       ${o.price==null?`<span class="ptag">${t('quote')}</span>`:baseTag(o.price)}
-    </button>`).join('')+`</div>`;
+    </button>`;
+  }).join('');
+  B().innerHTML=head(D.size.q,lg("Starting prices shown. Final pricing depends on flavors and design complexity.","Preços iniciais indicados. O preço final depende dos sabores e da complexidade do design."))+
+    `<div class="opts">${cards}</div>`;
   bindSingle('size',()=>{S.shape=null;S.flavor=null;});
 };
 R.shape=()=>{
@@ -446,15 +518,15 @@ R.shape=()=>{
     <button class="opt grid-card ${S.shape===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic">${shapeIcon(o.id)}</span>
       <span class="tt">${o.t[lang]}</span>
-      ${addTag(o.price)}
+      ${addTag(shapePrice(o.id))}
     </button>`).join('')+`</div>`;
   bindSingle('shape');
 };
 R.flavor=()=>{
-  let h=head(lg("Choose your flavour","Escolha o seu sabor"),lg("One sponge + two fillings, finished in Swiss meringue buttercream.","As combinações foram cuidadosamente pensadas para criar um sabor equilibrado e indulgente. Todos os bolos são finalizados com buttercream de merengue suíço."));
+  let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
   const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic" style="background:${o.c}22"><span style="width:24px;height:24px;border-radius:50%;background:${o.c};display:block;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.15)"></span></span>
-      <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.ck[lang]}</span><span class="ds">${o.fi[lang]}</span></span>${addTag(o.price)}</button>`;
+      <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.ck[lang]}</span><span class="ds">${o.fi[lang]}</span></span>${addTag(flavPrice(o))}</button>`;
   if(isBento()){h+=`<div class="opts">`+D.flavBento.map(card).join('')+`</div>`;}
   else{D.flavCustom.forEach(g=>{h+=`<div class="tier"><span>${g.tier[lang]}</span><span class="ln"></span></div><div class="opts">`+g.items.map(card).join('')+`</div>`;});}
   B().innerHTML=h;bindSingle('flavor');
@@ -464,10 +536,12 @@ R.color=()=>{
     return `<div class="sw ${sel?'sel':''} ${isLight(o.h)?'light':''}" data-c="${o.h}"><div class="chip" style="background:${o.h}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
   const pig=D.pigment.map(o=>{const sel=S.pigment.includes(o.id);
     return `<div class="sw ${sel?'sel':''} ${isLight(o.c)?'light':''}" data-pid="${o.id}"><div class="chip" style="background:${o.c}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
-  const pigPrice=(S.size==='L'||S.size==='XL')?8:5;
+  const pigPrice=bigSize()?7:5;
   B().innerHTML=head(lg("Cake colours","Cor do bolo"),lg("Up to 2 colours included. Extra colours +€5 each.","Máximo de 2 cores. Cores adicionais: +€5 cada."))+
     `<div class="sw-grid">${swatches}</div><p class="pickcount" id="pc">${T.pickMax[lang](S.colors.length)}</p>`+
-    `<div class="pigment-card"><div class="pig-head">${lang==='en'?`High-pigment colours · +€${pigPrice} each`:`Cores de alta pigmentação · +€${pigPrice} cada`}</div><div class="sw-grid">${pig}</div></div>`;
+    `<div class="pigment-card"><div class="pig-head">${lang==='en'?`High-pigment colours · +€${pigPrice} each`:`Cores de alta pigmentação · +€${pigPrice} cada`}</div>`+
+    `<p class="pig-desc">${lang==='en'?'Each high pigment color extra price applies when the entire cake is covered in the selected color.':'O valor extra de cada cor de alta pigmentação aplica-se quando o bolo é totalmente coberto com a cor selecionada.'}</p>`+
+    `<div class="sw-grid">${pig}</div></div>`;
   bindSwatchMulti('colors',2,'pc');
   B().querySelectorAll('.sw[data-pid]').forEach(el=>el.onclick=()=>{
     const id=el.dataset.pid;
@@ -479,16 +553,22 @@ R.writing=()=>{
   const cards=D.writeMethods.map(o=>`<button class="opt multi ${S.writeMethods.includes(o.id)?'sel':''}" data-id="${o.id}">
       <span class="ic"><span style="font-size:22px">${o.ic}</span></span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span>
+      ${addTag(writeMethodPrice(o.id))}
       <span class="chk">${tick()}</span></button>`).join('');
-  const wantText=S.writeMethods.length>0;
-  B().innerHTML=head(lg("Writing on top","Escrita no bolo"),lg("Optional. Pick a style (or match your reference), then add your wording.","Opcional. Escolha um estilo (ou igual à referência) e adicione o texto."))+
-    `<div class="opts">${cards}</div>`+
-    `<div id="wtext" style="${wantText?'':'display:none'};margin-top:14px">
-       <div class="field"><label>${lang==='en'?'Text on top':'Texto no bolo'} <span class="opt-note">(${t('optional')})</span></label>
-       <input id="writing" type="text" maxlength="40" placeholder="${lang==='en'?'Happy Birthday Sofia':'Parabéns Sofia'}" value="${esc(S.writing)}"></div>
-       <div class="mini-upload ${S.writeExample?'has':''}" id="wex" onclick="S.writeExample=!S.writeExample;R.writing();">${S.writeExample?(lang==='en'?'✓ Reference image added':'✓ Imagem de referência adicionada'):(lang==='en'?'＋ Add reference image for the writing (optional)':'＋ Adicionar imagem de referência da escrita (opcional)')}</div>
-     </div>`;
-  bindMulti('writeMethods',()=>{document.getElementById('wtext').style.display=S.writeMethods.length?'block':'none';});
+  B().innerHTML=head(lg("Cake Message","Mensagem no bolo"),lg("Optional. Type your message, then choose how you'd like it written.","Opcional. Escreva a sua mensagem e escolha como quer que seja aplicada."))+
+    `<div class="field"><label>${lang==='en'?'Your message':'A sua mensagem'} <span class="opt-note">(${t('optional')})</span></label>
+       <input id="writing" type="text" maxlength="40" placeholder="${lang==='en'?'Happy Birthday Sofia':'Parabéns Sofia'}" value="${esc(S.writing)}">
+       <span class="opt-note" style="display:block;margin-top:6px">${lang==='en'?'Example: Happy Birthday Sofia':'Exemplo: Parabéns Sofia'}</span></div>
+    <div class="opts" style="margin-top:4px">${cards}</div>`;
+  B().querySelectorAll('.opt.multi[data-id]').forEach(el=>el.onclick=()=>{
+    const id=el.dataset.id;
+    change(el,()=>{
+      if(id==='none'){S.writeMethods=['none'];}
+      else{S.writeMethods=S.writeMethods.filter(x=>x!=='none');
+        const i=S.writeMethods.indexOf(id);if(i>=0)S.writeMethods.splice(i,1);else S.writeMethods.push(id);}
+    });
+    R.writing();
+  });
   const w=document.getElementById('writing'); if(w)w.oninput=e=>S.writing=e.target.value;
 };
 R.wcolor=()=>{
@@ -498,7 +578,7 @@ R.wcolor=()=>{
   const cols=[D.colors.find(o=>o.h==='#1A1A1A'),...D.colors.filter(o=>o.h!=='#1A1A1A')];
   const swatches=cols.map(o=>{const sel=!S.writingRef&&S.writingColor===o.h;
     return `<div class="sw ${sel?'sel':''} ${isLight(o.h)?'light':''}" data-c="${o.h}"><div class="chip" style="background:${o.h}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
-  B().innerHTML=head(lg("Writing colour","Cor da escrita"))+refCard+
+  B().innerHTML=head(lg("Cake Message Color","Cor da mensagem"))+refCard+
     `<div class="divlabel"><span>${lang==='en'?'Or pick a colour':'Ou escolha uma cor'}</span><span class="ln"></span></div>`+
     `<div class="sw-grid">${swatches}</div>`;
   document.querySelector('[data-ref]').onclick=function(){S.writingRef=!S.writingRef;R.wcolor();};
@@ -513,11 +593,18 @@ R.cupcakes=()=>{
   bindSingle('cupcakes');
 };
 R.decor=()=>{
-  B().innerHTML=head(lg("Decorations","Decorações"),lg("Pick any you'd like · +€3–15 each.","Escolha as que quiser · +€3 a €15 cada."))+
+  const tagFor=o=>{
+    if(o.id==='none')return '';
+    if(o.quote)return `<span class="qtag">${t('quote')}</span>`;
+    const p=decorPrice(o);
+    return p?`<span class="atag">+€${p}</span>`:'';
+  };
+  B().innerHTML=head(lg("Add-ons","Extras"),lg("Pick any you'd like. Prices vary by size — some items are quoted individually.","Escolha os que quiser. Os preços variam consoante o tamanho — alguns extras são orçamentados individualmente."))+
     `<div class="opts">`+D.decor.map(o=>`
     <button class="opt multi ${S.decor.includes(o.id)?'sel':''}" data-id="${o.id}">
       <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span>
+      ${tagFor(o)}
       <span class="chk">${tick()}</span></button>`).join('')+`</div>`;
   B().querySelectorAll('.opt').forEach(el=>el.onclick=()=>{
     const id=el.dataset.id;
@@ -531,7 +618,7 @@ R.decor=()=>{
   });
 };
 R.candles=()=>{
-  B().innerHTML=head(lg("Candles?","Velas?"),lg("1–3 candles are free.","1–3 velas são gratuitas."))+
+  B().innerHTML=head(lg("Complimentary Candles","Velas de oferta"),lg("1–3 candles are free.","1–3 velas são gratuitas."))+
     `<div class="opts">`+[{id:"yes",t:lg("Yes please","Sim, por favor"),ic:"🕯️"},{id:"no",t:lg("No, not needed","Não, obrigado(a)"),ic:"🚫"}]
       .map(o=>`<button class="opt ${S.candles===o.id?'sel':''}" data-id="${o.id}">
         <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
@@ -539,19 +626,39 @@ R.candles=()=>{
   bindSingle('candles');
 };
 R.photo=()=>{
-  const hasP=!!S.photoFile;
-  B().innerHTML=head(lg("Reference photo","Imagem de referência"),lg("Required — this is how Amanda understands your vision. The final cake will be similar, not identical.","As imagens de inspiração ajudam a orientar a decoração. O resultado final não será idêntico, mas será semelhante."))+
-    `<input type="file" accept="image/*" id="photoInput" style="display:none">
-     <div class="drop ${hasP?'has':''}" id="drop">
-       ${hasP&&S.photoPreview?`<img src="${S.photoPreview}" style="max-height:160px;max-width:100%;border-radius:12px;display:block;margin:0 auto">`:`<div class="big">📷</div>`}
-       <div class="t1">${hasP?(lang==='en'?'Photo added ✓':'Foto adicionada ✓'):(lang==='en'?'Tap to add a photo':'Carregar uma foto de referência')}</div>
-       <div class="t2">${hasP?esc(S.photoFile.name):(lang==='en'?'Inspiration image from your gallery':'Imagem de inspiração da galeria')}</div>
-     </div>
+  const n=S.photoFiles.length;
+  const thumbs=S.photoFiles.map((f,i)=>`
+    <div class="photo-thumb">
+      <img src="${S.photoPreviews[i]}" alt="">
+      <button type="button" class="photo-rm" data-i="${i}" aria-label="remove">×</button>
+    </div>`).join('');
+  const adder=n<3?`
+    <button type="button" class="photo-add" id="drop">
+      <span class="big">＋</span>
+      <span class="t1">${lang==='en'?'Add a photo':'Adicionar foto'}</span>
+      <span class="t2">${lang==='en'?`${n}/3 added`:`${n}/3 adicionadas`}</span>
+    </button>`:'';
+  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("Upload up to 3 inspiration photos — this is how Amanda understands your vision.","Carregue até 3 fotos de inspiração — é assim que a Amanda percebe a sua visão."))+
+    `<input type="file" accept="image/*" id="photoInput" multiple style="display:none">
+     <div class="photo-grid">${thumbs}${adder}</div>
+     <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
      <div class="field" style="margin-top:16px"><label>${lang==='en'?'Notes about your reference':'Notas sobre a referência'} <span class="opt-note">(${t('optional')})</span></label>
        <textarea id="photoNote" placeholder="${lang==='en'?'e.g. I love the colours but want a round shape':'ex. adoro as cores mas quero forma redonda'}">${esc(S.photoNote)}</textarea></div>`;
   const inp=document.getElementById('photoInput');
-  document.getElementById('drop').onclick=()=>inp.click();
-  inp.onchange=e=>{const f=e.target.files[0];if(f){S.photoFile=f;S.photo=true;S.photoPreview=URL.createObjectURL(f);R.photo();validate();}};
+  const drop=document.getElementById('drop');
+  if(drop)drop.onclick=()=>inp.click();
+  inp.onchange=e=>{
+    const files=Array.from(e.target.files||[]);
+    for(const f of files){ if(S.photoFiles.length>=3)break; S.photoFiles.push(f); S.photoPreviews.push(URL.createObjectURL(f)); }
+    S.photo=S.photoFiles.length>0;
+    R.photo();validate();
+  };
+  B().querySelectorAll('.photo-rm').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;
+    try{URL.revokeObjectURL(S.photoPreviews[i]);}catch(_){}
+    S.photoFiles.splice(i,1);S.photoPreviews.splice(i,1);
+    S.photo=S.photoFiles.length>0;R.photo();validate();
+  });
   const pn=document.getElementById('photoNote'); if(pn)pn.oninput=e=>S.photoNote=e.target.value;
 };
 R.allergies=()=>{
@@ -608,16 +715,17 @@ R.pickup=()=>{
   for(let i=0;i<startDow;i++)cells+=`<div class="fdp-cell empty"></div>`;
   for(let d=1;d<=days;d++){
     const iso=`${y}-${pad(m+1)}-${pad(d)}`;const dd=new Date(y,m,d);const past=dd<t0;const sel=iso===S.pdate;
-    cells+=`<div class="fdp-cell ${past?'past':''} ${sel?'sel':''}" ${past?'':`onclick="pickDate('${iso}')"`}>${d}</div>`;
+    const off=(dd.getDay()===1||dd.getDay()===2);/* Monday & Tuesday closed */
+    const disabled=past||off;
+    cells+=`<div class="fdp-cell ${past?'past':''} ${off?'off':''} ${sel?'sel':''}" ${disabled?'':`onclick="pickDate('${iso}')"`}>${d}</div>`;
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
   const disp=S.pdate?fmtPicked(S.pdate):(lang==='en'?'Choose a date':'Escolha uma data');
   let slots='';
-  for(let h=11;h<=20;h++)for(let mm=0;mm<60;mm+=15){if(h===20&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
+  for(let h=11;h<=18;h++)for(let mm=0;mm<60;mm+=15){if(h===18&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
     slots+=`<div class="tslot ${S.ptime===s?'sel':''}" data-tm="${s}">${s}</div>`;}
-  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),lg("Wed–Fri 11:00–20:00 · Sat–Sun 11:00–19:00","Qua–Sex 11:00–20:00 · Sáb–Dom 11:00–19:00"))+
-    `<div class="fdp-selected ${S.pdate?'':'empty'}">${disp}</div>
-     <div class="fdp">
+  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),lg("Wed–Sun · 11:00–18:00 (Mon & Tue closed)","Qua–Dom · 11:00–18:00 (Seg e Ter encerrado)"))+
+    `<div class="fdp">
        <div class="fdp-head">
          <button class="fdp-nav" ${prevDisabled?'disabled':''} ${prevDisabled?'':'onclick="shiftMonth(-1)"'}>‹</button>
          <span class="fdp-mo">${MOs[m]} ${y}</span>
@@ -625,32 +733,36 @@ R.pickup=()=>{
        </div>
        <div class="fdp-grid">${WDs.map(w=>`<span class="fdp-dow">${w}</span>`).join('')}${cells}</div>
      </div>
-     <div class="field" style="margin-top:18px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>`;
+     <div class="fdp-selected ${S.pdate?'':'empty'}" style="margin-top:14px;margin-bottom:0">${disp}</div>
+     <div class="field" style="margin-top:18px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
+     <p class="note">${lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.':'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.'}</p>`;
   B().querySelectorAll('.tslot').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
     B().querySelectorAll('.tslot').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');validate();});
 };
 R.heard=()=>{
-  B().innerHTML=head(lg("How did you find Amanda?","Como encontrou a @byamandasoyer?"))+
+  B().innerHTML=head(lg("How did you find me?","Como me encontrou?"))+
     `<div class="opts">`+D.heard.map(o=>`
     <button class="opt ${S.heard===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')+`</div>
      <div id="refwrap" style="${S.heard==='referral'?'':'display:none'};margin-top:14px">
-       <div class="field"><label>${lang==='en'?'Who can she thank?':'Se foi indicado(a), a quem posso agradecer?'}</label>
+       <div class="field"><label>${lang==='en'?'Who can I thank?':'A quem posso agradecer?'}</label>
        <input id="refby" type="text" placeholder="${lang==='en'?'Name of who referred you':'Nome de quem indicou'}" value="${esc(S.referredBy)}"></div></div>`;
   bindSingle('heard',()=>{document.getElementById('refwrap').style.display=S.heard==='referral'?'block':'none';});
   const rb=document.getElementById('refby'); if(rb)rb.oninput=e=>S.referredBy=e.target.value;
 };
 R.email=()=>{
-  B().innerHTML=head(lg("Email — optional","Email — opcional"),lg("Only if you'd like to hear from Amanda. You can leave this empty.","Deixe o seu email caso pretenda receber atualizações sobre workshops, ofertas e novos lançamentos."))+
+  B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Only if you would like to receive updates about workshops, seasonal collections, new products and special offers. Leave blank if you prefer not to.","Apenas se pretender receber atualizações sobre workshops, coleções sazonais, novos produtos e ofertas especiais. Deixe em branco se preferir não receber."))+
     `<div class="field"><input id="email" type="email" placeholder="you@email.com" value="${esc(S.email)}"></div>
-     <button class="opt multi ${S.emailOptIn?'sel':''}" id="optin">
+     <button class="opt multi optin-wide ${S.emailOptIn?'sel':''}" id="optin">
        <span class="ic"><span style="font-size:20px">💌</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?'Yes, send me offers, workshops & new releases':'Sim, envie-me ofertas, workshops e novos lançamentos'}</span></span>
+       <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive email updates about workshops, new releases and special offers.":'Gostaria de receber atualizações por email sobre workshops, novidades e ofertas especiais.'}</span></span>
        <span class="chk">${tick()}</span></button>
-     <p class="note">${lang==='en'?"We'll never share your email with anyone, and we'll email you as little as possible.":"Nunca partilhamos o seu email com terceiros e enviamos o mínimo possível."}</p>`;
+     <p class="note">${lang==='en'?"Your email will only be used for updates you've chosen to receive. We'll never share it with third parties and will email on occasion.":'O seu email será usado apenas para as atualizações que escolheu receber. Nunca o partilhamos com terceiros e enviamos apenas ocasionalmente.'}</p>
+     <button type="button" class="linklike" id="privBtn">${lang==='en'?'Read our Privacy Policy':'Ler a nossa Política de Privacidade'}</button>`;
   document.getElementById('email').oninput=e=>S.email=e.target.value;
   document.getElementById('optin').onclick=()=>{S.emailOptIn=!S.emailOptIn;document.getElementById('optin').classList.toggle('sel');};
+  document.getElementById('privBtn').onclick=openPrivacy;
 };
 R.policies=()=>{
   const P=lang==='en'?[
@@ -662,7 +774,7 @@ R.policies=()=>{
     ["Reservas","A sua encomenda só fica confirmada após a receção do sinal não reembolsável de 50% e do respetivo comprovativo de pagamento. <span style=\"white-space:nowrap\">Sem sinal = sem encomenda.</span> Os orçamentos são válidos durante 48 horas. Após esse período, não é possível garantir a disponibilidade da data pretendida."],
     ["Pagamento e cancelamento","Pagamento por MB Way ou transferência bancária. Os dados serão fornecidos juntamente com o orçamento. Em caso de cancelamento, o sinal de 50% não é reembolsável."],
   ];
-  B().innerHTML=head(lg("Policies","Políticas"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+
+  B().innerHTML=head(lg("Booking Terms & Policies","Termos e Políticas de Reserva"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+
     `<div class="policybox">`+P.map(s=>`<div class="policysec"><h4>${s[0]}</h4><p>${s[1]}</p></div>`).join('')+`</div>`+
     `<button class="opt multi ${S.agreed?'sel':''}" id="agree">
        <span class="ic"><span style="font-size:20px">📝</span></span>
@@ -676,17 +788,18 @@ R.review=()=>{
   const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape);
   const fl=allFlav().find(o=>o.id===S.flavor);
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes);
-  const sizeShape=isBento()?`Bento · XS`:`${sz?sz.id:''} ${lang==='en'?'Size':'Tamanho'} · ${sh?sh.t[lang]:''} ${lang==='en'?'Shape':'Forma'}`;
+  const sizeShape=isBento()?`Bento · XS`:`${sz?sz.t[lang]:''} · ${sh?sh.t[lang]:''}`;
   const colNames=S.colors.map(h=>{const o=D.colors.find(x=>x.h===h);return `<span><i style="background:${h}"></i>${o?o.t[lang]:''}</span>`;}).join('');
   const decNames=S.decor.filter(d=>d!=='none').map(id=>{const o=D.decor.find(x=>x.id===id);return o?o.t[lang]:'';}).join(', ');
   const block=(k,v,cls)=>v?`<div class="rblock"><div class="k">${k}</div><div class="v ${cls||''}">${v}</div></div>`:'';
   let totalTxt=c.custom?t('quote'):(c.range?'from €'+c.sum:t('est')+' €'+c.sum);
-  B().innerHTML=head(lg("Review your cake","Rever o seu bolo"),lg("Amanda confirms availability & sends your final quote by WhatsApp.","A Amanda confirma disponibilidade e envia o orçamento final por WhatsApp."))+
+  const wmSel=S.writeMethods.filter(id=>id!=='none');
+  B().innerHTML=head(lg("Review your order","Rever o seu pedido"),lg("I'll confirm availability and send your final quote via WhatsApp within 24 to 48 hours.","Vou confirmar a disponibilidade e enviar o orçamento final por WhatsApp dentro de 24 a 48 horas."))+
     `<div class="rev">
       ${block(lang==='en'?'Size & shape':'Tamanho e forma',sizeShape)}
       ${block(lang==='en'?'Flavour':'Sabor',fl?fl.t[lang]:'')}
       ${S.colors.length?`<div class="rblock"><div class="k">${lang==='en'?'Colours':'Cores'}</div><div class="rcolors">${colNames}</div></div>`:''}
-      ${block(lang==='en'?'Writing':'Escrita',S.writing||(S.writeMethods.length?(lang==='en'?'(style chosen)':'(estilo escolhido)'):''),'norm')}
+      ${block(lang==='en'?'Message':'Mensagem',S.writing||(wmSel.length?(lang==='en'?'(style chosen)':'(estilo escolhido)'):''),'norm')}
       ${block('Cupcakes',cup&&cup.id!=='none'?cup.t[lang]:'','norm')}
       ${block(lang==='en'?'Decorations':'Decorações',decNames,'norm')}
       ${block(lang==='en'?'Pick-up':'Levantamento',(S.pdate||'')+(S.ptime?' · '+S.ptime:''),'norm')}
@@ -745,7 +858,14 @@ function start(l){lang=l;document.getElementById('lang').style.display='none';st
 function restart(){S=DEF();step=0;document.getElementById('lang').style.display='flex';}
 
 /* map form state to database row (English labels for the owner dashboard) */
-function buildPayload(photo_url){
+function buildPayload(photo_urls){
+  photo_urls=photo_urls||[];
+  const primaryPhoto=photo_urls[0]||null;
+  let photoNote=S.photoNote||"";
+  if(photo_urls.length>1){
+    const extra=photo_urls.slice(1).join("  |  ");
+    photoNote=(photoNote?photoNote+"\n\n":"")+"Additional reference photos: "+extra;
+  }
   const so=D.size.opts.find(o=>o.id===S.size);
   const portions=so?so.d.en.replace(' portions','').replace(' porções',''):'';
   const sizeStr=so?`${so.id}${portions?` (${portions})`:''}`:S.size;
@@ -756,7 +876,7 @@ function buildPayload(photo_url){
   const dsel=S.decor.filter(d=>d!=='none');
   const decorArr=dsel.length?dsel.map(id=>{const o=D.decor.find(x=>x.id===id);return o?o.t.en:id;}):["No decoration"];
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes);
-  const wm=S.writeMethods.map(id=>{const o=D.writeMethods.find(x=>x.id===id);return o?o.t.en:id;});
+  const wm=S.writeMethods.filter(id=>id!=='none').map(id=>{const o=D.writeMethods.find(x=>x.id===id);return o?o.t.en:id;});
   const wc=S.writingRef?"Reference photo":((D.colors.find(x=>x.h===S.writingColor)||{}).t?.en||S.writingColor);
   const hrd=(D.heard.find(o=>o.id===S.heard)||{}).t?.en||S.heard;
   const c=calc();
@@ -768,7 +888,7 @@ function buildPayload(photo_url){
     colors:colorsArr, pigment:pigArr, write_methods:wm,
     writing:S.writing, writing_color:wc,
     cupcakes:cup?cup.t.en:S.cupcakes, decor:decorArr, candles:S.candles==='yes'?"Yes":"No",
-    photo_url:photo_url, photo_note:S.photoNote,
+    photo_url:primaryPhoto, photo_note:photoNote,
     no_allergy:S.noAllergy, allergies:S.noAllergy?"":S.allergies, notes:S.notes,
     name:S.name, whatsapp:(S.wcode+" "+S.wnum).trim(), instagram:S.instagram,
     pickup_date:S.pdate||null, pickup_time:S.ptime,
@@ -782,15 +902,15 @@ async function submit(){
   btn.disabled=true; btn.textContent=lang==='en'?'Sending…':'A enviar…';
   try{
     if(!sb) throw new Error("Connection not ready. Please refresh and try again.");
-    let photo_url=null;
-    if(S.photoFile){
-      const ext=(S.photoFile.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+    let photo_urls=[];
+    for(const f of S.photoFiles.slice(0,3)){
+      const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
       const path=`orders/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
-      const up=await sb.storage.from('references').upload(path,S.photoFile,{cacheControl:'3600',upsert:false});
+      const up=await sb.storage.from('references').upload(path,f,{cacheControl:'3600',upsert:false});
       if(up.error) throw up.error;
-      photo_url=sb.storage.from('references').getPublicUrl(path).data.publicUrl;
+      photo_urls.push(sb.storage.from('references').getPublicUrl(path).data.publicUrl);
     }
-    const {error}=await sb.from('orders').insert(buildPayload(photo_url));
+    const {error}=await sb.from('orders').insert(buildPayload(photo_urls));
     if(error) throw error;
     showDone();
   }catch(e){
@@ -811,6 +931,41 @@ function showDone(){
   document.getElementById('doneAgain').textContent=lang==='en'?'Start over':'Recomeçar';
   d.classList.add('show');
 }
+
+/* ---------- privacy policy ---------- */
+const PRIVACY={
+  en:`<p class="muted">Last updated: 13/07/2026</p>
+    <p>At byamandasoyer, we respect your privacy and are committed to protecting your personal information.</p>
+    <h4>Who We Are</h4><p>Amanda's Cakes is a home-based cake studio located in Lisbon, Portugal.</p>
+    <p>Contact — Email: byamandasoyer@gmail.com</p>
+    <h4>Information We Collect</h4><p>When you contact us or submit an order, we may collect: name, email address, phone number, event details, collection or delivery information, inspiration photos you choose to upload, dietary restrictions or allergy information, and any additional information you provide.</p>
+    <p>If you choose to subscribe to our email updates, we also collect your email address for marketing purposes.</p>
+    <h4>How We Use Your Information</h4><p>We use your information to process and manage your cake order, communicate with you about your order, arrange collection or delivery, respond to enquiries, improve our customer service, and send email updates only if you have given your consent.</p>
+    <p>Dietary restrictions and allergy information are collected solely to help prepare your order safely and are used only for that purpose.</p>
+    <h4>Marketing Emails</h4><p>If you subscribe, we may occasionally send updates about workshops, seasonal collections, new products and special offers. You can unsubscribe at any time by contacting us directly via email.</p>
+    <h4>Sharing Your Information</h4><p>We do not sell, rent or trade your personal information. Your information may be shared only with trusted service providers where necessary to operate our business, such as payment processors, website hosting providers or email marketing services.</p>
+    <h4>How Long We Keep Your Information</h4><p>We keep your personal information only for as long as necessary to fulfil your order, meet legal and accounting obligations, and maintain business records. Marketing email information is kept until you withdraw your consent by emailing us.</p>
+    <h4>Contact</h4><p>If you have any questions about this Privacy Policy or how your personal information is handled, please contact Byamandasoyer — Email: byamandasoyer@gmail.com</p>`,
+  pt:`<p class="muted">Última atualização: 13/07/2026</p>
+    <p>Na byamandasoyer, respeitamos a sua privacidade e comprometemo-nos a proteger os seus dados pessoais.</p>
+    <h4>Quem Somos</h4><p>A Amanda's Cakes é um estúdio de bolos caseiro localizado em Lisboa, Portugal.</p>
+    <p>Contacto — Email: byamandasoyer@gmail.com</p>
+    <h4>Informações que Recolhemos</h4><p>Quando nos contacta ou submete um pedido, podemos recolher: nome, email, número de telefone, detalhes do evento, informação de levantamento ou entrega, fotos de inspiração que escolha carregar, restrições alimentares ou informação sobre alergias, e qualquer informação adicional que forneça.</p>
+    <p>Se optar por subscrever as nossas atualizações por email, recolhemos também o seu email para fins de marketing.</p>
+    <h4>Como Usamos as Suas Informações</h4><p>Usamos as suas informações para processar e gerir o seu pedido, comunicar consigo sobre o pedido, organizar o levantamento ou entrega, responder a questões, melhorar o nosso serviço e enviar atualizações por email apenas com o seu consentimento.</p>
+    <p>As restrições alimentares e informação sobre alergias são recolhidas apenas para preparar o seu pedido em segurança e usadas exclusivamente para esse fim.</p>
+    <h4>Emails de Marketing</h4><p>Se subscrever, poderemos ocasionalmente enviar atualizações sobre workshops, coleções sazonais, novos produtos e ofertas especiais. Pode cancelar a subscrição a qualquer momento contactando-nos por email.</p>
+    <h4>Partilha das Suas Informações</h4><p>Não vendemos, alugamos nem trocamos os seus dados pessoais. As suas informações apenas poderão ser partilhadas com prestadores de serviços de confiança quando necessário para operar o nosso negócio, como processadores de pagamento, alojamento web ou serviços de email marketing.</p>
+    <h4>Durante Quanto Tempo Guardamos as Suas Informações</h4><p>Guardamos os seus dados apenas pelo tempo necessário para cumprir o seu pedido, cumprir obrigações legais e contabilísticas, e manter registos comerciais. A informação de email marketing é mantida até retirar o seu consentimento por email.</p>
+    <h4>Contacto</h4><p>Se tiver questões sobre esta Política de Privacidade, contacte Byamandasoyer — Email: byamandasoyer@gmail.com</p>`
+};
+function openPrivacy(){
+  document.getElementById('privTitle').textContent=lang==='en'?'Privacy Policy':'Política de Privacidade';
+  document.getElementById('privBody').innerHTML=PRIVACY[lang];
+  document.getElementById('privacy').classList.add('show');
+}
+function closePrivacy(){document.getElementById('privacy').classList.remove('show');}
+document.getElementById('privacy').addEventListener('click',function(e){if(e.target===this)closePrivacy();});
 
 /* ---------- utils ---------- */
 let pickMonth=null;
