@@ -12,6 +12,7 @@
     --bg:#F7F6F3; --card:#FFFFFF; --ink:#4A4446; --ink-soft:#8C8C8C; --ink-faint:#B7B1AC;
     --line:#E6E2DC; --brand:#73082C; --accent:#73082C; --accent-soft:#F2E2E8; --pistachio:#73082C;
     --maroon:#73082C; --shadow-sm:0 3px 12px rgba(20,20,20,.06); --radius:20px;
+    --ink-quiet:#6E4351;   /* readable but still quiet — for text on pink surfaces */
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -26,10 +27,10 @@
   #screen{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
 
   /* Top */
-  #topbar{padding:calc(14px + env(safe-area-inset-top)) 20px 8px;flex:0 0 auto}
+  #topbar{padding:calc(8px + env(safe-area-inset-top)); padding-right: 20px;padding-bottom: 5px;padding-left: 16px;flex:0 0 auto}
   @media (min-width:441px){#topbar{padding-top:22px}}
   .mini-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin-bottom:9px;font-size:12px;font-weight:600;letter-spacing:.03em}
-  .mini-row .toplogo{justify-self:start;height:19px;width:auto;display:block;opacity:.9}
+  .mini-row .toplogo{justify-self:start;height:40px;width:auto;display:block;opacity:.9}
   .mini-row .top-actions{justify-self:end;display:flex;align-items:center;gap:4px}
   .mini-row .iconbtn{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);
     color:var(--brand);font-family:inherit;font-size:15px;line-height:1;cursor:pointer;padding:0;
@@ -46,6 +47,8 @@
   #back[hidden]{visibility:hidden}
   #progress{flex:1;height:7px;background:var(--line);border-radius:99px;overflow:hidden}
   #progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,#A64A67,var(--accent));border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+  #cart.almost{background:var(--accent-soft);color:var(--brand)}
+  #cart.almost .amt{font-size:13px;font-weight:700}
   #cart{display:flex;align-items:center;gap:7px;background:var(--brand);color:#fff;border-radius:99px;
     padding:8px 13px 8px 11px;font-weight:600;font-size:14px;flex:0 0 auto;box-shadow:var(--shadow-sm)}
   #cart .amt{font-variant-numeric:tabular-nums}
@@ -59,7 +62,8 @@
   #body::-webkit-scrollbar{display:none}
   h1.q{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:27px;line-height:1.12;margin:6px 0 4px;letter-spacing:-.01em;color:var(--brand)}
   .sub{color:var(--ink-soft);font-size:14px;line-height:1.45;margin:0 0 16px}
-  .note{font-size:12.5px;color:var(--ink-soft);line-height:1.5;background:var(--accent-soft);border-radius:14px;padding:11px 13px;margin:8px 0 0}
+  .note{font-size:12.5px;color:var(--ink-quiet);line-height:1.55;background:#F8F0F3;border:1px solid #EFE0E6;border-radius:14px;padding:11px 13px;margin:8px 0 0}
+  .note.soft{margin-top:12px}
   .warn{font-size:12px;color:var(--brand);line-height:1.5;background:#F7ECEF;border:1px solid #E7CBD5;border-radius:14px;padding:12px 13px;margin:14px 0 0}
   .warn b{font-weight:600}
   .policybox{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:4px 15px;margin-bottom:14px}
@@ -78,20 +82,15 @@
   .opts.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
   .shape-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .scroll-space{height:180px}
-  /* flavour accordion */
-  .acc{width:100%;display:flex;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--line);
-    border-radius:16px;padding:15px 15px;margin-bottom:10px;cursor:pointer;font-family:inherit;text-align:left;
-    transition:border-color .15s,background .15s}
-  .acc .acc-t{flex:1;font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:600;color:var(--brand)}
-  .acc .acc-n{font-size:11.5px;font-weight:600;color:var(--ink-soft);background:var(--bg);border-radius:99px;padding:2px 8px}
-  .acc .acc-badge{width:19px;height:19px;border-radius:50%;background:var(--brand);color:#fff;font-size:11px;
-    display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-  .acc .acc-ar{color:var(--ink-faint);font-size:19px;transition:transform .25s;display:block}
-  .acc.open{border-color:var(--brand);background:var(--accent-soft);margin-bottom:11px}
-  .acc.open .acc-ar{transform:rotate(90deg)}
-  .acc.has{border-color:var(--brand)}
-  .acc:active{transform:scale(.99)}
-  .acc-body.open{margin-bottom:14px;animation:accIn .22s ease}
+  /* flavour accordion — a title with a dropdown chevron, not a button */
+  .acc{width:100%;display:flex;align-items:center;gap:8px;background:none;border:none;border-bottom:1px solid var(--line);
+    border-radius:0;padding:14px 2px 11px;margin:0 0 2px;cursor:pointer;font-family:inherit;text-align:left}
+  .acc .acc-t{flex:1;font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:600;color:var(--brand);line-height:1.2}
+  .acc .acc-ar{color:var(--ink-faint);font-size:17px;line-height:1;transition:transform .25s;display:block;margin-top:-4px}
+  .acc.open{border-bottom-color:transparent;padding-bottom:6px}
+  .acc.open .acc-ar{transform:rotate(180deg);color:var(--brand)}
+  .acc:active .acc-t{opacity:.6}
+  .acc-body.open{margin-bottom:16px;animation:accIn .22s ease}
   @keyframes accIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
   .shape-row .shape-card{flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:11px 4px 10px;text-align:center;min-height:0}
   .shape-row .shape-card .ic{width:34px;height:34px;flex:0 0 auto;background:transparent}
@@ -106,6 +105,10 @@
   .opt .tx{flex:1;min-width:0}
   /* keep every multi-select label clear of the checkbox in the top-right */
   .opt.multi .tx{padding-right:26px}
+  /* exclusive choices inside a multi list (None / single toggles) show no checkbox */
+  .opt.multi.excl .chk{display:none}
+  .opt.multi.excl .tx{padding-right:0}
+  .opt.multi.excl.sel .ic{background:var(--accent-soft)}
   .opt .tt{display:block;font-weight:600;font-size:15.5px;line-height:1.25}
   .opt .ds{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.4;margin-top:2px}
   .opt .chk{position:absolute;top:11px;right:11px;width:21px;height:21px;border-radius:50%;border:2px solid var(--line);display:none;align-items:center;justify-content:center;background:#fff}
@@ -199,35 +202,53 @@
   .photo-add .big{font-size:26px;line-height:1;color:var(--accent)}
   .photo-add .t1{font-size:12px;font-weight:600;color:var(--ink)}
   .photo-add .t2{font-size:10.5px;color:var(--ink-soft)}
+  .photo-add.need{border-color:var(--brand);background:var(--accent-soft)}
+  .photo-add.need .t2{color:var(--brand);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:9.5px}
   .mini-upload{border:1.5px dashed #DFCBD0;border-radius:13px;background:var(--card);padding:11px;text-align:center;cursor:pointer;font-size:13px;color:var(--ink-soft);font-weight:600;margin-top:12px}
   .mini-upload.has{border-style:solid;border-color:var(--pistachio);color:var(--pistachio)}
 
   /* review */
   /* review card */
-  .rcard{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:12px}
-  .rc-head{display:flex;align-items:center;gap:13px;padding:16px 17px 14px;background:linear-gradient(180deg,var(--accent-soft),transparent)}
-  .rc-ic{width:52px;height:52px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-  .rc-ic svg{width:46px;height:46px}
-  .rc-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .rc-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:600;color:var(--brand);line-height:1.15}
-  .rc-sub{font-size:13px;color:var(--ink-soft);font-weight:500}
-  .rlist{padding:4px 17px 6px}
-  .rcard.slim .rlist{padding:6px 17px 8px}
-  .rrow{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid var(--line)}
-  .rlist .rrow:first-child{border-top:none}
-  .rrow.col{flex-direction:column;align-items:stretch;gap:7px}
-  .rk{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);flex:0 0 auto}
-  .rv{font-size:14px;font-weight:600;color:var(--ink);text-align:right;line-height:1.35;min-width:0}
-  .rrow.col .rv{text-align:left}
-  .rmuted{color:var(--ink-soft);font-weight:500}
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 6px 22px rgba(20,20,20,.07);overflow:hidden}
+  .rc-for{padding:16px 18px 0;text-align:center}
+  .rc-forlbl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .rc-name{display:block;font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:600;color:var(--brand);line-height:1.2;margin-top:3px}
+  .rc-hero{display:flex;align-items:center;gap:15px;padding:12px 18px 16px;border-bottom:1px solid var(--line)}
+  .rc-fic{width:76px;height:76px;border-radius:22px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .rc-fic i{width:38px;height:38px;border-radius:50%;display:block;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.16)}
+  .rc-htx{display:flex;flex-direction:column;gap:7px;min-width:0;flex:1}
+  .rc-spec{display:flex;align-items:baseline;gap:9px}
+  .rc-sk{flex:0 0 44px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .rc-sv{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:600;color:var(--ink);line-height:1.15}
+  .rc-sv em{display:block;font-family:'Montserrat',system-ui,sans-serif;font-style:normal;font-size:11px;font-weight:500;color:var(--ink-faint);margin-top:1px}
+  .rc-flavrow{display:flex;align-items:center;margin-top:3px;padding-top:9px;border-top:1px dashed var(--line)}
+  .rc-fname{font-size:15px;font-weight:700;color:var(--brand);line-height:1.25}
+  .rc-body{padding:4px 18px 8px}
+  .rsec{padding:13px 0;border-bottom:1px solid var(--line)}
+  .rsec:last-child{border-bottom:none}
+  .rlab{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
   .rchips{display:flex;flex-wrap:wrap;gap:6px}
-  .rchip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--ink);
-    background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:4px 9px}
+  .rchip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:5px 10px}
   .rchip i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.12);display:inline-block;flex:0 0 auto}
   .rchip.plain{color:var(--brand);background:var(--accent-soft);border-color:transparent}
-  .rc-total{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--brand);color:#fff;padding:14px 17px}
-  .rc-tl{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
-  .rc-tv{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+  .rquote{display:flex;flex-direction:column;gap:3px}
+  .rq-text{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:600;line-height:1.3;word-break:break-word}
+  .rq-meta{font-size:11.5px;color:var(--ink-faint);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .rq-col{display:inline-flex;align-items:center;gap:4px;font-weight:600;color:var(--ink-soft)}
+  .rq-col i{width:10px;height:10px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:inline-block}
+  .rlines{display:flex;flex-direction:column;gap:6px}
+  .rline{font-size:13.5px;font-weight:500;color:var(--ink)}
+  .rpick{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .rp-d{font-size:15px;font-weight:700;color:var(--ink)}
+  .rp-t{font-size:15px;font-weight:700;color:var(--brand);font-variant-numeric:tabular-nums}
+  .rcour{display:flex;flex-direction:column;gap:4px;margin-top:11px;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:12px}
+  .rc-cline{font-size:13px;font-weight:700;color:var(--ink)}
+  .rc-cnote{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
+  .rc-total{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--bg);border-top:1px dashed #DCD7D0;padding:16px 18px}
+  .rc-tl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .rc-tv{font-family:'Montserrat',system-ui,sans-serif;font-size:25px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
   .rtotal .v{font-family:'Playfair Display',Georgia,serif;font-size:22px}
 
   #lang{position:absolute;inset:0;background:linear-gradient(160deg,#F7F6F3,#F2E2E8);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center}
@@ -248,7 +269,22 @@
     font-weight:600;font-size:16.5px;padding:16px;cursor:pointer;box-shadow:0 8px 22px rgba(115,8,44,.28);transition:transform .15s,opacity .15s}
   #next:active{transform:scale(.98)}
   #next:disabled{opacity:.4;box-shadow:none}
+  #next.off{opacity:.42;box-shadow:none}
   #next.pist{background:var(--pistachio);box-shadow:0 8px 22px rgba(143,166,124,.32)}
+  #next.shake{animation:shk .4s}
+  @keyframes shk{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-4px)}}
+  /* missing-field hints */
+  #errToast{display:none;background:#FBEAEA;border:1px solid #EFC9C9;border-radius:13px;padding:9px 12px;margin-bottom:9px;
+    flex-direction:column;gap:3px;animation:accIn .22s ease}
+  #errToast.show{display:flex}
+  #errToast span{font-size:12.5px;font-weight:600;color:#9B2C2C;line-height:1.35;display:flex;gap:6px}
+  #errToast span:before{content:"!";flex:0 0 auto;width:14px;height:14px;border-radius:50%;background:#9B2C2C;color:#fff;
+    font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .err{position:relative}
+  .field.err input,.field.err textarea,.err>.ig-wrap input{border-color:#D66A6A !important;background:#FEF7F7}
+  .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err{
+    outline:2px solid #E9A9A9;outline-offset:5px;border-radius:14px}
+  .opt.err{border-color:#D66A6A !important}
 
   .modal{position:absolute;inset:0;z-index:60;background:rgba(20,20,20,.45);display:none;align-items:flex-end;justify-content:center;padding:0}
   .modal.show{display:flex}
@@ -319,7 +355,7 @@
       </div>
     </div>
     <div id="body"></div>
-    <div id="foot"><button id="next" onclick="goNext()">Continue</button></div>
+    <div id="foot"><div id="errToast"></div><button id="next" onclick="goNext()">Continue</button></div>
   </div>
 
   <div id="done">
@@ -549,6 +585,15 @@ function calc(){
 }
 const priceNow=()=>{const c=calc();return c.custom?0:c.sum;};
 function renderCart(){
+  const cart=document.getElementById('cart');
+  /* on the review step the total is already in the card — show encouragement instead */
+  if(STEPS[step]==='review'){
+    cart.classList.add('almost');
+    cart.innerHTML=`<span>✨</span><span class="amt">${lang==='en'?'Almost done':'Quase pronto'}</span>`;
+    return;
+  }
+  cart.classList.remove('almost');
+  cart.innerHTML=`<span>🛒</span><span><span class="pre" id="cartPre"></span><span class="amt" id="cartAmt">€0</span></span>`;
   const c=calc(),amt=document.getElementById('cartAmt'),pre=document.getElementById('cartPre');
   if(!S.size){amt.textContent='€0';pre.textContent='';return;}
   if(c.custom){amt.textContent=t('quote');pre.textContent='';return;}
@@ -571,7 +616,7 @@ function change(el,fn){const before=priceNow();fn();const after=priceNow();rende
 /* ---------- Render ---------- */
 const B=()=>document.getElementById('body');
 function render(){
-  const key=STEPS[step];B().scrollTop=0;
+  const key=STEPS[step];B().scrollTop=0;clearErrors();
   document.getElementById('back').hidden=(step===0);
   document.getElementById('stepno').textContent=t('step')+' '+(step+1)+'/'+STEPS.length;
   document.getElementById('restartBtn').title=t('restart');
@@ -632,7 +677,8 @@ R.size=()=>{
     validate();
   });
 };
-let openTiers={};   /* which flavour groups are expanded */
+let openTiers={};        /* which flavour groups are expanded */
+let flavAutoOpened=false; /* titles show first, then open by themselves */
 R.flavor=()=>{
   let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
   const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
@@ -643,12 +689,9 @@ R.flavor=()=>{
     h+=`<p class="pig-desc" style="margin:-2px 0 12px">${lang==='en'?'Tap a group to see its flavours.':'Toque num grupo para ver os sabores.'}</p>`;
     D.flavCustom.forEach((g,i)=>{
       const open=!!openTiers[i];
-      const hasSel=g.items.some(o=>o.id===S.flavor);
-      h+=`<button type="button" class="acc ${open?'open':''} ${hasSel?'has':''}" data-tier="${i}">
+      h+=`<button type="button" class="acc ${open?'open':''}" data-tier="${i}">
             <span class="acc-t">${g.tier[lang]}</span>
-            ${hasSel?`<span class="acc-badge">✓</span>`:''}
-            <span class="acc-n">${g.items.length}</span>
-            <span class="acc-ar">›</span>
+            <span class="acc-ar">⌄</span>
           </button>
           <div class="acc-body ${open?'open':''}">${open?`<div class="opts">`+g.items.map(card).join('')+`</div>`:''}</div>`;
     });
@@ -658,6 +701,16 @@ R.flavor=()=>{
     const i=el.dataset.tier;openTiers[i]=!openTiers[i];R.flavor();
     if(openTiers[i])setTimeout(()=>{const b=B().querySelector(`[data-tier="${i}"]`);if(b)b.scrollIntoView({behavior:'smooth',block:'start'});},60);
   });
+  /* first visit: let the three titles land, then open them so nothing stays hidden */
+  if(!isBento()&&!flavAutoOpened){
+    flavAutoOpened=true;
+    D.flavCustom.forEach((g,i)=>{
+      setTimeout(()=>{
+        if(STEPS[step]!=='flavor')return;      /* user already moved on */
+        openTiers[i]=true;R.flavor();
+      },420+i*130);
+    });
+  }
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
     change(el,()=>{S.flavor=el.dataset.id;});
     R.flavor();validate();
@@ -681,49 +734,62 @@ R.color=()=>{
     el.classList.toggle('sel');
   });
 };
+function scrollToColour(){
+  const sec=document.getElementById('msgColSec');
+  if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);
+}
 R.writing=()=>{
   const msgNone=S.writeMethods.length>0&&!S.writeMethods.some(m=>m!=='none');
   const needs=S.writeMethods.some(m=>m!=='none');   /* a real style is chosen */
-  const cards=D.writeMethods.map(o=>`<button class="opt multi ${S.writeMethods.includes(o.id)?'sel':''}" data-id="${o.id}">
+  const cards=D.writeMethods.map(o=>`<button class="opt multi ${o.id==='none'?'excl':''} ${S.writeMethods.includes(o.id)?'sel':''}" data-id="${o.id}">
       <span class="ic"><span style="font-size:22px">${o.ic}</span></span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span>
       ${addTag(writeMethodPrice(o.id))}
-      <span class="chk">${tick()}</span></button>`).join('');
+      ${o.id==='none'?'':`<span class="chk">${tick()}</span>`}</button>`).join('');
   const cols=[D.colors.find(o=>o.h==='#1A1A1A'),...D.colors.filter(o=>o.h!=='#1A1A1A')];
   const swatches=cols.map(o=>{const sel=S.writingColor===o.h;
     return `<div class="sw ${sel?'sel':''} ${isLight(o.h)?'light':''}" data-c="${o.h}"><div class="chip" style="background:${o.h}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
-  /* message field: required once a style is picked, disabled when None */
+  /* message field: required once a style is picked, hidden when None */
   const msgLabel=needs
     ? `${lang==='en'?'Your message':'A sua mensagem'}`
     : `${lang==='en'?'Your message':'A sua mensagem'} <span class="opt-note">(${t('optional')})</span>`;
-  const msgField=`<div class="field"><label>${msgLabel}</label>
-       <input id="writing" type="text" maxlength="40" ${msgNone?'disabled':''} placeholder="${lang==='en'?'Happy Birthday Sofia':'Parabéns Sofia'}" value="${esc(S.writing)}">
+  const msgField=msgNone?'':`<div class="field"><label>${msgLabel}</label>
+       <input id="writing" type="text" maxlength="40" placeholder="${lang==='en'?'Happy Birthday Sofia':'Parabéns Sofia'}" value="${esc(S.writing)}">
        <span class="opt-note" style="display:block;margin-top:6px">${lang==='en'?'Example: Happy Birthday Sofia':'Exemplo: Parabéns Sofia'}</span></div>`;
-  /* colour section */
-  let colSec;
-  if(msgNone){
-    colSec=`<div class="tier"><span>${lang==='en'?'Message colour':'Cor da mensagem'}</span><span class="ln"></span></div>
-      <div class="disabled-note">${lang==='en'?'Cake message selected as none':'Mensagem definida como nenhuma'}</div>
-      <div class="sw-grid is-disabled">${swatches}</div>`;
-  }else{
-    colSec=`<div class="tier"><span>${lang==='en'?'Message colour':'Cor da mensagem'}</span><span class="ln"></span></div>
-      ${needs&&!S.writingColor?`<p class="pig-desc" style="margin:-4px 0 10px">${lang==='en'?'Please choose a colour for your message.':'Por favor, escolha uma cor para a sua mensagem.'}</p>`:''}
-      <div class="sw-grid">${swatches}</div>`;
-  }
+  /* colour section — only when a real style is chosen */
+  const colSec=needs
+    ? `<div id="msgColSec" class="tier"><span>${lang==='en'?'Message colour':'Cor da mensagem'}</span><span class="ln"></span></div>
+       ${!S.writingColor?`<p class="pig-desc" id="colHint" style="margin:-4px 0 10px">${lang==='en'?'Choose a colour to continue.':'Escolha uma cor para continuar.'}</p>`:''}
+       <div class="sw-grid">${swatches}</div><div class="scroll-space"></div>`
+    : '';
   B().innerHTML=head(lg("Cake Message & Color","Mensagem e cor do bolo"),lg("Type your message, then choose how you'd like it written and in which colour.","Escreva a sua mensagem e escolha como quer que seja aplicada e em que cor."))+
     msgField+`<div class="opts" style="margin-top:4px">${cards}</div>`+colSec;
   B().querySelectorAll('.opt.multi[data-id]').forEach(el=>el.onclick=()=>{
     const id=el.dataset.id;
+    const hadColour=needs;
     change(el,()=>{
       if(id==='none'){S.writeMethods=['none'];S.writing='';S.writingColor=null;}
       else{S.writeMethods=S.writeMethods.filter(x=>x!=='none');
         const i=S.writeMethods.indexOf(id);if(i>=0)S.writeMethods.splice(i,1);else S.writeMethods.push(id);}
     });
     R.writing();validate();
+    /* only pull them down once they've actually written something AND picked a style */
+    if(S.writeMethods.some(m=>m!=='none')&&S.writing.trim()&&!S.writingColor)scrollToColour();
   });
-  const w=document.getElementById('writing'); if(w)w.oninput=e=>{S.writing=e.target.value;validate();};
-  if(!msgNone)B().querySelectorAll('.sw[data-c]').forEach(el=>el.onclick=()=>{
-    S.writingColor=el.dataset.c;R.writing();validate();
+  const w=document.getElementById('writing');
+  if(w){
+    w.oninput=e=>{S.writing=e.target.value;validate();};
+    /* if the style was picked first, wait until they finish typing before moving the page */
+    w.onblur=()=>{
+      if(S.writing.trim()&&S.writeMethods.some(m=>m!=='none')&&!S.writingColor)scrollToColour();
+    };
+  }
+  B().querySelectorAll('.sw[data-c]').forEach(el=>el.onclick=()=>{
+    S.writingColor=el.dataset.c;
+    B().querySelectorAll('.sw[data-c]').forEach(x=>x.classList.remove('sel'));
+    el.classList.add('sel');
+    const hint=document.getElementById('colHint'); if(hint)hint.remove();
+    validate();
   });
 };
 R.decor=()=>{
@@ -739,11 +805,11 @@ R.decor=()=>{
     return S.decor.includes(o.id);
   };
   const rows=D.decor.map(o=>`
-    <button class="opt multi ${isSel(o)?'sel':''}" data-id="${o.id}">
+    <button class="opt multi ${o.id==='none'?'excl':''} ${isSel(o)?'sel':''}" data-id="${o.id}">
       <span class="ic"><span style="font-size:22px">${o.ic}</span></span>
       <span class="tx"><span class="tt">${o.t[lang]}</span>${o.d?`<span class="ds">${o.d[lang]}</span>`:''}</span>
       ${tagFor(o)}
-      <span class="chk">${tick()}</span></button>`).join('');
+      ${o.id==='none'?'':`<span class="chk">${tick()}</span>`}</button>`).join('');
   B().innerHTML=head(lg("Add-ons","Extras"),lg("Select as many as you like — tap again to remove. Prices vary by cake size, and some items are quoted individually.","Selecione os que quiser — toque novamente para remover. Os preços variam consoante o tamanho do bolo e alguns extras são orçamentados individualmente."))+
     `<div class="opts">${rows}</div>`;
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
@@ -777,12 +843,12 @@ R.photo=()=>{
       <button type="button" class="photo-rm" data-i="${i}" aria-label="remove">×</button>
     </div>`).join('');
   const adder=n<3?`
-    <button type="button" class="photo-add" id="drop">
+    <button type="button" class="photo-add ${n===0?'need':''}" id="drop">
       <span class="big">＋</span>
       <span class="t1">${lang==='en'?'Add a photo':'Adicionar foto'}</span>
-      <span class="t2">${lang==='en'?`${n}/3 added`:`${n}/3 adicionadas`}</span>
+      <span class="t2">${n===0?(lang==='en'?'required':'obrigatória'):(lang==='en'?`${n}/3 added`:`${n}/3 adicionadas`)}</span>
     </button>`:'';
-  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("Upload up to 3 inspiration photos — this is how Amanda understands your vision.","Carregue até 3 fotos de inspiração — é assim que a Amanda percebe a sua visão."))+
+  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("At least 1 photo is required, up to 3 — this is how Amanda understands your vision.","É necessária pelo menos 1 foto, até um máximo de 3 — é assim que a Amanda percebe a sua visão."))+
     `<input type="file" accept="image/*" id="photoInput" multiple style="display:none">
      <div class="photo-grid">${thumbs}${adder}</div>
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
@@ -808,15 +874,16 @@ R.photo=()=>{
 };
 R.allergies=()=>{
   B().innerHTML=head(lg("Dietary restrictions & allergies","Alergias e/ou restrições alimentares"))+
-    `<button class="opt multi ${S.noAllergy?'sel':''}" id="noAll">
-       <span class="ic"><span style="font-size:20px">👍🏻</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions or allergies':'Não tenho restrições alimentares nem alergias'}</span></span>
-       <span class="chk">${tick()}</span></button>
-     <div id="allBox" style="${S.noAllergy?'display:none':''};margin-top:14px">
+    `<div id="allBox" style="${S.noAllergy?'display:none':''}">
        <div class="field"><label>${lang==='en'?'Please list any restrictions or allergies':'Por favor, indique abaixo ou escreva «nenhuma»'}</label>
        <input id="allergies" type="text" placeholder="${lang==='en'?'e.g. nut allergy':'ex. alergia a frutos secos'}" value="${esc(S.allergies)}"></div>
+       <div class="warn" style="margin-top:12px"><b>${lang==='en'?'Orders may be declined based on dietary restrictions.':'Algumas encomendas poderão não ser aceites devido a restrições alimentares.'}</b> ${lang==='en'?'I do not offer gluten-free, sugar-free, or vegan cakes. All products are made in a kitchen that handles milk, eggs, wheat, and nuts. Cross-contact may occur.':'Não faço bolos sem glúten, sem açúcar ou vegan. Todos os produtos são produzidos numa cozinha onde são utilizados leite, ovos, trigo e frutos secos. Pode ocorrer contaminação cruzada.'}</div>
+       <div class="divlabel" style="margin-top:16px"><span>${lang==='en'?'or':'ou'}</span><span class="ln"></span></div>
      </div>
-     ${S.noAllergy?'':`<div class="warn"><b>${lang==='en'?'Orders may be declined based on dietary restrictions.':'Algumas encomendas poderão não ser aceites devido a restrições alimentares.'}</b> ${lang==='en'?'I do not offer gluten-free, sugar-free, or vegan cakes. All products are made in a kitchen that handles milk, eggs, wheat, and nuts. Cross-contact may occur.':'Não faço bolos sem glúten, sem açúcar ou vegan. Todos os produtos são produzidos numa cozinha onde são utilizados leite, ovos, trigo e frutos secos. Pode ocorrer contaminação cruzada.'}</div>`}`;
+     <button class="opt multi excl ${S.noAllergy?'sel':''}" id="noAll" style="margin-top:${S.noAllergy?'0':'12px'}">
+       <span class="ic"><span style="font-size:20px">👍🏻</span></span>
+       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions or allergies':'Não tenho restrições alimentares nem alergias'}</span></span>
+     </button>`;
   document.getElementById('noAll').onclick=()=>{S.noAllergy=!S.noAllergy;if(S.noAllergy)S.allergies='';R.allergies();validate();};
   const a=document.getElementById('allergies'); if(a)a.oninput=e=>{S.allergies=e.target.value;validate();};
 };
@@ -845,8 +912,8 @@ R.contact=()=>{
 };
 function pickNote(){
   return S.courier
-    ? (lang==='en'?'Please notify me 8 to 10 minutes before requesting the courier and send the tracking link once the ride has been booked.'
-                  :'Por favor, avise-me 8 a 10 minutos antes de solicitar o estafeta e envie o link de acompanhamento assim que a viagem estiver marcada.')
+    ? (lang==='en'?'You book and pay for the courier yourself. Please notify me 8 to 10 minutes before requesting it, and send the tracking link once the ride has been booked.'
+                  :'É você que reserva e paga o estafeta. Por favor, avise-me 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que a viagem estiver marcada.')
     : (lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.'
                   :'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.');
 }
@@ -912,24 +979,25 @@ R.heard=()=>{
   const rb=document.getElementById('refby'); if(rb)rb.oninput=e=>S.referredBy=e.target.value;
 };
 R.email=()=>{
-  B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Only if you would like to receive updates about workshops, seasonal collections, new products and special offers. Leave blank if you prefer not to.","Apenas se pretender receber atualizações sobre workshops, coleções sazonais, novos produtos e ofertas especiais. Deixe em branco se preferir não receber."))+
-    `<button class="opt multi ${S.emailOptIn?'sel':''}" id="optin">
+  B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Choose if you'd like to receive updates about workshops, new products, and special offers.","Escolha se pretende receber atualizações sobre workshops, novos produtos e ofertas especiais."))+
+    `<button class="opt multi excl ${S.emailOptIn?'sel':''}" id="optin">
        <span class="ic"><span style="font-size:20px">💌</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive email updates about workshops, new releases and special offers.":'Gostaria de receber atualizações por email sobre workshops, novidades e ofertas especiais.'}</span></span>
-       <span class="chk">${tick()}</span></button>
+       <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive emails about workshops, new products, and special offers":'Gostaria de receber emails sobre workshops, novos produtos e ofertas especiais'}</span></span>
+     </button>
      <div id="emailWrap" style="${S.emailOptIn?'':'display:none'}">
        <div class="field" style="margin-top:14px"><label>${lang==='en'?'Your email':'O seu email'}</label>
          <input id="email" type="email" placeholder="you@email.com" value="${esc(S.email)}"></div>
-       <p class="note">${lang==='en'?"Your email will only be used for updates you've chosen to receive. We'll never share it with third parties and will email on occasion.":'O seu email será usado apenas para as atualizações que escolheu receber. Nunca o partilhamos com terceiros e enviamos apenas ocasionalmente.'}</p>
+       <p class="note">${lang==='en'?"We only email about these updates, never share your email, and won't contact you often.":'Só enviamos emails sobre estas atualizações, nunca partilhamos o seu email e não o contactamos com frequência.'}</p>
      </div>
      <button type="button" class="linklike" id="privBtn">${lang==='en'?'Read our Privacy Policy':'Ler a nossa Política de Privacidade'}</button>`;
-  document.getElementById('email').oninput=e=>S.email=e.target.value;
+  document.getElementById('email').oninput=e=>{S.email=e.target.value;validate();};
   document.getElementById('optin').onclick=()=>{
     S.emailOptIn=!S.emailOptIn;
     document.getElementById('optin').classList.toggle('sel',S.emailOptIn);
     document.getElementById('emailWrap').style.display=S.emailOptIn?'block':'none';
     if(!S.emailOptIn)S.email='';
     else setTimeout(()=>{const e=document.getElementById('email');if(e)e.focus();},80);
+    validate();
   };
   document.getElementById('privBtn').onclick=openPrivacy;
 };
@@ -953,58 +1021,78 @@ R.policies=()=>{
 };
 R.review=()=>{
   const c=calc();
-  const sz=D.size.opts.find(o=>o.id===S.size);
+  const sz=sizeOpt();
   const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape);
   const fl=allFlav().find(o=>o.id===S.flavor);
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes);
   const wmSel=S.writeMethods.filter(id=>id!=='none');
-  const headline=isBento()?`Bento · XS`:`${sz?sz.t[lang]:''} · ${sh?sh.t[lang]:''}`;
+  const first=(S.name.trim().split(/\s+/)[0]||'');
+  const sizeName=sz?sz.t[lang]:'';
+  const shapeName=sh?sh.t[lang]:'';
+  const portions=sz?sz.d[lang]:'';
+  /* colours */
   const colChips=S.colors.map(h=>{const o=D.colors.find(x=>x.h===h);
     return `<span class="rchip"><i style="background:${h}"></i>${o?o.t[lang]:''}</span>`;}).join('');
   const pigChips=S.pigment.map(id=>{const o=D.pigment.find(x=>x.id===id);
     return o?`<span class="rchip"><i style="background:${o.c}"></i>${o.t[lang]}</span>`:'';}).join('');
-  const decNames=S.decor.filter(d=>d!=='none').map(id=>{const o=D.decor.find(x=>x.id===id);return o?o.t[lang]:'';}).filter(Boolean);
-  const addChips=decNames.map(n=>`<span class="rchip plain">${n}</span>`).join('');
-  const row=(k,v)=>v?`<div class="rrow"><span class="rk">${k}</span><span class="rv">${v}</span></div>`:'';
-  const chipRow=(k,v)=>v?`<div class="rrow col"><span class="rk">${k}</span><span class="rchips">${v}</span></div>`:'';
-  const msg=S.writing?`“${esc(S.writing)}”`:(wmSel.length?(lang==='en'?'(style chosen)':'(estilo escolhido)'):'');
-  const msgColor=S.writingColor?(D.colors.find(x=>x.h===S.writingColor)||{}).t?.[lang]:'';
+  const addChips=S.decor.filter(d=>d!=='none').map(id=>{const o=D.decor.find(x=>x.id===id);
+    return o?`<span class="rchip plain">${o.ic} ${o.t[lang]}</span>`:'';}).join('');
+  /* message, written as a sentence */
+  let msgLine='';
+  if(S.writing){
+    const styles=wmSel.map(id=>{const o=D.writeMethods.find(x=>x.id===id);return o?o.t[lang]:'';}).filter(Boolean).join(' + ');
+    const wc=S.writingColor?D.colors.find(x=>x.h===S.writingColor):null;
+    msgLine=`<div class="rquote">
+        <span class="rq-text">“${esc(S.writing)}”</span>
+        <span class="rq-meta">${styles}${wc?` <span class="rq-col"><i style="background:${wc.h}"></i>${wc.t[lang]}</span>`:''}</span>
+      </div>`;
+  }
+  /* nice human lines instead of yes/no rows */
+  const extras=[];
+  if(S.candles==='yes')extras.push(lang==='en'?'🕯️ Comes with candles':'🕯️ Vem com velas');
+  if(cup&&cup.id!=='none')extras.push(`🧁 ${cup.t[lang]}`);
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
+  const sec=(label,inner)=>inner?`<div class="rsec"><div class="rlab">${label}</div>${inner}</div>`:'';
   B().innerHTML=head(lg("Review your order","Rever o seu pedido"),lg("I'll confirm availability and send your final quote via WhatsApp within 24 to 48 hours.","Vou confirmar a disponibilidade e enviar o orçamento final por WhatsApp dentro de 24 a 48 horas."))+
     `<div class="rcard">
-      <div class="rc-head">
-        <span class="rc-ic">${isBento()?sizeCake(1):(sz&&sz.twoTier?sizeCakeTwoTier(sz.lvl):sizeCake(sz?sz.lvl:3))}</span>
-        <span class="rc-tx">
-          <span class="rc-title">${headline}</span>
-          <span class="rc-sub">${fl?fl.t[lang]:''}</span>
-        </span>
+      <div class="rc-for">
+        <span class="rc-forlbl">${lang==='en'?'Cake for':'Bolo para'}</span>
+        <span class="rc-name">${esc(S.name)||'—'}</span>
       </div>
-      <div class="rlist">
-        ${chipRow(lang==='en'?'Colours':'Cores',colChips)}
-        ${chipRow(lang==='en'?'High-pigment':'Alta pigmentação',pigChips)}
-        ${row(lang==='en'?'Message':'Mensagem',msg?msg+(msgColor?` <span class="rmuted">· ${msgColor}</span>`:''):'')}
-        ${chipRow(lang==='en'?'Add-ons':'Extras',addChips)}
-        ${row('Cupcakes',cup&&cup.id!=='none'?cup.t[lang]:'')}
-        ${row(lang==='en'?'Candles':'Velas',S.candles==='yes'?(lang==='en'?'Yes':'Sim'):(lang==='en'?'No':'Não'))}
+
+      <div class="rc-hero">
+        ${fl?`<span class="rc-fic" style="background:${fl.c}22"><i style="background:${fl.c}"></i></span>`:''}
+        <div class="rc-htx">
+          <div class="rc-spec"><span class="rc-sk">${lang==='en'?'Size':'Tamanho'}</span>
+            <span class="rc-sv">${sizeName}${portions?`<em>${portions}</em>`:''}</span></div>
+          ${shapeName?`<div class="rc-spec"><span class="rc-sk">${lang==='en'?'Shape':'Forma'}</span>
+            <span class="rc-sv">${shapeName}</span></div>`:''}
+          ${fl?`<div class="rc-flavrow"><span class="rc-fname">${fl.t[lang]}</span></div>`:''}
+        </div>
       </div>
+
+      <div class="rc-body">
+        ${sec(lang==='en'?'Colours':'Cores',colChips?`<div class="rchips">${colChips}${pigChips}</div>`:'')}
+        ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine)}
+        ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'')}
+        ${extras.length?`<div class="rsec"><div class="rlab">${lang==='en'?'Also included':'Também incluído'}</div>
+          <div class="rlines">${extras.map(e=>`<span class="rline">${e}</span>`).join('')}</div></div>`:''}
+        ${sec(lang==='en'?'Pick-up':'Levantamento',
+          `<div class="rpick"><span class="rp-d">${S.pdate?fmtPickedShort(S.pdate):''}</span><span class="rp-t">${S.ptime||''}</span></div>`
+          +(S.courier?`<div class="rcour">
+              <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
+              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — please tell Amanda 8–10 minutes before you request it, and send the tracking link once booked.':'É você que reserva e paga o estafeta — avise a Amanda 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que estiver marcado.'}</span>
+            </div>`:''))}
+      </div>
+
       <div class="rc-total">
         <span class="rc-tl">${totalLbl}</span>
         <span class="rc-tv">${totalTxt}</span>
       </div>
     </div>
-
-    <div class="rcard slim">
-      <div class="rlist">
-        ${row(lang==='en'?'Pick-up':'Levantamento',(S.pdate?fmtPicked(S.pdate):'')+(S.ptime?` <span class="rmuted">· ${S.ptime}</span>`:''))}
-        ${S.courier?row(lang==='en'?'Courier':'Estafeta',lang==='en'?'Bolt / Uber requested':'Estafeta Bolt / Uber solicitado'):''}
-        ${row(lang==='en'?'Name':'Nome',esc(S.name))}
-        ${row('WhatsApp',esc(S.wcode+' '+S.wnum))}
-        ${row('Instagram',S.instagram?'@'+esc(S.instagram):'')}
-      </div>
-    </div>
-    <p class="note">${lang==='en'?'This is an estimate — some add-ons are quoted individually. Your exact quote comes by WhatsApp.':'Isto é uma estimativa — alguns extras são orçamentados individualmente. O orçamento exato será enviado por WhatsApp.'}</p>`;
+    <p class="note soft">${lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. Your exact quote comes by WhatsApp.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. O orçamento exato será enviado por WhatsApp.`}</p>`;
 };
 
 /* ---------- binders ---------- */
@@ -1033,27 +1121,82 @@ function bindSwatchMulti(field,max,pcId){
 }
 
 /* ---------- validation ---------- */
-function validate(){
-  const k=STEPS[step];let ok=true;
-  if(k==='size')ok=!!S.size&&!!S.shape;
-  else if(k==='flavor')ok=!!S.flavor;
-  else if(k==='color')ok=S.colors.length>=1;
-  else if(k==='writing'){
-    const chosen=S.writeMethods.length>=1;
-    const needs=S.writeMethods.some(m=>m!=='none');
-    ok=chosen&&(!needs||(S.writing.trim().length>0&&!!S.writingColor));
+/* what's still missing on this step — drives both the Continue state and the error hints */
+function missing(){
+  const k=STEPS[step];const M=[];
+  const add=(msg,sel)=>M.push({msg,sel});
+  if(k==='size'){
+    if(!S.size)add(lang==='en'?'Choose a cake size':'Escolha o tamanho do bolo','.opts');
+    else if(!S.shape)add(lang==='en'?'Choose a cake shape':'Escolha a forma do bolo','.shape-row');
   }
-  else if(k==='photo')ok=S.photo;
-  else if(k==='allergies')ok=S.noAllergy||S.allergies.trim().length>0;
-  else if(k==='contact')ok=S.name.trim()&&S.wnum.trim().length>3&&S.instagram.trim().length>0;
-  else if(k==='pickup')ok=S.pdate&&S.ptime;
-  else if(k==='heard')ok=!!S.heard;
-  else if(k==='policies')ok=S.agreed;
-  document.getElementById('next').disabled=!ok;
+  else if(k==='flavor'){if(!S.flavor)add(lang==='en'?'Choose a flavour':'Escolha um sabor','.acc');}
+  else if(k==='color'){if(!S.colors.length)add(lang==='en'?'Choose at least one colour':'Escolha pelo menos uma cor','.sw-grid');}
+  else if(k==='writing'){
+    if(!S.writeMethods.length)add(lang==='en'?'Choose how your message should be written — or tap None':'Escolha como aplicar a mensagem — ou toque em Nenhuma','.opts');
+    else if(S.writeMethods.some(m=>m!=='none')){
+      if(!S.writing.trim())add(lang==='en'?'Type your message':'Escreva a sua mensagem','#writing');
+      if(!S.writingColor)add(lang==='en'?'Choose a colour for your message':'Escolha uma cor para a mensagem','.sw-grid');
+    }
+  }
+  else if(k==='photo'){if(!S.photo)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');}
+  else if(k==='allergies'){if(!(S.noAllergy||S.allergies.trim()))add(lang==='en'?'List any allergies, or tap the button below':'Indique as alergias, ou toque no botão abaixo','#allergies');}
+  else if(k==='contact'){
+    if(!S.name.trim())add(lang==='en'?'Enter your full name':'Indique o seu nome completo','#name');
+    if(S.wnum.trim().length<=3)add(lang==='en'?'Enter your WhatsApp number':'Indique o seu número de WhatsApp','#wnum');
+    if(!S.instagram.trim())add(lang==='en'?'Enter your Instagram username':'Indique o seu utilizador de Instagram','#insta');
+  }
+  else if(k==='pickup'){
+    if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
+    if(!S.ptime)add(lang==='en'?'Choose a pick-up time':'Escolha a hora de levantamento','.time-grid');
+  }
+  else if(k==='heard'){if(!S.heard)add(lang==='en'?'Let me know how you found me':'Diga-me como me encontrou','.opts');}
+  else if(k==='policies'){if(!S.agreed)add(lang==='en'?'Please accept the booking terms to continue':'Aceite os termos para continuar','#agree');}
+  else if(k==='email'){
+    if(S.emailOptIn){
+      const v=S.email.trim();
+      if(!v)add(lang==='en'?'Enter your email to receive updates':'Indique o seu email para receber atualizações','#email');
+      else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))add(lang==='en'?'That email address doesn\'t look right':'Esse endereço de email não parece correto','#email');
+    }
+  }
+  return M;
+}
+function validate(){
+  const M=missing();
+  const ok=M.length===0;
+  const n=document.getElementById('next');
+  n.classList.toggle('off',!ok);   /* looks inactive but stays clickable so we can explain why */
+  const t=document.getElementById('errToast');
+  if(ok)clearErrors();
+  else if(t&&t.classList.contains('show'))paintErrors(M);  /* keep the list honest as they fix things */
+  return ok;
+}
+function paintErrors(M){
+  document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+  M.forEach(m=>{const el=B().querySelector(m.sel);if(!el)return;(el.closest('.field')||el).classList.add('err');});
+  const t=document.getElementById('errToast');
+  t.innerHTML=M.map(m=>`<span>${m.msg}</span>`).join('');
+  t.classList.add('show');
+}
+function clearErrors(){
+  document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+  const t=document.getElementById('errToast'); if(t)t.classList.remove('show');
+}
+function showMissing(){
+  const M=missing(); if(!M.length)return;
+  paintErrors(M);
+  const first=B().querySelector(M[0].sel);
+  if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+  if(first&&/^(INPUT|TEXTAREA)$/.test(first.tagName))setTimeout(()=>first.focus(),320);
+  const n=document.getElementById('next');
+  n.classList.remove('shake');void n.offsetWidth;n.classList.add('shake');
 }
 
 /* ---------- nav ---------- */
-function goNext(){if(step<STEPS.length-1){step++;render();}else submit();}
+function goNext(){
+  if(!validate()){showMissing();return;}
+  clearErrors();
+  if(step<STEPS.length-1){step++;render();}else submit();
+}
 function goBack(){if(step>0){step--;render();}}
 function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;render();}
 function goHome(){window.location.href=MAIN_PAGE_URL;}
@@ -1063,7 +1206,7 @@ function goHome(){window.location.href=MAIN_PAGE_URL;}
   const top=document.getElementById('topLogo');
   if(src&&top)top.src=src.src;
 })();
-function restart(){S=DEF();step=0;openTiers={};document.getElementById('lang').style.display='flex';}
+function restart(){S=DEF();step=0;openTiers={};flavAutoOpened=false;document.getElementById('lang').style.display='flex';}
 
 /* map form state to database row (English labels for the owner dashboard) */
 function buildPayload(photo_urls){
@@ -1233,6 +1376,14 @@ function fmtPicked(iso){const d=new Date(iso+'T00:00:00');
   const wd=(lang==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
     :['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'])[d.getDay()];
   return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} - ${wd}`;}
+/* "29 June - Wednesday" — friendlier than a numeric date */
+function fmtPickedShort(iso){const d=new Date(iso+'T00:00:00');
+  const mo=(lang==='en'?['January','February','March','April','May','June','July','August','September','October','November','December']
+    :['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'])[d.getMonth()];
+  const wd=(lang==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+    :['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'])[d.getDay()];
+  return `${d.getDate()} ${mo} - ${wd}`;}
+
 function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 function isLight(hex){const c=hex.substring(1);const r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);return(0.299*r+0.587*g+0.114*b)>175;}
 
