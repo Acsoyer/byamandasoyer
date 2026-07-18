@@ -53,45 +53,45 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:18px 22px 20px;text-align:center}
-  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
-  .hero-id{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:-18px;position:relative;z-index:3}
-  .biglogo-btn{width:178px;height:178px;border:1px solid rgba(115,8,44,.16);border-radius:50%;background:var(--card);padding:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2;box-shadow:0 8px 24px rgba(115,8,44,.08)}
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;padding:0 22px max(28px,env(safe-area-inset-bottom));text-align:center;background:radial-gradient(circle at 50% 30%,#fff 0,#f9f4f5 38%,var(--bg) 72%);overflow:hidden}
+  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;min-height:100svh}
+  .hero-id{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:-44px;position:relative;z-index:3}
+  .biglogo-btn{width:136px;height:136px;border:1px solid rgba(115,8,44,.14);border-radius:50%;background:rgba(255,255,255,.97);padding:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2;box-shadow:0 14px 34px rgba(67,25,39,.13)}
   .hero .biglogo{width:100%;max-width:100%;margin:0 auto;filter:none}
-  .hero .lede{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--brand);margin:4px auto 0;max-width:330px;line-height:1.35}
-  .meta{font-size:13px;color:var(--gray-soft);line-height:1.7;margin-bottom:0}
+  .hero .lede{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--brand);margin:8px auto 0;max-width:330px;line-height:1.3;letter-spacing:-.01em}
+  .meta{font-size:12px;color:var(--gray-soft);line-height:1.75;margin:0;padding:8px 16px;border-top:1px solid rgba(115,8,44,.12);border-bottom:1px solid rgba(115,8,44,.12);width:min(100%,360px)}
   .meta b{color:var(--gray);font-weight:600}
 
-  .hero-gallery{width:calc(100% + 44px);margin:0 -22px;overflow:hidden;position:relative}
+  .hero-gallery{width:calc(100% + 44px);height:230px;margin:0 -22px;overflow:hidden;position:relative;border-radius:0 0 28px 28px}
   .hero-gallery::before,.hero-gallery::after{content:"";position:absolute;top:0;bottom:0;width:34px;z-index:2;pointer-events:none}
   .hero-gallery::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
   .hero-gallery::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
-  .hero-marquee{display:flex;width:max-content;gap:10px;animation:heroMarquee 55s linear infinite;padding:2px 0}
+  .hero-marquee{display:flex;width:max-content;height:100%;gap:10px;animation:heroMarquee 55s linear infinite;padding:0}
   .hero-marquee-group{display:flex;gap:10px}
   .hero-gallery:hover .hero-marquee,.hero-gallery:focus-within .hero-marquee{animation-play-state:paused}
-  .hero-marquee button{width:122px;height:150px;flex:0 0 auto;border:0;padding:0;border-radius:15px;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:var(--shadow-sm)}
+  .hero-marquee button{width:166px;height:230px;flex:0 0 auto;border:0;padding:0;border-radius:0;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:none}
   .hero-marquee img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}
   .hero-marquee button:hover img{transform:scale(1.04)}
   @keyframes heroMarquee{to{transform:translateX(calc(-50% - 5px))}}
   @media (prefers-reduced-motion:reduce){.hero-marquee{animation:none;overflow-x:auto}}
 
-  .socials{display:flex;justify-content:center;gap:16px;margin:0}
-  .socials a{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:var(--shadow-sm);transition:transform .15s}
+  .socials{display:flex;justify-content:center;gap:10px;margin:0}
+  .socials a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.76);border:1px solid rgba(115,8,44,.13);
+    display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:none;transition:transform .15s,background .15s}
   .socials a:active{transform:scale(.9)}
-  .socials svg{width:22px;height:22px}
+  .socials svg{width:18px;height:18px}
 
   .image-lightbox{position:fixed;inset:0;z-index:300;background:rgba(25,14,19,.82);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(7px)}
   .image-lightbox.show{display:flex}
   .image-lightbox img{max-width:min(92vw,480px);max-height:86vh;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
   .image-lightbox button{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:28px;cursor:pointer}
 
-  .cta-row{display:flex;flex-direction:column;gap:10px; width: 100%; margin-top: 18px}
+  .cta-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:auto;padding-top:8px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
-    font-family:var(--sans);font-weight:600;font-size:17px;padding:20px 14px;border-radius:14px;transition:transform .15s}
+    font-family:var(--sans);font-weight:600;font-size:15px;padding:16px 14px;border-radius:14px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
   .cta.primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(115,8,44,.24)}
-  .cta.ghost{background:var(--card);color:var(--brand);border:1.5px solid var(--line);box-shadow:var(--shadow-sm)}
+  .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:10px;text-decoration:underline;text-underline-offset:4px;font-size:13px}
 
   /* ---------- sections ---------- */
   section{padding:34px 24px 10px;scroll-margin-top:var(--topbar)}
@@ -130,15 +130,20 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials — no card, corner quote marks */
+  #testimonials{background:var(--brand);color:#fff;padding:50px 24px 38px;margin:0;min-height:330px}
+  #testimonials .sec-title{color:#fff}
+  #testimonials .sec-intro{color:#e7c6d0;margin-bottom:22px}
   #testiTrack{padding-left:0;padding-right:0;margin:0}
-  #testiTrack .slide{flex:0 0 96%;scroll-snap-align:center}
-  .quote{position:relative;padding:38px 22px 42px;text-align:left;min-height:180px;
+  #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
+  .quote{position:relative;padding:34px 12px 48px;text-align:left;min-height:150px;
     display:flex;flex-direction:column;justify-content:center}
-  .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:var(--brand);opacity:.22;pointer-events:none}
+  .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:#fff;opacity:.2;pointer-events:none}
   .quote .qm-o{top:14px;left:8px}
   .quote .qm-c{bottom:6px;right:12px}
-  .quote-text{font-family:var(--sans);font-style:normal;font-size:16px;line-height:1.65;color:var(--gray);margin:0}
-  .quote-by{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--brand)}
+  .quote-text{font-family:var(--sans);font-style:normal;font-size:15px;line-height:1.55;color:#fff;margin:0;letter-spacing:-.01em}
+  .quote-by{position:absolute;right:12px;bottom:13px;margin:0;font-size:12px;font-weight:600;letter-spacing:.05em;color:#e7c6d0;text-align:right}
+  #testimonials .dot{background:rgba(255,255,255,.3)}
+  #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
 
   /* accordions */
@@ -160,11 +165,11 @@
   .qa.open .plus::before{transform:rotate(90deg);opacity:0}
   .qa .answer{font-size:13px;line-height:1.55;color:var(--gray-soft);padding:0 2px 14px}
 
-  .ask{background:var(--brand-soft);border-radius:18px;padding:18px 16px 20px;margin-top:20px;text-align:center}
-  .ask p{margin:0 0 14px;font-size:13px;color:var(--brand)}
-  .ask a{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 26px;border-radius:12px;
-    font-size:14px;font-weight:600;text-decoration:none;background:var(--brand);color:#fff}
-  .ask a svg{width:18px;height:18px}
+  .ask{display:flex;align-items:center;gap:14px;background:var(--brand-soft);border-radius:18px;padding:18px;margin-top:20px;text-align:left;text-decoration:none;color:var(--brand);transition:transform .15s,background .15s}
+  .ask:active{transform:scale(.985)}
+  .ask p{flex:1;margin:0;font-size:13px;line-height:1.55;color:var(--brand)}
+  .ask .wa-go{width:42px;height:42px;flex:0 0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--brand);color:#fff}
+  .ask svg{width:19px;height:19px}
 
   /* guides + care */
   .care-list{list-style:none;margin:0;padding:0}
@@ -221,9 +226,9 @@
 
   <!-- top bar -->
   <div id="topbar">
-    <img class="tb-logo" src="byAmandaSoyer_Logo_NoBackground.png" alt="byAmandaSoyer">
+    <img class="tb-logo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAmandaSoyer_Logo_NoBackground.png" alt="byAmandaSoyer">
     <div class="tb-right">
-      <button class="tb-order" onclick="openOrder()"><span class="i-en">Start your Order</span><span class="i-pt">Começar Encomenda</span></button>
+      <button class="tb-order" onclick="openOrder()"><span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua encomenda</span></button>
     </div>
   </div>
 
@@ -235,7 +240,7 @@
       </div>
       <div class="hero-id">
         <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
-      <img class="biglogo" src="byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
+      <img class="biglogo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
     </button>
         <p class="lede">Lisbon Baking Studio By Amanda</p>
       </div>
@@ -261,9 +266,9 @@
     </nav>
 
     <div class="cta-row">
-      <button class="cta primary" onclick="openOrder()">
+      <button class="cta primary" id="heroOrderCta" onclick="openOrder()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
-        <span class="i-en">Custom Cake Order</span><span class="i-pt">Encomendar Bolo Personalizado</span>
+        <span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua encomenda</span>
       </button>
       <button class="cta ghost" onclick="goTo('faq')">
         <span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span>
@@ -308,8 +313,8 @@
 
   <!-- testimonials (PLACEHOLDER — replace with real reviews) -->
   <section id="testimonials">
-    <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Testemunhos</span></h2>
-    <p class="sec-intro"><span class="i-en">Kind words from my customers</span><span class="i-pt">Palavras carinhosas dos meus clientes</span></p>
+    <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Feedback</span></h2>
+    <p class="sec-intro"><span class="i-en">Kind words from my customers</span><span class="i-pt">O que dizem o meus clientes</span></p>
     <div class="carousel" data-carousel>
       <div class="carousel-track" id="testiTrack" data-align="center"></div>
       <div class="dots" id="testiDots"></div>
@@ -320,13 +325,12 @@
   <section id="faq">
     <h2 class="sec-title"><span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span></h2>
     <div id="faqList" style="margin-top:8px"></div>
-    <div class="ask">
-      <p><span class="i-en"><b>Still have a question?</b> I'll do my best to reply as soon as I can, though response times may vary.</span><span class="i-pt"><b>Ainda tem alguma dúvida?</b> Farei o meu melhor para responder o mais rapidamente possível, mas o tempo de resposta pode variar.</span></p>
-      <a href="https://wa.me/+351912491965" target="_blank" rel="noopener">
+    <a class="ask" href="https://wa.me/+351912491965" target="_blank" rel="noopener">
+      <p><span class="i-en">If you cannot find the answer to your question here, send me a message on WhatsApp. I’ll do my best to reply as soon as possible, but response times may vary.</span><span class="i-pt">Se não encontrar a resposta à sua pergunta aqui, envie-me uma mensagem pelo WhatsApp. Farei o possível para responder o mais rapidamente possível, mas os tempos de resposta podem variar.</span></p>
+      <span class="wa-go" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg>
-        WhatsApp
-      </a>
-    </div>
+      </span>
+    </a>
   </section>
 
   <!-- guides + care -->
@@ -459,8 +463,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeHeroIm
 /* ---------- sticky topbar ---------- */
 (function(){
   var tb=document.getElementById('topbar');
-  var onScroll=function(){tb.classList.toggle('solid',window.scrollY>18);};
-  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  var cta=document.getElementById('heroOrderCta');
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      var e=entries[0];
+      tb.classList.toggle('solid',!e.isIntersecting&&e.boundingClientRect.top<0);
+    },{threshold:0}).observe(cta);
+  }else{
+    var onScroll=function(){tb.classList.toggle('solid',cta.getBoundingClientRect().bottom<0);};
+    window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  }
 })();
 
 /* ---------- content ---------- */
@@ -514,59 +526,63 @@ var TESTI=[
 ];
 
 var FAQ=[
-  {cat:bi('Pricing &amp; Payment','Preços &amp; Pagamento'), items:[
-    {q:bi('How much does a cake cost?','Quanto custa um bolo?'),
-     a:bi("Prices depend on the size, flavours and design. You'll find starting prices in the order form.",
-          'Os preços dependem do tamanho, dos sabores e do design. Encontrará os preços iniciais no formulário de encomenda.')},
-    {q:bi('Can I order by kg?','Posso encomendar ao quilo?'),
-     a:bi('No. I work by cake size and number of portions, since weight can vary depending on the design.',
-          'Não. Trabalho com base no tamanho do bolo e no número de doses, uma vez que o peso pode variar consoante o design.')},
-    {q:bi('How do I pay?','Como faço o pagamento?'),
-     a:bi('Via MB Way or bank transfer (IBAN).','Através de MB Way ou transferência bancária (IBAN).')},
-    {q:bi('Can I pay at pick-up?','Posso pagar no levantamento?'),
-     a:bi('No. A 50% non-refundable deposit is required to secure your order.',
-          'Não. É necessário um sinal de 50% não reembolsável para garantir o seu pedido.')}
-  ]},
-  {cat:bi('Cake &amp; Flavours','Bolos &amp; Sabores'), items:[
-    {q:bi('What buttercream do you use?','Qual o buttercream que usa?'),
-     a:bi('I use Swiss meringue buttercream — smooth, light and not too sweet.',
-          'Uso buttercream de merengue suíço, que é suave, leve e não muito doce.')},
-    {q:bi('Do you make fondant cakes?','Faz bolos com pasta americana?'),
-     a:bi('No, I only create custom buttercream cakes.','Não, só faço bolos personalizados com buttercream.')},
-    {q:bi('Can I choose my own flavour?','Posso escolher o meu próprio sabor?'),
-     a:bi('No, I offer a set menu of flavour pairings designed to taste really balanced and delicious.',
-          'Não, ofereço um menu fixo de combinações de sabores, criadas para serem realmente equilibradas e deliciosas.')},
-    {q:bi('How long does the cake last?','Quanto tempo dura o bolo?'),
-     a:bi('Up to 3 days in the fridge. You can also freeze it for up to 2 months.',
-          'Pode ser conservado no frigorífico até 3 dias. Também pode ser congelado até 2 meses.')},
-    {q:bi('Why does my cake cream taste like butter?','Porque é que o creme do meu bolo sabe a manteiga?'),
-     a:bi('Because the cake is still cold. Remove it from the fridge and let it sit at room temperature for 1–2 hours before serving for the best flavour and texture.',
-          'Isto acontece porque o bolo ainda está frio. Para obter o melhor sabor e textura, retire o bolo do frigorífico e deixe-o à temperatura ambiente durante 1 a 2 horas antes de servir.')}
-  ]},
-  {cat:bi('Ordering','Como fazer um pedido'), items:[
-    {q:bi('How do I place an order?','Como faço um pedido?'),
-     a:bi("Just fill out the order form (link in bio). I'll send your quote via WhatsApp.",
-          'Basta preencher o formulário de encomenda (link na bio). Enviarei o orçamento por WhatsApp.')},
-    {q:bi('Can I order through Instagram DM?','Posso fazer o pedido por mensagem direta no Instagram?'),
-     a:bi("No. I don't process orders via Instagram DM, and response times are not guaranteed there.",
-          'Não. Não processo pedidos por mensagem direta no Instagram e não garanto respostas.')},
-    {q:bi('How far in advance should I order?','Com que antecedência devo fazer o pedido?'),
-     a:bi('5–8 days in advance to make sure I have availability.',
-          '5 a 8 dias de antecedência para garantir a disponibilidade.')},
-    {q:bi('Do you accept last-minute orders?','Aceitam pedidos de última hora?'),
-     a:bi('Orders with two days\u2019 notice: +20% urgency fee and limited flavour options (subject to availability).',
-          'Encomendas com dois dias de antecedência: acréscimo de 20% por urgência e opções de sabor limitadas (sujeitas a disponibilidade).')},
-    {q:bi('Can I change my order after confirmation?','Posso alterar o meu pedido após a confirmação?'),
-     a:bi('Changes are possible up to 5 days before the pick-up date. After that, no changes can be made.',
-          'As alterações são possíveis até 5 dias antes da data de levantamento. Depois disso, não será possível fazer alterações.')},
-    {q:bi('Can I cancel my order?','Posso cancelar o meu pedido?'),
+  {cat:bi('Ordering','ENCOMENDAS'), items:[
+    {q:bi('How do I place an order?','Como faço uma encomenda?'),
+     a:bi('Visit my website using the link in my bio to submit your order request. I’ll send your quote via WhatsApp.',
+          'Visite o meu site através do link na minha biografia para enviar o seu pedido. Enviar-lhe-ei o seu orçamento por WhatsApp.')},
+    {q:bi('Can I order through Instagram DM?','Posso encomendar por mensagem privada no Instagram?'),
+     a:bi('No. I do not accept orders through Instagram DMs, and response times are not guaranteed there.',
+          'Não. Não aceito encomendas através de mensagens privadas no Instagram e os tempos de resposta não são garantidos por essa via.')},
+    {q:bi('How far in advance should I order?','Com quanta antecedência devo encomendar?'),
+     a:bi('Order 5–8 days in advance to ensure availability.',
+          'Entre 5 e 8 dias de antecedência para garantir disponibilidade.')},
+    {q:bi('Do you accept last-minute orders?','Aceita encomendas de última hora?'),
+     a:bi('Yes, with at least 2 days’ notice and a +20% urgency fee, with limited flavour options (subject to availability).',
+          'Sim, com um mínimo de 2 dias de antecedência e uma taxa de urgência de +20%, com opções de sabores limitados (sujeito a disponibilidade).')},
+    {q:bi('Can I change my order after confirmation?','Posso alterar a minha encomenda após a confirmação?'),
+     a:bi('Changes are possible up to 5 days before the pick-up date. After that, no changes will be accepted.',
+          'As alterações são possíveis até 5 dias antes da data de levantamento. Após esse prazo, não serão aceites alterações.')},
+    {q:bi('Can I cancel my order?','Posso cancelar a minha encomenda?'),
      a:bi('Yes, but the deposit is non-refundable.','Sim, mas o sinal não é reembolsável.')}
   ]},
-  {cat:bi('Location &amp; Delivery','Localização &amp; Entrega'), items:[
+  {cat:bi('Pricing &amp; Payment','PREÇOS E PAGAMENTO'), items:[
+    {q:bi('How much does a cake cost?','Quanto custa um bolo?'),
+     a:bi('Prices depend on the size, flavours and decoration. You’ll find base prices in the order form.',
+          'Os preços dependem do tamanho, dos sabores e da decoração. Encontrará os preços base no formulário de encomenda.')},
+    {q:bi('Can I order by kg?','Posso encomendar ao KG?'),
+     a:bi('No. I work by cake size and number of portions, since weight can vary depending on the decoration.',
+          'Não. Trabalho com tamanhos de bolo e número de porções, uma vez que o peso pode variar consoante a decoração.')},
+    {q:bi('How can I pay?','Como posso pagar?'),
+     a:bi('By MB Way or bank transfer (IBAN).','Por MB Way ou transferência bancária (IBAN).')},
+    {q:bi('Can I pay at pick-up?','Posso pagar no levantamento?'),
+     a:bi('No. A 50% non-refundable deposit is required to reserve your order.',
+          'Não. É necessário um sinal não reembolsável de 50% para reservar a sua encomenda.')}
+  ]},
+  {cat:bi('Cakes &amp; Flavours','BOLOS E SABORES'), items:[
+    {q:bi('What buttercream do you use?','Que buttercream utiliza?'),
+     a:bi('I use Swiss meringue buttercream, which is smooth, light and not too sweet.',
+          'Utilizo buttercream de merengue suíço, que é suave, leve e não demasiado doce.')},
+    {q:bi('Do you make fondant cakes?','Faz bolos com pasta de açúcar?'),
+     a:bi('No. I only create custom cakes decorated with buttercream.',
+          'Não. Apenas crio bolos personalizados decorados com buttercream.')},
+    {q:bi('Can I choose my own flavours?','Posso escolher os meus próprios sabores?'),
+     a:bi('No. I offer a set menu of flavour combinations carefully designed to be balanced and delicious.',
+          'Não. Disponibilizo um menu definido de combinações de sabores cuidadosamente pensadas para serem equilibradas e deliciosas.')},
+    {q:bi('How long does the cake stay fresh?','Durante quanto tempo o bolo se mantém fresco?'),
+     a:bi('Up to 3 days in the fridge. It can also be frozen for up to 2 months.',
+          'Até 3 dias no frigorífico. Também pode ser congelado até 2 meses.')},
+    {q:bi('Why does my cake cream taste like butter?','Porque é que o creme do meu bolo sabe a manteiga?'),
+     a:bi('Because the cake is still cold. Remove it from the fridge and leave it at room temperature for 1–2 hours before serving for the best flavour and texture.',
+          'Porque o bolo ainda está frio. Deve retirar o bolo do frigorífico e deixá-lo à temperatura ambiente durante 1 a 2 horas antes de servir, para obter o melhor sabor e textura.')}
+  ]},
+  {cat:bi('Location &amp; Extras','LOCALIZAÇÃO E EXTRAS'), items:[
     {q:bi('Where are you located?','Onde está localizado?'),
-     a:bi('I\u2019m a home-based cake studio in Entrecampos, Lisbon 1600-311. The full address is shared after order confirmation.',
-          'Sou um estúdio de bolos caseiros em Entrecampos, Lisboa 1600-311. O endereço completo será partilhado após a confirmação da encomenda.')},
-    {q:bi('Do you offer delivery?','Oferecem entrega?'),
+     a:bi('I’m a home-based cake studio in Entrecampos, Lisbon (1600-311). The full collection address will be provided once your booking is confirmed.',
+          'Sou um estúdio de pastelaria em casa, localizado em Entrecampos, Lisboa (1600-311). A morada completa para levantamento será fornecida após a confirmação da sua encomenda.')},
+    {q:bi('Do you have a physical shop?','Tem uma loja física?'),
+     a:bi('No. I operate by appointment only. There is no walk-in shop.',
+          'Não. Trabalho exclusivamente por marcação. Não é possível efetuar levantamentos nem prestar atendimento sem marcação prévia.')},
+    {q:bi('Do you offer delivery?','Faz entregas?'),
      a:bi('No. Pick-up only.','Não. Apenas levantamento no local.')}
   ]}
 ];
