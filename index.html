@@ -53,8 +53,8 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;padding:0 22px max(28px,env(safe-area-inset-bottom));text-align:center;background:radial-gradient(circle at 50% 30%,#fff 0,#f9f4f5 38%,var(--bg) 72%);overflow:hidden}
-  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;min-height:100svh}
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;padding:0 22px calc(36px + env(safe-area-inset-bottom));text-align:center;background:radial-gradient(circle at 50% 30%,#fff 0,#f9f4f5 38%,var(--bg) 72%);overflow:hidden}
+  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
   .hero-id{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:-44px;position:relative;z-index:3}
   .biglogo-btn{width:136px;height:136px;border:1px solid rgba(115,8,44,.14);border-radius:50%;background:rgba(255,255,255,.97);padding:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2;box-shadow:0 14px 34px rgba(67,25,39,.13)}
   .hero .biglogo{width:100%;max-width:100%;margin:0 auto;filter:none}
@@ -86,12 +86,18 @@
   .image-lightbox img{max-width:min(92vw,480px);max-height:86vh;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
   .image-lightbox button{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:28px;cursor:pointer}
 
-  .cta-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:auto;padding-top:8px}
+  .cta-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:4px;padding-top:0}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
     font-family:var(--sans);font-weight:600;font-size:15px;padding:16px 14px;border-radius:14px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
   .cta.primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(115,8,44,.24)}
   .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:10px;text-decoration:underline;text-underline-offset:4px;font-size:13px}
+
+  /* Keep the next section behind the iOS Safari bottom toolbar until the user scrolls. */
+  @media (max-width:600px){
+    .hero{min-height:calc(100svh + 116px);padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+    @supports (height:100dvh){.hero{min-height:calc(100dvh + 88px)}}
+  }
 
   /* ---------- sections ---------- */
   section{padding:34px 24px 10px;scroll-margin-top:var(--topbar)}
