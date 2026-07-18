@@ -1199,7 +1199,16 @@ function goNext(){
 }
 function goBack(){if(step>0){step--;render();}}
 function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;render();}
-function goHome(){window.location.href=MAIN_PAGE_URL;}
+function isEmbedded(){
+  try{return window.parent&&window.parent!==window;}catch(e){return false;}
+}
+function goHome(){
+  if(isEmbedded()){
+    window.parent.postMessage({t:'byas-close'},'*');
+  }else{
+    window.location.href=MAIN_PAGE_URL;
+  }
+}
 /* topbar logo reuses the language-screen logo (no duplicated base64) */
 (function(){
   const src=document.querySelector('#lang .logoimg');
@@ -1314,7 +1323,7 @@ function showDone(){
   document.getElementById('fbRow').querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>sendFeedback(b.dataset.fb,b));
   const home=document.getElementById('doneHome');
   home.textContent=lang==='en'?'Back to main page':'Voltar à página principal';
-  home.onclick=()=>{window.location.href=MAIN_PAGE_URL;};
+  home.onclick=goHome;
   d.classList.add('show');
 }
 
@@ -1401,6 +1410,7 @@ let _lti=1;
   if(qp.get('embed')==='1')document.body.classList.add('embed');
   var q=qp.get('lang');
   if(q==='en'||q==='pt')start(q);
+  if(qp.get('privacy')==='1')setTimeout(openPrivacy,0);
 }catch(e){}})();
 window.addEventListener('message',function(e){if(e.data&&e.data.t==='byas-restart'){S=DEF();step=0;render();}});
 </script>

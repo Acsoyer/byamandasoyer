@@ -42,10 +42,9 @@
   /* ---------- top bar ---------- */
   #topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:60;display:flex;
     align-items:center;justify-content:space-between;padding:0 16px;
-    max-width:var(--col);margin:0 auto;transition:background .3s,box-shadow .3s;pointer-events:none}
-  #topbar.solid{background:rgba(247,246,243,.94);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line)}
-  #topbar .tb-logo{height:46px;opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s;pointer-events:auto}
-  #topbar.solid .tb-logo{opacity:1;transform:none}
+    max-width:var(--col);margin:0 auto;transition:background .3s,box-shadow .3s,opacity .3s,transform .3s;pointer-events:none;opacity:0;transform:translateY(-100%)}
+  #topbar.solid{background:rgba(247,246,243,.94);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line);opacity:1;transform:none;pointer-events:auto}
+  #topbar .tb-logo{height:38px;pointer-events:auto}
   #topbar .tb-right{display:flex;align-items:center;gap:8px;pointer-events:auto}
   .tb-order{border:none;background:var(--brand);color:#fff;font-weight:600;font-size:12.5px;
     padding:9px 14px;border-radius:99px;cursor:pointer;letter-spacing:.01em}
@@ -54,14 +53,27 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--topbar) + 10px) 22px 20px;text-align:center}
-  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%}
-  .hero-id{display:flex;flex-direction:column;align-items:center;gap:4px}
-  .biglogo-btn{border:none;background:none;padding:0;cursor:pointer;display:block;margin:0 auto}
-  .hero .biglogo{width:252px;max-width:74%;margin:0 auto;filter:drop-shadow(0 8px 20px rgba(115,8,44,.12))}
-  .hero .lede{font-family:var(--serif);font-size:16.5px;font-weight:500;color:var(--brand);margin:0 auto;max-width:300px;line-height:1.35}
+  .hero{min-height:100svh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:18px 22px 20px;text-align:center}
+  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+  .hero-id{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:-18px;position:relative;z-index:3}
+  .biglogo-btn{width:178px;height:178px;border:1px solid rgba(115,8,44,.16);border-radius:50%;background:var(--card);padding:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2;box-shadow:0 8px 24px rgba(115,8,44,.08)}
+  .hero .biglogo{width:100%;max-width:100%;margin:0 auto;filter:none}
+  .hero .lede{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--brand);margin:4px auto 0;max-width:330px;line-height:1.35}
   .meta{font-size:13px;color:var(--gray-soft);line-height:1.7;margin-bottom:0}
   .meta b{color:var(--gray);font-weight:600}
+
+  .hero-gallery{width:calc(100% + 44px);margin:0 -22px;overflow:hidden;position:relative}
+  .hero-gallery::before,.hero-gallery::after{content:"";position:absolute;top:0;bottom:0;width:34px;z-index:2;pointer-events:none}
+  .hero-gallery::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+  .hero-gallery::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
+  .hero-marquee{display:flex;width:max-content;gap:10px;animation:heroMarquee 55s linear infinite;padding:2px 0}
+  .hero-marquee-group{display:flex;gap:10px}
+  .hero-gallery:hover .hero-marquee,.hero-gallery:focus-within .hero-marquee{animation-play-state:paused}
+  .hero-marquee button{width:122px;height:150px;flex:0 0 auto;border:0;padding:0;border-radius:15px;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:var(--shadow-sm)}
+  .hero-marquee img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}
+  .hero-marquee button:hover img{transform:scale(1.04)}
+  @keyframes heroMarquee{to{transform:translateX(calc(-50% - 5px))}}
+  @media (prefers-reduced-motion:reduce){.hero-marquee{animation:none;overflow-x:auto}}
 
   .socials{display:flex;justify-content:center;gap:16px;margin:0}
   .socials a{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);
@@ -69,11 +81,10 @@
   .socials a:active{transform:scale(.9)}
   .socials svg{width:22px;height:22px}
 
-  .peek{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:0}
-  .peek button{padding:0;border:none;background:none;cursor:pointer;border-radius:14px;overflow:hidden;
-    box-shadow:var(--shadow-sm);aspect-ratio:4/5}
-  .peek img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
-  .peek button:active img{transform:scale(1.05)}
+  .image-lightbox{position:fixed;inset:0;z-index:300;background:rgba(25,14,19,.82);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(7px)}
+  .image-lightbox.show{display:flex}
+  .image-lightbox img{max-width:min(92vw,480px);max-height:86vh;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+  .image-lightbox button{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:28px;cursor:pointer}
 
   .cta-row{display:flex;flex-direction:column;gap:10px; width: 100%; margin-top: 18px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
@@ -120,13 +131,13 @@
 
   /* testimonials — no card, corner quote marks */
   #testiTrack{padding-left:0;padding-right:0;margin:0}
-  #testiTrack .slide{flex:0 0 86%;scroll-snap-align:center}
-  .quote{position:relative;padding:40px 30px 44px;text-align:center;min-height:180px;
+  #testiTrack .slide{flex:0 0 96%;scroll-snap-align:center}
+  .quote{position:relative;padding:38px 22px 42px;text-align:left;min-height:180px;
     display:flex;flex-direction:column;justify-content:center}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:var(--brand);opacity:.22;pointer-events:none}
   .quote .qm-o{top:14px;left:8px}
   .quote .qm-c{bottom:6px;right:12px}
-  .quote-text{font-family:var(--serif);font-style:italic;font-size:17.5px;line-height:1.5;color:var(--gray);margin:0}
+  .quote-text{font-family:var(--sans);font-style:normal;font-size:16px;line-height:1.65;color:var(--gray);margin:0}
   .quote-by{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.05em;color:var(--brand)}
   .quote-by::before{content:"— "}
 
@@ -171,6 +182,7 @@
   footer .fsoc svg{width:24px;height:24px}
   footer p{margin:3px 0;font-size:12px;color:#E7C6D0;line-height:1.6}
   footer .fcopy{margin-top:16px;font-size:11px;color:#CE9AA9}
+  footer .privacy-link{display:inline-block;margin-top:8px;color:#E7C6D0;font-size:11px;text-underline-offset:3px}
   footer .langtog{margin:16px auto 0;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
   footer .langtog button{color:#E7C6D0}
   footer .langtog button.on{background:#fff;color:var(--brand)}
@@ -211,23 +223,26 @@
   <div id="topbar">
     <img class="tb-logo" src="byAmandaSoyer_Logo_NoBackground.png" alt="byAmandaSoyer">
     <div class="tb-right">
-      <button class="tb-order" onclick="openOrder()"><span class="i-en">Order</span><span class="i-pt">Encomendar</span></button>
+      <button class="tb-order" onclick="openOrder()"><span class="i-en">Start your Order</span><span class="i-pt">Começar Encomenda</span></button>
     </div>
   </div>
 
   <!-- hero -->
   <header class="hero">
     <div class="hero-inner">
+      <div class="hero-gallery" aria-label="Cake decoration gallery">
+        <div class="hero-marquee" id="heroMarquee"></div>
+      </div>
       <div class="hero-id">
         <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
       <img class="biglogo" src="byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
     </button>
-        <p class="lede"><span class="i-en">Home-based cake studio.</span><span class="i-pt">Estúdio de bolos caseiro.</span></p>
+        <p class="lede">Lisbon Baking Studio By Amanda</p>
       </div>
 
     <div class="meta">
-      <div><b><span class="i-en">Wed–Fri</span><span class="i-pt">Qua–Sex</span></b> 11:00–20:00 &nbsp;·&nbsp; <b><span class="i-en">Sat–Sun</span><span class="i-pt">Sáb–Dom</span></b> 11:00–19:00</div>
-      <div>Entrecampos · Lisboa</div>
+      <div>Entrecampos, Lisbon 1600-311</div>
+      <div><b><span class="i-en">Wed–Fri</span><span class="i-pt">Qua–Sex</span></b> 11:00–18:00 &nbsp;·&nbsp; <b><span class="i-en">Sat–Sun</span><span class="i-pt">Sáb–Dom</span></b> 11:00–13:00</div>
     </div>
 
     <nav class="socials" aria-label="Social links">
@@ -245,12 +260,6 @@
       </a>
     </nav>
 
-    <div class="peek" aria-label="Cake gallery">
-      <button onclick="goTo('inspiration')"><img src="A1_Giving30_v1.jpg" alt="Mint vintage cake with cherries"></button>
-      <button onclick="goTo('inspiration')"><img src="A1_Daisy_v1.jpg" alt="Sage cake with buttercream daisies"></button>
-      <button onclick="goTo('inspiration')"><img src="A1_Moon_v3.jpg" alt="Pink cake with gold moon and stars"></button>
-    </div>
-
     <div class="cta-row">
       <button class="cta primary" onclick="openOrder()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
@@ -264,7 +273,7 @@
   </header>
 
   <!-- inspiration -->
-  <section id="inspiration">
+  <section id="inspiration" hidden>
     <h2 class="sec-title"><span class="i-en">Inspiration</span><span class="i-pt">Inspiração</span></h2>
     <p class="sec-intro"><span class="i-en">A few cakes I've made — yours will be designed just for you.</span><span class="i-pt">Alguns bolos que fiz — o seu será desenhado só para si.</span></p>
     <div class="carousel" data-carousel>
@@ -274,7 +283,7 @@
   </section>
 
   <!-- our story -->
-  <section id="story">
+  <section id="story" hidden>
     <h2 class="sec-title"><span class="i-en">Our Story</span><span class="i-pt">A Nossa História</span></h2>
     <img class="story-photo" src="ourstory.jpg" alt="Amanda Soyer with one of her cakes">
     <div class="story-body">
@@ -300,7 +309,7 @@
   <!-- testimonials (PLACEHOLDER — replace with real reviews) -->
   <section id="testimonials">
     <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Testemunhos</span></h2>
-    <p class="sec-intro"><span class="i-en">What sweet customers are saying.</span><span class="i-pt">O que dizem os clientes.</span></p>
+    <p class="sec-intro"><span class="i-en">Kind words from my customers</span><span class="i-pt">Palavras carinhosas dos meus clientes</span></p>
     <div class="carousel" data-carousel>
       <div class="carousel-track" id="testiTrack" data-align="center"></div>
       <div class="dots" id="testiDots"></div>
@@ -336,10 +345,16 @@
       <a href="mailto:byamandasoyer@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a>
     </div>
     <p>Entrecampos · Lisboa · 1600-311</p>
-    <p><span class="i-en">Wed–Fri 11:00–20:00 · Sat–Sun 11:00–19:00</span><span class="i-pt">Qua–Sex 11:00–20:00 · Sáb–Dom 11:00–19:00</span></p>
+    <p><span class="i-en">Wed–Fri 11:00–18:00 · Sat–Sun 11:00–13:00</span><span class="i-pt">Qua–Sex 11:00–18:00 · Sáb–Dom 11:00–13:00</span></p>
     <p><span class="i-en">Home-based studio · pick-up only · full address shared after confirmation.</span><span class="i-pt">Estúdio caseiro · apenas levantamento · morada completa partilhada após confirmação.</span></p>
     <p class="fcopy">© <span id="yr"></span> byAmandaSoyer · Lisbon Baking Studio</p>
+    <a class="privacy-link" href="#" onclick="openPrivacyPage();return false"><span class="i-en">Privacy Policy</span><span class="i-pt">Política de Privacidade</span></a>
   </footer>
+</div>
+
+<div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+  <button type="button" onclick="closeHeroImage()" aria-label="Close">&times;</button>
+  <img id="lightboxImage" alt="Cake decoration preview">
 </div>
 
 <!-- order form overlay -->
@@ -391,40 +406,84 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 function goTo(id){document.getElementById(id).scrollIntoView({behavior:reduce()?'auto':'smooth',block:'start'});}
 
 /* ---------- order overlay ---------- */
+var orderScrollY=0;
+function lockPageForOrder(){
+  orderScrollY=window.scrollY||window.pageYOffset||0;
+  document.body.style.position='fixed';
+  document.body.style.top='-'+orderScrollY+'px';
+  document.body.style.left='0';
+  document.body.style.right='0';
+  document.body.style.width='100%';
+  document.body.style.overflow='hidden';
+}
+function unlockPageFromOrder(){
+  document.body.style.position='';
+  document.body.style.top='';
+  document.body.style.left='';
+  document.body.style.right='';
+  document.body.style.width='';
+  document.body.style.overflow='';
+  window.scrollTo(0,orderScrollY);
+}
 function openOrder(){
+  var o=document.getElementById('orderOverlay');
+  if(o.classList.contains('show'))return;
   var l=document.body.dataset.lang||'pt';
   var f=document.getElementById('orderFrame');
   if(f.src.indexOf('cake-order-form')<0) f.src='cake-order-form.html?lang='+l+'&embed=1';
-  var o=document.getElementById('orderOverlay');
   o.classList.add('show');o.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
+  lockPageForOrder();
 }
 function closeOrder(){
   var o=document.getElementById('orderOverlay');
+  if(!o.classList.contains('show'))return;
   o.classList.remove('show');o.setAttribute('aria-hidden','true');
-  document.body.style.overflow='';
+  unlockPageFromOrder();
 }
 document.getElementById('ordRestart').onclick=function(){
   var f=document.getElementById('orderFrame');
   if(f.contentWindow) f.contentWindow.postMessage({t:'byas-restart'},'*');
 };
 window.addEventListener('message',function(e){
+  if(e.source!==document.getElementById('orderFrame').contentWindow)return;
+  if(e.data&&e.data.t==='byas-close'){
+    closeOrder();return;
+  }
   if(e.data&&e.data.t==='byas-step'){
     var lab=document.body.dataset.lang==='en'?'Step':'Passo';
     document.getElementById('ordSteps').textContent=lab+' '+e.data.s+' / '+e.data.n;
   }
 });
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeOrder();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeHeroImage();closeOrder();}});
 
 /* ---------- sticky topbar ---------- */
 (function(){
   var tb=document.getElementById('topbar');
-  var onScroll=function(){tb.classList.toggle('solid',window.scrollY>220);};
+  var onScroll=function(){tb.classList.toggle('solid',window.scrollY>18);};
   window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 })();
 
 /* ---------- content ---------- */
 var bi=function(en,pt){return '<span class="i-en">'+en+'</span><span class="i-pt">'+pt+'</span>';};
+
+var HERO_IMAGES=[
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/PaperButterfly.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/MaraschinoCherriesGlitter.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/MaraschinoCherries.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/goldsilversunstar.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/freshfruits.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/edibleprints.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/edibleflowers.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/CustomThemedImages.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/bows.jpg',
+  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/balls.jpg'
+];
+function heroImageMarkup(){return HERO_IMAGES.map(function(src,i){return '<button type="button" onclick="openHeroImage(\''+src+'\')" aria-label="Open cake decoration image '+(i+1)+'"><img src="'+src+'" alt="Cake decoration inspiration" loading="eager"></button>';}).join('');}
+document.getElementById('heroMarquee').innerHTML='<div class="hero-marquee-group">'+heroImageMarkup()+'</div><div class="hero-marquee-group" aria-hidden="true">'+heroImageMarkup()+'</div>';
+function openHeroImage(src){var box=document.getElementById('imageLightbox');document.getElementById('lightboxImage').src=src;box.classList.add('show');box.setAttribute('aria-hidden','false');}
+function closeHeroImage(){var box=document.getElementById('imageLightbox');if(!box)return;box.classList.remove('show');box.setAttribute('aria-hidden','true');}
+document.getElementById('imageLightbox').addEventListener('click',function(e){if(e.target===this)closeHeroImage();});
+function openPrivacyPage(){var l=document.body.dataset.lang||'pt';window.open('cake-order-form.html?lang='+l+'&privacy=1','_blank','noopener');}
 
 var INSPO=[
   {img:'A1_Giving30_v1.jpg',
