@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/order/:token", "destination": "/order/index.html?token=:token" }
+  ]
+}

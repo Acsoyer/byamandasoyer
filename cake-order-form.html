@@ -1276,21 +1276,17 @@ async function submit(){
       if(up.error) throw up.error;
       photo_urls.push(sb.storage.from('references').getPublicUrl(path).data.publicUrl);
     }
-    /* Try to get the new row's id so the survey can attach to this order.
-       If the database doesn't allow reading it back, fall back to a plain
-       insert — the order must go through no matter what. */
-    lastOrderId=null;
+    /* A private submission token lets the optional survey attach after submit. */
     const payload=buildPayload(photo_urls);
-    let inserted=false;
-    try{
-      const {data,error}=await sb.from('orders').insert(payload).select('id').single();
-      if(error) throw error;
-      lastOrderId=data?data.id:null; inserted=true;
-    }catch(_){ lastOrderId=null; }
-    if(!inserted){
-      const {error}=await sb.from('orders').insert(payload);
-      if(error) throw error;
+    lastSubmissionToken=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():fallbackUuid();
+    payload.submission_token=lastSubmissionToken;
+    let {error}=await sb.from('orders').insert(payload);
+    /* Backward-compatible safety: orders must still submit before the migration is installed. */
+    if(error&&/submission_token/i.test(error.message||'')){
+      delete payload.submission_token;lastSubmissionToken=null;
+      ({error}=await sb.from('orders').insert(payload));
     }
+    if(error)throw error;
     showDone();
   }catch(e){
     btn.disabled=false; btn.textContent=t('send');
@@ -1308,7 +1304,8 @@ const FEEDBACK=[
   {id:'good',em:'🙂',t:lg('Good','Boa')},
   {id:'excellent',em:'🤩',t:lg('Excellent','Excelente')},
 ];
-let lastOrderId=null;
+let lastSubmissionToken=null;
+function fallbackUuid(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16);});}
 
 function showDone(){
   const d=document.getElementById('done');const fn=(S.name.split(' ')[0]||'');
@@ -1335,8 +1332,8 @@ async function sendFeedback(id,btn){
   sv.classList.add('sent');
   sv.innerHTML=`<p class="fb-thanks"><span class="fb-em">${em}</span>${lang==='en'?'Thank you for sharing your feedback':'Obrigada por partilhar o seu feedback'}</p>`;
   try{
-    if(sb&&lastOrderId!=null){
-      await sb.from('orders').update({feedback:label}).eq('id',lastOrderId);
+    if(sb&&lastSubmissionToken){
+      await sb.rpc('submit_order_feedback',{p_submission_token:lastSubmissionToken,p_feedback:label});
     }
   }catch(e){/* best-effort — never block or alarm the customer */}
 }
