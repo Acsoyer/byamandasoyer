@@ -53,55 +53,51 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;padding:0 22px calc(36px + env(safe-area-inset-bottom));text-align:center;background:radial-gradient(circle at 50% 30%,#fff 0,#f9f4f5 38%,var(--bg) 72%);overflow:hidden}
-  .hero-inner{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
-  .hero-id{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:-44px;position:relative;z-index:3}
-  .biglogo-btn{width:136px;height:136px;border:1px solid rgba(115,8,44,.14);border-radius:50%;background:rgba(255,255,255,.97);padding:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2;box-shadow:0 14px 34px rgba(67,25,39,.13)}
-  .hero .biglogo{width:100%;max-width:100%;margin:0 auto;filter:none}
-  .hero .lede{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--brand);margin:8px auto 0;max-width:330px;line-height:1.3;letter-spacing:-.01em}
-  .meta{font-size:12px;color:var(--gray-soft);line-height:1.75;margin:0;padding:8px 16px;border-top:1px solid rgba(115,8,44,.12);border-bottom:1px solid rgba(115,8,44,.12);width:min(100%,360px)}
+  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(24px + env(safe-area-inset-top)) 22px calc(24px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
+    background-color:#FBF8F5;
+    background-image:
+      radial-gradient(circle at 50% 38%,rgba(255,255,255,.96) 0,rgba(255,255,255,.72) 30%,rgba(251,248,245,.18) 64%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Cg fill='none' stroke='%2373082C' stroke-opacity='.055' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 17c3-5 9-5 12 0M21 12v10M17 22h8'/%3E%3Cpath d='M68 13v8M64 17h8M66 15l4 4M70 15l-4 4'/%3E%3Cpath d='M57 56c0-5 4-9 9-9s9 4 9 9M59 56h14l-2 13H61zM62 47c0-3 2-5 4-5s4 2 4 5'/%3E%3Cpath d='M14 66c4-4 8-4 12 0s8 4 12 0M26 59v14'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:auto,92px 92px}
+  .hero::before{content:"";position:absolute;inset:14px;border:1px solid rgba(115,8,44,.08);border-radius:30px;z-index:-1;pointer-events:none}
+  .hero-inner{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:center;align-items:center;gap:15px;width:100%;padding:12px 0}
+  .hero-id{display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;z-index:1;width:100%}
+  .hero-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 5px;padding:6px 12px;border:1px solid rgba(115,8,44,.12);border-radius:99px;background:rgba(255,255,255,.62);color:var(--brand);font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+  .hero-kicker::before,.hero-kicker::after{content:"";width:3px;height:3px;border-radius:50%;background:var(--brand);opacity:.45}
+  .biglogo-btn{width:min(82vw,300px);min-height:78px;border:0;background:transparent;padding:4px 10px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2}
+  .hero .biglogo{width:100%;max-width:280px;margin:0 auto;filter:none}
+  .hero .lede{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--brand);margin:0 auto;max-width:330px;line-height:1.35;letter-spacing:-.01em}
+  .hero-ornament{display:flex;align-items:center;gap:9px;width:88px;margin:1px auto;color:var(--brand);opacity:.4}
+  .hero-ornament::before,.hero-ornament::after{content:"";height:1px;flex:1;background:currentColor}
+  .hero-ornament span{font-size:10px;line-height:1}
+  .meta{font-size:11.5px;color:#766D70;line-height:1.7;margin:0;padding:10px 15px;border:1px solid rgba(115,8,44,.1);border-radius:14px;background:rgba(255,255,255,.55);width:min(100%,356px)}
   .meta b{color:var(--gray);font-weight:600}
 
-  .hero-gallery{width:calc(100% + 44px);height:230px;margin:0 -22px;overflow:hidden;position:relative;border-radius:0 0 28px 28px}
-  .hero-gallery::before,.hero-gallery::after{content:"";position:absolute;top:0;bottom:0;width:34px;z-index:2;pointer-events:none}
-  .hero-gallery::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
-  .hero-gallery::after{right:0;background:linear-gradient(-90deg,var(--bg),transparent)}
-  .hero-marquee{display:flex;width:max-content;height:100%;gap:10px;animation:heroMarquee 55s linear infinite;padding:0}
-  .hero-marquee-group{display:flex;gap:10px}
-  .hero-gallery:hover .hero-marquee,.hero-gallery:focus-within .hero-marquee{animation-play-state:paused}
-  .hero-marquee button{width:166px;height:230px;flex:0 0 auto;border:0;padding:0;border-radius:0;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:none}
-  .hero-marquee img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}
-  .hero-marquee button:hover img{transform:scale(1.04)}
-  @keyframes heroMarquee{to{transform:translateX(calc(-50% - 5px))}}
-  @media (prefers-reduced-motion:reduce){.hero-marquee{animation:none;overflow-x:auto}}
-
   .socials{display:flex;justify-content:center;gap:10px;margin:0}
-  .socials a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.76);border:1px solid rgba(115,8,44,.13);
+  .socials a{width:39px;height:39px;border-radius:50%;background:rgba(255,255,255,.7);border:1px solid rgba(115,8,44,.12);
     display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:none;transition:transform .15s,background .15s}
   .socials a:active{transform:scale(.9)}
   .socials svg{width:19px;height:19px}
 
-  .image-lightbox{position:fixed;inset:0;z-index:300;background:rgba(25,14,19,.82);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(7px)}
-  .image-lightbox.show{display:flex}
-  .image-lightbox img{max-width:min(92vw,480px);max-height:86vh;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.4)}
-  .image-lightbox button{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.5);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:28px;cursor:pointer}
-
-  .cta-row{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:4px;padding-top:0}
+  .cta-row{display:flex;flex-direction:column;gap:6px;width:100%;max-width:356px;margin-top:1px;padding-top:0}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
     font-family:var(--sans);font-weight:600;font-size:15px;padding:16px 14px;border-radius:14px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
-  .cta.primary{min-height:58px;background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(115,8,44,.24);font-size:16.5px;white-space:nowrap;padding:17px 14px}
+  .cta.primary{min-height:56px;background:var(--brand);color:#fff;box-shadow:0 10px 24px rgba(115,8,44,.2);font-size:16px;white-space:nowrap;padding:16px 14px}
   .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:10px;text-decoration:underline;text-underline-offset:4px;font-size:13px}
 
-  /* Keep the next section behind the iOS Safari bottom toolbar until the user scrolls. */
-  @media (max-width:600px){
-    .hero{min-height:calc(100svh + 196px);padding-bottom:calc(104px + env(safe-area-inset-bottom))}
-    .hero-inner{min-height:calc(100svh + 92px)}
-    .cta-row{flex:1;justify-content:center;min-height:176px;margin-top:0;padding:12px 0 8px}
-    @supports (height:100dvh){
-      .hero{min-height:calc(100dvh + 168px)}
-      .hero-inner{min-height:calc(100dvh + 64px)}
-    }
+  @media (max-height:700px){
+    .hero{padding-top:calc(15px + env(safe-area-inset-top));padding-bottom:calc(15px + env(safe-area-inset-bottom))}
+    .hero::before{inset:9px;border-radius:24px}
+    .hero-inner{gap:9px;padding:4px 0}
+    .hero-kicker{margin-bottom:0;padding:4px 10px}
+    .biglogo-btn{min-height:64px;width:min(76vw,270px)}
+    .hero .biglogo{max-width:250px}
+    .hero .lede{font-size:16.5px}
+    .meta{padding:7px 12px;line-height:1.55}
+    .socials a{width:36px;height:36px}
+    .cta.primary{min-height:52px;padding:13px 12px}
+    .cta.ghost{padding:7px}
   }
 
   /* ---------- sections ---------- */
@@ -246,14 +242,13 @@
   <!-- hero -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-gallery" aria-label="Cake decoration gallery">
-        <div class="hero-marquee" id="heroMarquee"></div>
-      </div>
       <div class="hero-id">
+        <p class="hero-kicker"><span class="i-en">Custom cakes · Lisbon</span><span class="i-pt">Bolos personalizados · Lisboa</span></p>
         <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
-      <img class="biglogo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAS_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
-    </button>
+          <img class="biglogo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAmandaSoyer_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
+        </button>
         <p class="lede">Lisbon Baking Studio By Amanda</p>
+        <div class="hero-ornament" aria-hidden="true"><span>✦</span></div>
       </div>
 
     <div class="meta">
@@ -367,11 +362,6 @@
   </footer>
 </div>
 
-<div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
-  <button type="button" onclick="closeHeroImage()" aria-label="Close">&times;</button>
-  <img id="lightboxImage" alt="Cake decoration preview">
-</div>
-
 <!-- order form overlay -->
 <div id="orderOverlay" aria-hidden="true">
   <div class="ord-bar">
@@ -469,7 +459,7 @@ window.addEventListener('message',function(e){
     document.getElementById('ordSteps').textContent=lab+' '+e.data.s+' / '+e.data.n;
   }
 });
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeHeroImage();closeOrder();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeOrder();});
 
 /* ---------- sticky topbar ---------- */
 (function(){
@@ -489,23 +479,6 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeHeroIm
 /* ---------- content ---------- */
 var bi=function(en,pt){return '<span class="i-en">'+en+'</span><span class="i-pt">'+pt+'</span>';};
 
-var HERO_IMAGES=[
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/PaperButterfly.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/MaraschinoCherriesGlitter.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/MaraschinoCherries.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/goldsilversunstar.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/freshfruits.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/edibleprints.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/edibleflowers.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/CustomThemedImages.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/bows.jpg',
-  'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/balls.jpg'
-];
-function heroImageMarkup(){return HERO_IMAGES.map(function(src,i){return '<button type="button" onclick="openHeroImage(\''+src+'\')" aria-label="Open cake decoration image '+(i+1)+'"><img src="'+src+'" alt="Cake decoration inspiration" loading="eager"></button>';}).join('');}
-document.getElementById('heroMarquee').innerHTML='<div class="hero-marquee-group">'+heroImageMarkup()+'</div><div class="hero-marquee-group" aria-hidden="true">'+heroImageMarkup()+'</div>';
-function openHeroImage(src){var box=document.getElementById('imageLightbox');document.getElementById('lightboxImage').src=src;box.classList.add('show');box.setAttribute('aria-hidden','false');}
-function closeHeroImage(){var box=document.getElementById('imageLightbox');if(!box)return;box.classList.remove('show');box.setAttribute('aria-hidden','true');}
-document.getElementById('imageLightbox').addEventListener('click',function(e){if(e.target===this)closeHeroImage();});
 function openPrivacyPage(){var l=document.body.dataset.lang||'pt';window.open('cake-order-form.html?lang='+l+'&privacy=1','_blank','noopener');}
 
 var INSPO=[
