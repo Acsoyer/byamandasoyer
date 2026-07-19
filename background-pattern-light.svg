@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="92" viewBox="0 0 92 92">
+  <g fill="none" stroke="#F3E7EC" stroke-opacity="0.12" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Same pattern, adapted for burgundy backgrounds -->
+    <path d="M15 17c3-5 9-5 12 0M21 12v10M17 22h8"/>
+    <path d="M68 13v8M64 17h8M66 15l4 4M70 15l-4 4"/>
+    <path d="M57 56c0-5 4-9 9-9s9 4 9 9M59 56h14l-2 13H61zM62 47c0-3 2-5 4-5s4 2 4 5"/>
+    <path d="M14 66c4-4 8-4 12 0s8 4 12 0M26 59v14"/>
+  </g>
+</svg>
