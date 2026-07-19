@@ -132,7 +132,7 @@ Ana sayfa ile sipariş formu arasındaki göreli bağlantılar nedeniyle `index.
 
 ## Sürüm
 
-Bu doküman `Byamandasoyer_v18` klasöründeki site yapısını açıklamak için güncellenmiştir.
+Bu doküman `Byamandasoyer_v19` klasöründeki site yapısını açıklamak için güncellenmiştir.
 
 ### v17 ana sayfa değişiklikleri
 
@@ -163,3 +163,17 @@ Her iki SVG de 92 × 92 piksellik tekrar eden bir karo içerir. Dosyalar normal 
 - Tekrar sıklığını değiştirmek için SVG içindeki `width`, `height` ve `viewBox` değerleriyle birlikte CSS'teki `background-size:92px 92px` değerini güncelleyin.
 - Tek tek semboller SVG içindeki dört ayrı `<path>` öğesidir. İstenmeyen sembolün `<path>` satırı silinebilir veya aynı `viewBox` içinde yeni çizimler eklenebilir.
 - Açık ve bordo zemin sürümlerinin şekillerinin aynı kalması için bir dosyada yapılan yol (`d`) değişiklikleri diğer dosyaya da uygulanmalıdır.
+
+### v19 ana sayfa değişiklikleri
+
+- v18 klasörü bütünüyle v19'a kopyalandı; dashboard, sipariş formu, müşteri portalı ve iki pattern SVG dosyası korundu.
+- İlk dil seçim penceresindeki geniş logo büyütüldü.
+- Hero içeriğinin başlangıcı ekran yüksekliğine göre yaklaşık `%15` aşağı alındı; kısa ekranlar için ayrı oransal sınırlar eklendi.
+- Hero logosu ve sosyal medya düğmeleri tekrar büyütüldü.
+- Adres ile çalışma saatleri arasına dikey boşluk eklendi.
+- Ana sipariş düğmesi 75 piksel yüksekliğe çıkarıldı. FAQ bağlantısı tekrar ana düğmenin altına yerleştirildi.
+- CTA grubu iOS Safari güvenli alanını koruyarak önceki konumundan yaklaşık 60–80 piksel yukarı taşındı.
+- Testimonials bölümünün önüne 150–190 piksel arasında ekran yüksekliğine uyarlanan bir boşluk eklendi; bordo alanın ilk ekranda görünmesi engellendi.
+- FAQ accordion kutularının arkasına yarı opak zemin, yumuşak gölge ve Safari uyumlu hafif backdrop blur eklendi. Böylece pattern korunurken metinlerin arkasında daha silik görünür.
+- Portekizce FAQ kategori başlıkları tamamen büyük harf yerine İngilizce sürümle aynı başlık biçimine getirildi.
+- FAQ altındaki WhatsApp yönlendirme metni İngilizce ve Portekizce olarak güncellendi.

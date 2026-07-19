@@ -53,53 +53,54 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(8px + env(safe-area-inset-top)) 22px calc(10px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
+  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(clamp(88px,15svh,124px) + env(safe-area-inset-top)) 22px calc(10px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
     background-color:#FBF8F5;
     background-image:
       radial-gradient(circle at 50% 38%,rgba(255,255,255,.96) 0,rgba(255,255,255,.72) 30%,rgba(251,248,245,.18) 64%),
       url("background-pattern.svg");
     background-size:auto,92px 92px}
   .hero::before{content:"";position:absolute;inset:8px;border:1px solid rgba(115,8,44,.1);border-radius:30px;z-index:-1;pointer-events:none}
-  .hero-inner{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:flex-start;align-items:center;gap:18px;width:100%;padding:0 0 4px}
+  .hero-inner{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:flex-start;align-items:center;gap:19px;width:100%;padding:0 0 4px}
   .hero-id{display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;z-index:1;width:100%}
   .hero-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 2px;padding:7px 13px;border:1px solid rgba(115,8,44,.14);border-radius:99px;background:rgba(255,255,255,.66);color:var(--brand);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
   .hero-kicker::before,.hero-kicker::after{content:"";width:3px;height:3px;border-radius:50%;background:var(--brand);opacity:.45}
-  .biglogo-btn{width:min(92vw,360px);min-height:96px;border:0;background:transparent;padding:2px 4px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2}
-  .hero .biglogo{width:100%;max-width:340px;margin:0 auto;filter:none}
+  .biglogo-btn{width:min(95vw,390px);min-height:104px;border:0;background:transparent;padding:2px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2}
+  .hero .biglogo{width:100%;max-width:370px;margin:0 auto;filter:none}
   .hero .lede{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--brand);margin:0 auto;max-width:350px;line-height:1.35;letter-spacing:-.01em}
   .hero-ornament{display:flex;align-items:center;gap:9px;width:88px;margin:1px auto;color:var(--brand);opacity:.4}
   .hero-ornament::before,.hero-ornament::after{content:"";height:1px;flex:1;background:currentColor}
   .hero-ornament span{font-size:10px;line-height:1}
   .meta{font-size:13px;color:#6F6569;line-height:1.7;margin:0;padding:12px 16px;border:1px solid rgba(115,8,44,.12);border-radius:15px;background:rgba(255,255,255,.62);width:min(100%,380px)}
   .meta b{color:var(--gray);font-weight:600}
+  .meta>div+div{margin-top:8px}
 
-  .socials{display:flex;justify-content:center;gap:12px;margin:0}
-  .socials a{width:43px;height:43px;border-radius:50%;background:rgba(255,255,255,.74);border:1px solid rgba(115,8,44,.14);
+  .socials{display:flex;justify-content:center;gap:13px;margin:0}
+  .socials a{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.74);border:1px solid rgba(115,8,44,.14);
     display:flex;align-items:center;justify-content:center;color:var(--brand);box-shadow:none;transition:transform .15s,background .15s}
   .socials a:active{transform:scale(.9)}
-  .socials svg{width:21px;height:21px}
+  .socials svg{width:23px;height:23px}
 
-  .cta-row{display:flex;flex-direction:column;gap:7px;width:100%;max-width:380px;margin-top:auto;padding-top:6px}
+  .cta-row{display:flex;flex-direction:column;gap:7px;width:100%;max-width:380px;margin-top:auto;margin-bottom:clamp(60px,9svh,80px);padding-top:6px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
     font-family:var(--sans);font-weight:600;font-size:16px;padding:17px 14px;border-radius:15px;transition:transform .15s}
   .cta:active{transform:scale(.98)}
-  .cta.primary{min-height:66px;background:var(--brand);color:#fff;box-shadow:0 10px 24px rgba(115,8,44,.2);font-size:17px;white-space:nowrap;padding:19px 14px}
+  .cta.primary{min-height:75px;background:var(--brand);color:#fff;box-shadow:0 10px 24px rgba(115,8,44,.2);font-size:17px;white-space:nowrap;padding:22px 14px}
   .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:9px;text-decoration:underline;text-underline-offset:4px;font-size:14px}
 
   @media (max-height:700px){
-    .hero{padding-top:calc(5px + env(safe-area-inset-top));padding-bottom:calc(7px + env(safe-area-inset-bottom))}
+    .hero{padding-top:calc(clamp(66px,12svh,86px) + env(safe-area-inset-top));padding-bottom:calc(7px + env(safe-area-inset-bottom))}
     .hero::before{inset:6px;border-radius:24px}
     .hero-inner{gap:10px;padding:0 0 2px}
     .hero-kicker{margin-bottom:0;padding:5px 10px;font-size:10px}
-    .biglogo-btn{min-height:72px;width:min(84vw,300px)}
-    .hero .biglogo{max-width:285px}
+    .biglogo-btn{min-height:78px;width:min(90vw,330px)}
+    .hero .biglogo{max-width:320px}
     .hero .lede{font-size:17.5px}
     .hero-ornament{margin:0 auto}
     .meta{padding:8px 12px;line-height:1.5;font-size:12px}
-    .socials a{width:38px;height:38px}
-    .socials svg{width:19px;height:19px}
-    .cta-row{padding-top:2px}
-    .cta.primary{min-height:58px;padding:15px 12px;font-size:17px}
+    .socials a{width:42px;height:42px}
+    .socials svg{width:20px;height:20px}
+    .cta-row{margin-bottom:clamp(44px,8svh,58px);padding-top:2px}
+    .cta.primary{min-height:75px;padding:19px 12px;font-size:17px}
     .cta.ghost{padding:6px;font-size:13px}
   }
 
@@ -140,7 +141,7 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials — no card, corner quote marks */
-  #testimonials{background-color:var(--brand);background-image:url("background-pattern-light.svg");background-size:92px 92px;color:#fff;padding:50px 24px 38px;margin:0;min-height:330px}
+  #testimonials{background-color:var(--brand);background-image:url("background-pattern-light.svg");background-size:92px 92px;color:#fff;padding:50px 24px 38px;margin:clamp(150px,20svh,190px) 0 0;min-height:330px}
   #testimonials .sec-title{color:#fff}
   #testimonials .sec-intro{color:#e7c6d0;margin-bottom:22px}
   #testiTrack{padding-left:0;padding-right:0;margin:0}
@@ -174,6 +175,7 @@
   .qa .plus::after{top:8px;left:2px;height:2px;width:14px}
   .qa.open .plus::before{transform:rotate(90deg);opacity:0}
   .qa .answer{font-size:13px;line-height:1.55;color:var(--gray-soft);padding:0 2px 14px}
+  #faqList .cat{margin:0 0 12px;padding:0 10px;border:1px solid rgba(115,8,44,.055);border-radius:14px;background:rgba(247,246,243,.88);box-shadow:0 0 20px 10px rgba(247,246,243,.68);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 
   .ask{display:flex;align-items:center;gap:14px;background:var(--brand-soft);border-radius:18px;padding:18px;margin-top:20px;text-align:left;text-decoration:none;color:var(--brand);transition:transform .15s,background .15s}
   .ask:active{transform:scale(.985)}
@@ -221,7 +223,7 @@
   #langModal.show{opacity:1}
   .lm-card{background:var(--card);border-radius:22px;box-shadow:0 24px 64px rgba(0,0,0,.32);
     padding:30px 24px;width:100%;max-width:330px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
-  .lm-card .lm-logo{width:180px;max-width:72%;margin:2px auto 12px}
+  .lm-card .lm-logo{width:260px;max-width:88%;margin:0 auto 16px}
   .lm-card button{width:100%;border:none;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:15.5px;
     padding:15px;border-radius:14px;transition:transform .15s}
   .lm-card button:active{transform:scale(.98)}
@@ -275,12 +277,12 @@
     </nav>
 
     <div class="cta-row">
-      <button class="cta ghost" onclick="goTo('faq')">
-        <span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span>
-      </button>
       <button class="cta primary" id="heroOrderCta" onclick="openOrder()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
         <span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua encomenda</span>
+      </button>
+      <button class="cta ghost" onclick="goTo('faq')">
+        <span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span>
       </button>
     </div>
     </div>
@@ -335,7 +337,7 @@
     <h2 class="sec-title"><span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span></h2>
     <div id="faqList" style="margin-top:8px"></div>
     <a class="ask" href="https://wa.me/+351912491965" target="_blank" rel="noopener">
-      <p><span class="i-en">If you cannot find the answer to your question here, send me a message on WhatsApp. I’ll do my best to reply as soon as possible, but response times may vary.</span><span class="i-pt">Se não encontrar a resposta à sua pergunta aqui, envie-me uma mensagem pelo WhatsApp. Farei o possível para responder o mais rapidamente possível, mas os tempos de resposta podem variar.</span></p>
+      <p><span class="i-en">If you don’t find your answer here, send me a message via WhatsApp. I will reply as soon as possible, but response times may vary.</span><span class="i-pt">Se não encontrar a resposta aqui, envie-me uma mensagem no WhatsApp. Responderei o mais rápido possível, mas o tempo de resposta pode variar.</span></p>
       <span class="wa-go" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg>
       </span>
@@ -513,7 +515,7 @@ var TESTI=[
 ];
 
 var FAQ=[
-  {cat:bi('Ordering','ENCOMENDAS'), items:[
+  {cat:bi('Ordering','Encomendas'), items:[
     {q:bi('How do I place an order?','Como faço uma encomenda?'),
      a:bi('Visit my website using the link in my bio to submit your order request. I’ll send your quote via WhatsApp.',
           'Visite o meu site através do link na minha biografia para enviar o seu pedido. Enviar-lhe-ei o seu orçamento por WhatsApp.')},
@@ -532,7 +534,7 @@ var FAQ=[
     {q:bi('Can I cancel my order?','Posso cancelar a minha encomenda?'),
      a:bi('Yes, but the deposit is non-refundable.','Sim, mas o sinal não é reembolsável.')}
   ]},
-  {cat:bi('Pricing &amp; Payment','PREÇOS E PAGAMENTO'), items:[
+  {cat:bi('Pricing &amp; Payment','Preços e Pagamento'), items:[
     {q:bi('How much does a cake cost?','Quanto custa um bolo?'),
      a:bi('Prices depend on the size, flavours and decoration. You’ll find base prices in the order form.',
           'Os preços dependem do tamanho, dos sabores e da decoração. Encontrará os preços base no formulário de encomenda.')},
@@ -545,7 +547,7 @@ var FAQ=[
      a:bi('No. A 50% non-refundable deposit is required to reserve your order.',
           'Não. É necessário um sinal não reembolsável de 50% para reservar a sua encomenda.')}
   ]},
-  {cat:bi('Cakes &amp; Flavours','BOLOS E SABORES'), items:[
+  {cat:bi('Cakes &amp; Flavours','Bolos e Sabores'), items:[
     {q:bi('What buttercream do you use?','Que buttercream utiliza?'),
      a:bi('I use Swiss meringue buttercream, which is smooth, light and not too sweet.',
           'Utilizo buttercream de merengue suíço, que é suave, leve e não demasiado doce.')},
@@ -562,7 +564,7 @@ var FAQ=[
      a:bi('Because the cake is still cold. Remove it from the fridge and leave it at room temperature for 1–2 hours before serving for the best flavour and texture.',
           'Porque o bolo ainda está frio. Deve retirar o bolo do frigorífico e deixá-lo à temperatura ambiente durante 1 a 2 horas antes de servir, para obter o melhor sabor e textura.')}
   ]},
-  {cat:bi('Location &amp; Extras','LOCALIZAÇÃO E EXTRAS'), items:[
+  {cat:bi('Location &amp; Extras','Localização e Extras'), items:[
     {q:bi('Where are you located?','Onde está localizado?'),
      a:bi('I’m a home-based cake studio in Entrecampos, Lisbon (1600-311). The full collection address will be provided once your booking is confirmed.',
           'Sou um estúdio de pastelaria em casa, localizado em Entrecampos, Lisboa (1600-311). A morada completa para levantamento será fornecida após a confirmação da sua encomenda.')},
