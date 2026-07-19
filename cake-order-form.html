@@ -318,6 +318,7 @@
   .fb-row.locked .fb-btn{pointer-events:none}
   .fb-row.locked .fb-btn:not(.sel){opacity:.45}
   .fb-thanks{font-size:13px;color:var(--brand);font-weight:600;margin:12px 0 0}
+  .fb-error{font-size:11.5px;line-height:1.45;color:#9b2635;margin:10px 0 0;text-align:center}
   #survey.sent{background:var(--accent-soft);border-radius:16px;padding:14px 16px;margin-top:26px;animation:accIn .3s ease}
   #survey.sent .fb-thanks{margin:0;display:flex;align-items:center;justify-content:center;gap:8px}
   #survey .fb-em{font-size:19px}
@@ -1282,7 +1283,7 @@ async function submit(){
     payload.submission_token=lastSubmissionToken;
     let {error}=await sb.from('orders').insert(payload);
     /* Backward-compatible safety: orders must still submit before the migration is installed. */
-    if(error&&/submission_token/i.test(error.message||'')){
+    if(error&&(error.code==='PGRST204'||/submission_token/i.test(error.message||''))){
       delete payload.submission_token;lastSubmissionToken=null;
       ({error}=await sb.from('orders').insert(payload));
     }
@@ -1318,6 +1319,12 @@ function showDone(){
   document.getElementById('fbRow').innerHTML=FEEDBACK.map(f=>
     `<button type="button" class="fb-btn" data-fb="${f.id}"><span class="em">${f.em}</span><span class="lb">${f.t[lang]}</span></button>`).join('');
   document.getElementById('fbRow').querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>sendFeedback(b.dataset.fb,b));
+  if(!lastSubmissionToken){
+    document.getElementById('fbRow').innerHTML='';
+    document.getElementById('surveyQ').textContent=lang==='en'
+      ?'The order was sent, but the optional survey is temporarily unavailable.'
+      :'O pedido foi enviado, mas o questionário opcional está temporariamente indisponível.';
+  }
   const home=document.getElementById('doneHome');
   home.textContent=lang==='en'?'Back to main page':'Voltar à página principal';
   home.onclick=goHome;
@@ -1327,15 +1334,31 @@ function showDone(){
 async function sendFeedback(id,btn){
   const label=(FEEDBACK.find(f=>f.id===id)||{}).t?.en||id;
   const em=(FEEDBACK.find(f=>f.id===id)||{}).em||'';
-  /* submits immediately on tap — the whole block becomes a thank-you */
   const sv=document.getElementById('survey');
-  sv.classList.add('sent');
-  sv.innerHTML=`<p class="fb-thanks"><span class="fb-em">${em}</span>${lang==='en'?'Thank you for sharing your feedback':'Obrigada por partilhar o seu feedback'}</p>`;
+  const row=document.getElementById('fbRow');
+  row.classList.add('locked');btn.classList.add('sel');
+  row.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const previousError=sv.querySelector('.fb-error');if(previousError)previousError.remove();
   try{
-    if(sb&&lastSubmissionToken){
-      await sb.rpc('submit_order_feedback',{p_submission_token:lastSubmissionToken,p_feedback:label});
-    }
-  }catch(e){/* best-effort — never block or alarm the customer */}
+    if(!sb||!lastSubmissionToken)throw new Error('Feedback connection is unavailable');
+    const {data,error}=await sb.rpc('submit_order_feedback',{
+      p_submission_token:lastSubmissionToken,
+      p_feedback:label
+    });
+    if(error)throw error;
+    if(data!==true)throw new Error('The feedback could not be attached to this order');
+    sv.classList.add('sent');
+    sv.innerHTML=`<p class="fb-thanks"><span class="fb-em">${em}</span>${lang==='en'?'Thank you for sharing your feedback':'Obrigada por partilhar o seu feedback'}</p>`;
+  }catch(e){
+    row.classList.remove('locked');btn.classList.remove('sel');
+    row.querySelectorAll('button').forEach(b=>b.disabled=false);
+    const msg=document.createElement('p');msg.className='fb-error';
+    msg.textContent=lang==='en'
+      ?'Your rating could not be saved. Please check your connection and tap again.'
+      :'Não foi possível guardar a sua avaliação. Verifique a ligação e tente novamente.';
+    sv.appendChild(msg);
+    console.error('Feedback submission failed',e);
+  }
 }
 
 /* ---------- privacy policy ---------- */
