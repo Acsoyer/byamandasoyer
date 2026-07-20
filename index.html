@@ -61,7 +61,7 @@
       "telephone":"+351912491965",
       "priceRange":"€€",
       "address":{"@type":"PostalAddress","streetAddress":"Rua Francisco Lyon de Castro nº 14","postalCode":"1600-311","addressLocality":"Lisbon","addressCountry":"PT"},
-      "sameAs":["https://www.instagram.com/byamandasoyer","https://www.tiktok.com/@cakeslisbon"],
+      "sameAs":["https://www.instagram.com/byamandasoyer","https://www.facebook.com/p/Custom-Cakes-By-Amanda-Soyer-61561880114999/","https://www.tiktok.com/@cakeslisbon"],
       "openingHoursSpecification":[
         {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday"],"opens":"11:00","closes":"18:00"},
         {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"11:00","closes":"13:00"}
@@ -141,6 +141,22 @@
   .socials a:active{transform:scale(.9)}
   .socials svg{width:23px;height:23px}
 
+  .cake-strip-shell{width:calc(100% + 44px);margin:-3px -22px 0;overflow:hidden;flex:0 0 auto}
+  .cake-strip{display:flex;gap:8px;overflow-x:auto;padding:3px 12px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain}
+  .cake-strip::-webkit-scrollbar{display:none}
+  .cake-thumb{flex:0 0 68px;width:68px;height:68px;padding:0;border:2px solid rgba(255,255,255,.88);border-radius:16px;overflow:hidden;background:#EDE7DF;box-shadow:0 3px 10px rgba(75,45,53,.12);cursor:zoom-in;transition:transform .14s,opacity .2s}
+  .cake-thumb:active{transform:scale(.94)}
+  .cake-thumb img{display:block;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+  .cake-thumb img.loaded{opacity:1}
+  .cake-lightbox{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(24,12,18,.86);backdrop-filter:blur(7px)}
+  .cake-lightbox.show{display:flex;animation:cakeLbIn .2s ease}
+  @keyframes cakeLbIn{from{opacity:0}to{opacity:1}}
+  .cake-lightbox figure{width:min(92vw,520px);margin:0;position:relative}
+  .cake-lightbox img{display:block;width:100%;max-height:82svh;object-fit:contain;border-radius:20px;background:#F6F1EC;box-shadow:0 22px 70px rgba(0,0,0,.38)}
+  .cake-lightbox-close{position:absolute;top:-16px;right:-12px;width:44px;height:44px;border:2px solid rgba(255,255,255,.8);border-radius:50%;background:var(--brand);color:#fff;font-size:27px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+  .cake-lightbox-close:active{transform:scale(.92)}
+  html.cake-lightbox-open,html.cake-lightbox-open body{overflow:hidden}
+
   .cta-row{display:flex;flex-direction:column;gap:7px;width:100%;max-width:380px;margin-top:auto;margin-bottom:clamp(60px,9svh,80px);padding-top:6px}
   .cta{display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
     font-family:var(--sans);font-weight:600;font-size:16px;padding:17px 14px;border-radius:15px;transition:transform .15s}
@@ -159,6 +175,9 @@
     .meta{padding:8px 12px;line-height:1.5;font-size:12px}
     .socials a{width:42px;height:42px}
     .socials svg{width:20px;height:20px}
+    .cake-strip-shell{margin-top:-2px}
+    .cake-strip{gap:7px;padding-top:1px;padding-bottom:2px}
+    .cake-thumb{flex-basis:56px;width:56px;height:56px;border-radius:13px}
     .cta-row{margin-bottom:clamp(44px,8svh,58px);padding-top:2px}
     .cta.primary{min-height:75px;padding:19px 12px;font-size:17px}
     .cta.ghost{padding:6px;font-size:13px}
@@ -323,7 +342,7 @@
     </button>
     <div class="hero-inner">
       <div class="hero-id">
-        <p class="hero-kicker"><span class="i-en">Custom cakes · Lisbon</span><span class="i-pt">Bolos personalizados · Lisboa</span></p>
+        <p class="hero-kicker"><span class="i-en">Custom cakes - Workshops</span><span class="i-pt">Bolos personalizados - Workshops</span></p>
         <h1 class="lede"><span class="i-en">Birthday &amp; Celebration Cakes in Lisbon</span><span class="i-pt">Bolos de aniversário e celebração em Lisboa</span></h1>
       </div>
 
@@ -336,6 +355,9 @@
       <a href="https://www.instagram.com/byamandasoyer" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
       </a>
+      <a href="https://www.facebook.com/p/Custom-Cakes-By-Amanda-Soyer-61561880114999/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.7 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.5 1.6-1.5H17V4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1v2H8v3h2.6v8h3.1Z"/></svg>
+      </a>
       <a href="https://www.tiktok.com/@cakeslisbon" target="_blank" rel="noopener" aria-label="TikTok">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.9v2.6c-1.4 0-2.7-.4-3.8-1.1v5.9a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v2.7a3 3 0 1 0 2.1 2.9V3h3z"/></svg>
       </a>
@@ -346,6 +368,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
       </a>
     </nav>
+
+    <div class="cake-strip-shell" aria-label="Cake gallery">
+      <div class="cake-strip" id="cakeStrip"></div>
+    </div>
 
     <div class="cta-row">
       <button class="cta primary" id="heroOrderCta" onclick="openOrder()">
@@ -372,7 +398,7 @@
   <!-- our story -->
   <section id="story" hidden>
     <h2 class="sec-title"><span class="i-en">Our Story</span><span class="i-pt">A Nossa História</span></h2>
-    <img class="story-photo" src="ourstory.jpg" alt="Amanda Soyer with one of her cakes">
+    <img class="story-photo" data-hidden-src="ourstory.jpg" alt="Amanda Soyer with one of her cakes">
     <div class="story-body">
       <div class="i-en">
         <p>My name is Amanda Soyer. I'm a Pisces, and I love all things sweet and creative. I decorated my very first cake in 2015, and in 2019 I had the incredible opportunity to train at the Wilton School in Chicago.</p>
@@ -408,7 +434,7 @@
     <h2 class="sec-title"><span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span></h2>
     <div id="faqList" style="margin-top:8px"></div>
     <a class="ask" href="https://wa.me/+351912491965" target="_blank" rel="noopener">
-      <p><span class="i-en">If you don’t find your answer here, send me a message via WhatsApp. I will reply as soon as possible, but response times may vary.</span><span class="i-pt">Se não encontrar a resposta aqui, envie-me uma mensagem no WhatsApp. Responderei o mais rápido possível, mas o tempo de resposta pode variar.</span></p>
+      <p><span class="i-en"><strong>Still have a question?</strong> Send me a message on WhatsApp. I’ll do my best to reply as soon as possible. Response times may vary.</span><span class="i-pt"><strong>Ainda tem alguma pergunta?</strong> Envie-me uma mensagem no WhatsApp. Farei o possível para responder o mais rapidamente possível. O tempo de resposta pode variar.</span></p>
       <span class="wa-go" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg>
       </span>
@@ -426,6 +452,7 @@
     <img class="flogo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAmandaSoyer_Logo_NoBackground.png" alt="byAmandaSoyer">
     <div class="fsoc">
       <a href="https://www.instagram.com/byamandasoyer" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.facebook.com/p/Custom-Cakes-By-Amanda-Soyer-61561880114999/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.7 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.5 1.6-1.5H17V4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1v2H8v3h2.6v8h3.1Z"/></svg></a>
       <a href="https://www.tiktok.com/@cakeslisbon" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.9v2.6c-1.4 0-2.7-.4-3.8-1.1v5.9a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v2.7a3 3 0 1 0 2.1 2.9V3h3z"/></svg></a>
       <a href="https://wa.me/+351912491965" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg></a>
       <a href="mailto:byamandasoyer@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a>
@@ -436,6 +463,13 @@
     <p class="fcopy">© <span id="yr"></span> byAmandaSoyer · Lisbon Baking Studio</p>
     <a class="privacy-link" href="#" onclick="openPrivacyPage();return false"><span class="i-en">Privacy Policy</span><span class="i-pt">Política de Privacidade</span></a>
   </footer>
+</div>
+
+<div class="cake-lightbox" id="cakeLightbox" role="dialog" aria-modal="true" aria-label="Cake photo" aria-hidden="true">
+  <figure>
+    <img id="cakeLightboxImage" alt="Cake by Amanda Soyer">
+    <button class="cake-lightbox-close" id="cakeLightboxClose" type="button" aria-label="Close cake photo">×</button>
+  </figure>
 </div>
 
 <!-- order form overlay -->
@@ -495,6 +529,53 @@ document.addEventListener('visibilitychange',function(){if(document.hidden)track
 
 function reduce(){return window.matchMedia('(prefers-reduced-motion:reduce)').matches;}
 
+/* ---------- decorative randomized cake strip ---------- */
+var cakeStripStarted=false,cakeStripDragging=false,cakeStripLastFrame=0,cakeStripPosition=0,cakeLightboxOpener=null;
+function cakeImageUrl(n){return 'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_'+String(n).padStart(2,'0')+'.jpg';}
+function shuffleCakes(items){
+  for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=items[i];items[i]=items[j];items[j]=tmp;}
+  return items;
+}
+function openCakeLightbox(url,alt,opener){
+  var box=document.getElementById('cakeLightbox'),img=document.getElementById('cakeLightboxImage');
+  cakeLightboxOpener=opener||null;img.src=url;img.alt=alt||'Cake by Amanda Soyer';
+  box.classList.add('show');box.setAttribute('aria-hidden','false');document.documentElement.classList.add('cake-lightbox-open');
+  document.getElementById('cakeLightboxClose').focus({preventScroll:true});
+}
+function closeCakeLightbox(){
+  var box=document.getElementById('cakeLightbox');
+  box.classList.remove('show');box.setAttribute('aria-hidden','true');document.documentElement.classList.remove('cake-lightbox-open');
+  if(cakeLightboxOpener)cakeLightboxOpener.focus({preventScroll:true});
+}
+function initCakeStrip(){
+  if(cakeStripStarted)return;cakeStripStarted=true;
+  var track=document.getElementById('cakeStrip');if(!track)return;
+  var order=shuffleCakes(Array.from({length:25},function(_,i){return i+1;}));
+  var doubled=order.concat(order);
+  track.innerHTML=doubled.map(function(n){var u=cakeImageUrl(n),alt='Custom cake by Amanda Soyer '+String(n).padStart(2,'0');return '<button class="cake-thumb" type="button" data-url="'+u+'" aria-label="Open '+alt+'"><img data-cake-src="'+u+'" alt="'+alt+'" decoding="async"></button>';}).join('');
+  var imgs=track.querySelectorAll('img[data-cake-src]');
+  function loadCake(img){if(!img||!img.hasAttribute('data-cake-src'))return;img.onload=function(){img.classList.add('loaded');};img.src=img.getAttribute('data-cake-src');img.removeAttribute('data-cake-src');if(img.complete&&img.naturalWidth)img.classList.add('loaded');}
+  if('IntersectionObserver' in window){
+    var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){loadCake(entry.target);observer.unobserve(entry.target);}});},{root:track,rootMargin:'0px 220px'});
+    imgs.forEach(function(img){observer.observe(img);});
+  }else imgs.forEach(loadCake);
+  track.querySelectorAll('.cake-thumb').forEach(function(button){button.onclick=function(){openCakeLightbox(button.dataset.url,button.querySelector('img').alt,button);};});
+  track.addEventListener('pointerdown',function(){cakeStripDragging=true;cakeStripPosition=track.scrollLeft;});
+  ['pointerup','pointercancel','pointerleave'].forEach(function(name){track.addEventListener(name,function(){cakeStripDragging=false;cakeStripPosition=track.scrollLeft;});});
+  function moveStrip(now){
+    if(!cakeStripLastFrame)cakeStripLastFrame=now;
+    var elapsed=Math.min(40,now-cakeStripLastFrame);cakeStripLastFrame=now;
+    if(!cakeStripDragging&&!reduce())cakeStripPosition+=elapsed*.012;
+    var halfway=track.scrollWidth/2;if(halfway&&cakeStripPosition>=halfway)cakeStripPosition-=halfway;
+    if(!cakeStripDragging)track.scrollLeft=cakeStripPosition;
+    window.requestAnimationFrame(moveStrip);
+  }
+  window.requestAnimationFrame(moveStrip);
+}
+document.getElementById('cakeLightboxClose').onclick=closeCakeLightbox;
+document.getElementById('cakeLightbox').addEventListener('click',function(e){if(e.target===this)closeCakeLightbox();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('cakeLightbox').classList.contains('show'))closeCakeLightbox();});
+
 /* ---------- defer decorative hero visuals until the language choice/idle time ---------- */
 var deferredVisualsStarted=false;
 function loadDeferredVisuals(){
@@ -508,6 +589,7 @@ function loadDeferredVisuals(){
     img.removeAttribute('data-deferred-src');
     if(img.complete&&img.naturalWidth)reveal();
   });
+  initCakeStrip();
 }
 function scheduleDeferredVisuals(){
   window.setTimeout(loadDeferredVisuals,1800);
@@ -655,8 +737,8 @@ var FAQ=[
      a:bi('Order 5–8 days in advance to ensure availability.',
           'Entre 5 e 8 dias de antecedência para garantir disponibilidade.')},
     {q:bi('Do you accept last-minute orders?','Aceita encomendas de última hora?'),
-     a:bi('Yes, with at least 2 days’ notice and a +20% urgency fee, with limited flavour options (subject to availability).',
-          'Sim, com um mínimo de 2 dias de antecedência e uma taxa de urgência de +20%, com opções de sabores limitados (sujeito a disponibilidade).')},
+     a:bi('Same-day orders and the following 2 days are unavailable. Orders for the 3rd day may be accepted subject to availability, with a +€10 rush fee for XS cakes or +€20 for every other size.',
+          'Não aceitamos encomendas para o próprio dia nem para os 2 dias seguintes. Encomendas para o 3.º dia podem ser aceites mediante disponibilidade, com taxa de urgência de +€10 para bolos XS ou +€20 para os restantes tamanhos.')},
     {q:bi('Can I change my order after confirmation?','Posso alterar a minha encomenda após a confirmação?'),
      a:bi('Changes are possible up to 5 days before the pick-up date. After that, no changes will be accepted.',
           'As alterações são possíveis até 5 dias antes da data de levantamento. Após esse prazo, não serão aceites alterações.')},
@@ -722,11 +804,14 @@ var GUIDES=[
 ];
 
 /* ---------- render ---------- */
-document.getElementById('inspoTrack').innerHTML=INSPO.map(function(c){return '<div class="slide"><div class="inspo-card"><img src="'+c.img+'" alt="">'+
-  '<div class="inspo-body"><div class="inspo-spec">'+c.spec+'</div>'+
-  '<div class="inspo-flav">'+c.flav+'</div>'+
-  '<div class="inspo-dec">'+c.dec+'</div>'+
-  '<span class="inspo-price">'+c.price+'</span></div></div></div>';}).join('');
+var inspirationSection=document.getElementById('inspiration');
+if(!inspirationSection.hidden){
+  document.getElementById('inspoTrack').innerHTML=INSPO.map(function(c){return '<div class="slide"><div class="inspo-card"><img src="'+c.img+'" alt="">'+
+    '<div class="inspo-body"><div class="inspo-spec">'+c.spec+'</div>'+
+    '<div class="inspo-flav">'+c.flav+'</div>'+
+    '<div class="inspo-dec">'+c.dec+'</div>'+
+    '<span class="inspo-price">'+c.price+'</span></div></div></div>';}).join('');
+}
 
 document.getElementById('testiTrack').innerHTML=TESTI.map(function(t){return '<div class="slide"><figure class="quote"><span class="qm qm-o">\u201C</span>'+
   '<blockquote class="quote-text">'+t.q+'</blockquote>'+

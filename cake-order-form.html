@@ -92,6 +92,8 @@
   .acc:active .acc-t{opacity:.6}
   .acc-body.open{margin-bottom:16px;animation:accIn .22s ease}
   @keyframes accIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .flavour-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:600;color:var(--brand);line-height:1.2;border-bottom:1px solid var(--line);padding:14px 2px 9px;margin:0 0 10px}
+  .flavour-group{margin-bottom:18px}
   .shape-row .shape-card{flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:11px 4px 10px;text-align:center;min-height:0}
   .shape-row .shape-card .ic{width:34px;height:34px;flex:0 0 auto;background:transparent}
   .shape-row .shape-card .ic svg{width:30px;height:30px}
@@ -115,6 +117,8 @@
   .opt.multi .chk{display:flex;border-radius:6px;border-width:2px;border-color:#C9C2BC}
   .opt.multi.sel .chk{background:var(--accent);border-color:var(--accent)}
   .opt.multi .chk svg{opacity:0}.opt.multi.sel .chk svg{opacity:1}
+  .opt.no-allergy.sel .chk{background:#2F7A57;border-color:#2F7A57}
+  .opt.no-allergy.sel{border-color:#70A88E;background:#EFF7F2}
   .opt.grid-card{flex-direction:column;align-items:center;gap:9px;padding:16px 12px;text-align:center}
   .opt.grid-card .ic{width:64px;height:64px}
 
@@ -182,8 +186,13 @@
   .fdp-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink)}
   .fdp-cell.past{color:var(--ink-faint);opacity:.35;cursor:default}
   .fdp-cell.off{color:var(--ink-faint);opacity:.3;cursor:default;text-decoration:line-through}
+  .fdp-cell.soon{color:var(--ink-faint);opacity:.3;cursor:default;text-decoration:line-through}
   .fdp-cell.empty{cursor:default}
   .fdp-cell.sel{background:var(--accent);color:#fff}
+  .fdp-cell.rush{flex-direction:column;line-height:1;border:1px solid #D39A47;color:#7A4B09;background:#FFF8E9}
+  .fdp-cell.rush small{font-size:7px;font-weight:800;margin-top:2px;letter-spacing:-.02em}
+  .fdp-cell.rush.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+  .rush-note{margin:9px 0 0;padding:9px 11px;border:1px solid #E8C98E;border-radius:11px;background:#FFF8E9;color:#744A13;font-size:11.5px;line-height:1.4}
   .tslot{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:8px 0;text-align:center;font-size:12.5px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
   .tslot.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
 
@@ -282,7 +291,7 @@
     font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .err{position:relative}
   .field.err input,.field.err textarea,.err>.ig-wrap input{border-color:#D66A6A !important;background:#FEF7F7}
-  .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err{
+  .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err,.flavour-group.err{
     outline:2px solid #E9A9A9;outline-offset:5px;border-radius:14px}
   .opt.err{border-color:#D66A6A !important}
 
@@ -390,6 +399,28 @@ const SB_URL="https://ivnybivjjydihltknlmo.supabase.co";
 const SB_KEY="sb_publishable_JgB-ewQdFNoFS25-tOxp4g_G-I0s1E2";
 let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.error("Supabase init failed",e); }
 
+/* ---------- anonymous funnel analytics (never sends form answers) ---------- */
+const formAnalyticsQuery=new URLSearchParams(location.search);
+const formAnalyticsEnabled=/^(www\.)?byamandasoyer\.pt$/i.test(location.hostname);
+const formAnalyticsUuid=()=>window.crypto&&window.crypto.randomUUID?window.crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16);});
+const formAnalyticsSession=(()=>{const passed=formAnalyticsQuery.get('sid');return /^[0-9a-f-]{36}$/i.test(passed||'')?passed:formAnalyticsUuid();})();
+const formAnalyticsText=(value,max)=>String(value||'').trim().slice(0,max);
+const formAnalyticsSource=formAnalyticsText(formAnalyticsQuery.get('src')||'Direct',100);
+const formAnalyticsMedium=formAnalyticsText(formAnalyticsQuery.get('med'),100);
+const formAnalyticsCampaign=formAnalyticsText(formAnalyticsQuery.get('camp'),120);
+const formAnalyticsReferrer=formAnalyticsText(formAnalyticsQuery.get('ref'),180);
+let formAnalyticsStarted=false,formAnalyticsSubmitted=false,formAnalyticsStartedAt=0,formAnalyticsLastAbandon=0;
+const formAnalyticsSteps=new Set();
+function trackFormEvent(eventName,extra,keepalive){
+  if(!formAnalyticsEnabled)return Promise.resolve();
+  const data=Object.assign({session_id:formAnalyticsSession,event_name:eventName,page_name:'order_form',source:formAnalyticsSource,medium:formAnalyticsMedium,campaign:formAnalyticsCampaign,referrer_host:formAnalyticsReferrer,language:typeof lang==='string'?lang:'en',metadata:{}},extra||{});
+  return fetch(SB_URL+'/rest/v1/site_analytics_events',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(data),keepalive:!!keepalive}).catch(()=>{});
+}
+function startFormAnalytics(){if(formAnalyticsStarted)return;formAnalyticsStarted=true;formAnalyticsStartedAt=Date.now();trackFormEvent('form_started');}
+function trackFormStep(){if(!formAnalyticsStarted)return;const number=step+1;if(formAnalyticsSteps.has(number))return;formAnalyticsSteps.add(number);trackFormEvent('form_step_view',{step_number:number,step_name:STEPS[step]});}
+function formDuration(){return Math.min(86400,Math.max(0,Math.round((Date.now()-(formAnalyticsStartedAt||Date.now()))/1000)));}
+function trackFormAbandon(){if(!formAnalyticsStarted||formAnalyticsSubmitted||Date.now()-formAnalyticsLastAbandon<4000)return;formAnalyticsLastAbandon=Date.now();trackFormEvent('form_abandoned',{step_number:step+1,step_name:STEPS[step],duration_seconds:formDuration()},true);}
+
 /* ---------- i18n ---------- */
 const lg=(en,pt)=>({en,pt});
 const T={
@@ -477,6 +508,7 @@ const D={
     {id:"butterflies",t:lg("Paper butterflies","Borboletas de papel"),ic:"🦋",sm:5,lxl:8},
     {id:"cherries",t:lg("Maraschino cherries","Cerejas Maraschino"),ic:"🍒",sm:6,lxl:8},
     {id:"cherriesg",t:lg("Maraschino cherries + glitter","Cerejas Maraschino + glitter"),ic:"🍒",sm:8,lxl:10},
+    {id:"balls",t:lg("Decorative balls","Bolas decorativas"),ic:"⚪",quote:true},
     {id:"disco",t:lg("Disco balls","Bolas de disco"),ic:"🪩",quote:true},
     {id:"flowers",t:lg("Fresh edible flowers","Flores comestíveis frescas"),ic:"🌸",quote:true},
     {id:"fruits",t:lg("Fresh fruits","Frutas frescas"),ic:"🍓",quote:true},
@@ -565,10 +597,17 @@ function writeMethodPrice(id){
   return 0;
 }
 function decorPrice(o){ if(!o||o.quote)return null; if(o.fixed)return o.fixed; return bigSize()?o.lxl:o.sm; }
+function dayNumberFromISO(iso){
+  const p=String(iso||'').split('-').map(Number);return p.length===3?Date.UTC(p[0],p[1]-1,p[2])/86400000:NaN;
+}
+function todayDayNumber(){const d=new Date();return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000;}
+function daysUntilPickup(iso){const n=dayNumberFromISO(iso);return Number.isFinite(n)?Math.round(n-todayDayNumber()):null;}
+function rushSurcharge(){return daysUntilPickup(S.pdate)===3?(S.size==='XS'?10:20):0;}
 
 /* ---------- Price ---------- */
 function calc(){
-  if(isCustomQuote())return{custom:true};
+  const rush=rushSurcharge();
+  if(isCustomQuote())return{custom:true,rush};
   let sum=0,range=false;
   const sz=sizeOpt(); if(sz&&sz.price!=null)sum+=sz.price;
   const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape); if(sh)sum+=shapePrice(sh.id);
@@ -582,7 +621,8 @@ function calc(){
     if(!o)return;
     if(o.quote){range=true;return;}
     const p=decorPrice(o); if(p)sum+=p;});
-  return{sum,range};
+  sum+=rush;
+  return{sum,range,rush};
 }
 const priceNow=()=>{const c=calc();return c.custom?0:c.sum;};
 function renderCart(){
@@ -627,6 +667,7 @@ function render(){
   next.classList.toggle('pist',key==='review');
   next.textContent=key==='review'?t('send'):t('continue');
   renderCart();R[key]();validate();
+  trackFormStep();
   try{if(window.parent&&window.parent!==window)window.parent.postMessage({t:'byas-step',s:step+1,n:STEPS.length},'*');}catch(e){}
 }
 const head=(q,sub)=>`<h1 class="q">${q[lang]}</h1>${sub?`<p class="sub">${sub[lang]}</p>`:'<div style="height:8px"></div>'}`;
@@ -678,8 +719,7 @@ R.size=()=>{
     validate();
   });
 };
-let openTiers={};        /* which flavour groups are expanded */
-let flavAutoOpened=false; /* titles show first, then open by themselves */
+let flavHintMoved=false;
 R.flavor=()=>{
   let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
   const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
@@ -687,30 +727,15 @@ R.flavor=()=>{
       <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.ck[lang]}</span><span class="ds">${o.fi[lang]}</span></span>${addTag(flavPrice(o))}</button>`;
   if(isBento()){h+=`<div class="opts">`+D.flavBento.map(card).join('')+`</div>`;}
   else{
-    h+=`<p class="pig-desc" style="margin:-2px 0 12px">${lang==='en'?'Tap a group to see its flavours.':'Toque num grupo para ver os sabores.'}</p>`;
-    D.flavCustom.forEach((g,i)=>{
-      const open=!!openTiers[i];
-      h+=`<button type="button" class="acc ${open?'open':''}" data-tier="${i}">
-            <span class="acc-t">${g.tier[lang]}</span>
-            <span class="acc-ar">⌄</span>
-          </button>
-          <div class="acc-body ${open?'open':''}">${open?`<div class="opts">`+g.items.map(card).join('')+`</div>`:''}</div>`;
+    h+=`<p class="pig-desc" style="margin:-2px 0 8px">${lang==='en'?'Scroll to explore all flavours.':'Deslize para explorar todos os sabores.'}</p>`;
+    D.flavCustom.forEach(g=>{
+      h+=`<section class="flavour-group"><div class="flavour-title">${g.tier[lang]}</div><div class="opts">${g.items.map(card).join('')}</div></section>`;
     });
   }
   B().innerHTML=h;
-  B().querySelectorAll('[data-tier]').forEach(el=>el.onclick=()=>{
-    const i=el.dataset.tier;openTiers[i]=!openTiers[i];R.flavor();
-    if(openTiers[i])setTimeout(()=>{const b=B().querySelector(`[data-tier="${i}"]`);if(b)b.scrollIntoView({behavior:'smooth',block:'start'});},60);
-  });
-  /* first visit: let the three titles land, then open them so nothing stays hidden */
-  if(!isBento()&&!flavAutoOpened){
-    flavAutoOpened=true;
-    D.flavCustom.forEach((g,i)=>{
-      setTimeout(()=>{
-        if(STEPS[step]!=='flavor')return;      /* user already moved on */
-        openTiers[i]=true;R.flavor();
-      },420+i*130);
-    });
+  if(!flavHintMoved){
+    flavHintMoved=true;
+    setTimeout(()=>{if(STEPS[step]==='flavor')B().scrollTo({top:Math.min(86,Math.max(0,B().scrollHeight-B().clientHeight)),behavior:'smooth'});},520);
   }
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
     change(el,()=>{S.flavor=el.dataset.id;});
@@ -875,16 +900,16 @@ R.photo=()=>{
 };
 R.allergies=()=>{
   B().innerHTML=head(lg("Dietary restrictions & allergies","Alergias e/ou restrições alimentares"))+
-    `<div id="allBox" style="${S.noAllergy?'display:none':''}">
+    `<button class="opt multi no-allergy ${S.noAllergy?'sel':''}" id="noAll">
+       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions or allergies':'Não tenho restrições alimentares nem alergias'}</span></span>
+       <span class="chk">${tick()}</span>
+     </button>
+     <div id="allBox" style="${S.noAllergy?'display:none':''}">
+       <div class="divlabel" style="margin:16px 0"><span>${lang==='en'?'or':'ou'}</span><span class="ln"></span></div>
        <div class="field"><label>${lang==='en'?'Please list any restrictions or allergies':'Por favor, indique abaixo ou escreva «nenhuma»'}</label>
        <input id="allergies" type="text" placeholder="${lang==='en'?'e.g. nut allergy':'ex. alergia a frutos secos'}" value="${esc(S.allergies)}"></div>
        <div class="warn" style="margin-top:12px"><b>${lang==='en'?'Orders may be declined based on dietary restrictions.':'Algumas encomendas poderão não ser aceites devido a restrições alimentares.'}</b> ${lang==='en'?'I do not offer gluten-free, sugar-free, or vegan cakes. All products are made in a kitchen that handles milk, eggs, wheat, and nuts. Cross-contact may occur.':'Não faço bolos sem glúten, sem açúcar ou vegan. Todos os produtos são produzidos numa cozinha onde são utilizados leite, ovos, trigo e frutos secos. Pode ocorrer contaminação cruzada.'}</div>
-       <div class="divlabel" style="margin-top:16px"><span>${lang==='en'?'or':'ou'}</span><span class="ln"></span></div>
-     </div>
-     <button class="opt multi excl ${S.noAllergy?'sel':''}" id="noAll" style="margin-top:${S.noAllergy?'0':'12px'}">
-       <span class="ic"><span style="font-size:20px">👍🏻</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?'I have no dietary restrictions or allergies':'Não tenho restrições alimentares nem alergias'}</span></span>
-     </button>`;
+     </div>`;
   document.getElementById('noAll').onclick=()=>{S.noAllergy=!S.noAllergy;if(S.noAllergy)S.allergies='';R.allergies();validate();};
   const a=document.getElementById('allergies'); if(a)a.oninput=e=>{S.allergies=e.target.value;validate();};
 };
@@ -918,6 +943,7 @@ function pickNote(){
     : (lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.'
                   :'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.');
 }
+let pickupHintMoved=false;
 R.pickup=()=>{
   const courierOK=(S.size==='XS'||S.size==='S'||S.size==='M');
   const t0=new Date();t0.setHours(0,0,0,0);
@@ -930,13 +956,15 @@ R.pickup=()=>{
   let cells='';
   for(let i=0;i<startDow;i++)cells+=`<div class="fdp-cell empty"></div>`;
   for(let d=1;d<=days;d++){
-    const iso=`${y}-${pad(m+1)}-${pad(d)}`;const dd=new Date(y,m,d);const past=dd<t0;const sel=iso===S.pdate;
+    const iso=`${y}-${pad(m+1)}-${pad(d)}`;const dd=new Date(y,m,d);const ahead=daysUntilPickup(iso);const past=ahead<0;const soon=ahead>=0&&ahead<3;const rush=ahead===3;const sel=iso===S.pdate;
     const off=(dd.getDay()===1||dd.getDay()===2);/* Monday & Tuesday closed */
-    const disabled=past||off;
-    cells+=`<div class="fdp-cell ${past?'past':''} ${off?'off':''} ${sel?'sel':''}" ${disabled?'':`onclick="pickDate('${iso}')"`}>${d}</div>`;
+    const disabled=past||soon||off;
+    const rushPrice=S.size==='XS'?10:20;
+    cells+=`<div class="fdp-cell ${past?'past':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${disabled?'':`onclick="pickDate('${iso}')"`}>${d}${rush&&!off?`<small>+€${rushPrice}</small>`:''}</div>`;
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
-  const disp=S.pdate?fmtPicked(S.pdate):(lang==='en'?'Choose a date':'Escolha uma data');
+  const selectedRush=rushSurcharge();
+  const disp=S.pdate?fmtPicked(S.pdate)+(selectedRush?` · ${lang==='en'?'Rush order':'Pedido urgente'} +€${selectedRush}`:''):(lang==='en'?'Choose a date':'Escolha uma data');
   let slots='';
   for(let h=11;h<=18;h++)for(let mm=0;mm<60;mm+=15){if(h===18&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
     slots+=`<div class="tslot ${S.ptime===s?'sel':''}" data-tm="${s}">${s}</div>`;}
@@ -949,12 +977,13 @@ R.pickup=()=>{
        </div>
        <div class="fdp-grid">${WDs.map(w=>`<span class="fdp-dow">${w}</span>`).join('')}${cells}</div>
      </div>
+     <p class="rush-note">${lang==='en'?'The next 2 days are unavailable. Orders for the 3rd day include a rush fee: +€10 for XS, +€20 for every other size.':'Os próximos 2 dias não estão disponíveis. Encomendas para o 3.º dia incluem taxa de urgência: +€10 para XS e +€20 para os restantes tamanhos.'}</p>
      <div class="fdp-selected ${S.pdate?'':'empty'}" style="margin-top:14px;margin-bottom:0">${disp}</div>
-     <div class="field" style="margin-top:18px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
      ${courierOK?`<button class="opt multi ${S.courier?'sel':''}" id="courierBtn" style="margin-top:16px">
        <span class="ic"><span style="font-size:20px">🛵</span></span>
        <span class="tx"><span class="tt">${lang==='en'?'I would like to arrange a Bolt or Uber courier':'Gostaria de solicitar um estafeta Bolt ou Uber'}</span></span>
        <span class="chk">${tick()}</span></button>`:''}
+     <div class="field" style="margin-top:18px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
      <p class="note" id="pickNote">${pickNote()}</p>`;
   if(courierOK){
     const cb=document.getElementById('courierBtn');
@@ -966,6 +995,10 @@ R.pickup=()=>{
   }
   B().querySelectorAll('.tslot').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
     B().querySelectorAll('.tslot').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');validate();});
+  if(!pickupHintMoved){
+    pickupHintMoved=true;
+    setTimeout(()=>{if(STEPS[step]==='pickup')B().scrollTo({top:Math.min(150,Math.max(0,B().scrollHeight-B().clientHeight)),behavior:'smooth'});},600);
+  }
 };
 R.heard=()=>{
   B().innerHTML=head(lg("How did you find me?","Como me encontrou?"))+
@@ -981,9 +1014,10 @@ R.heard=()=>{
 };
 R.email=()=>{
   B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Choose if you'd like to receive updates about workshops, new products, and special offers.","Escolha se pretende receber atualizações sobre workshops, novos produtos e ofertas especiais."))+
-    `<button class="opt multi excl ${S.emailOptIn?'sel':''}" id="optin">
+    `<button class="opt multi ${S.emailOptIn?'sel':''}" id="optin">
        <span class="ic"><span style="font-size:20px">💌</span></span>
        <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive emails about workshops, new products, and special offers":'Gostaria de receber emails sobre workshops, novos produtos e ofertas especiais'}</span></span>
+       <span class="chk">${tick()}</span>
      </button>
      <div id="emailWrap" style="${S.emailOptIn?'':'display:none'}">
        <div class="field" style="margin-top:14px"><label>${lang==='en'?'Your email':'O seu email'}</label>
@@ -1037,7 +1071,8 @@ R.review=()=>{
   const pigChips=S.pigment.map(id=>{const o=D.pigment.find(x=>x.id===id);
     return o?`<span class="rchip"><i style="background:${o.c}"></i>${o.t[lang]}</span>`:'';}).join('');
   const addChips=S.decor.filter(d=>d!=='none').map(id=>{const o=D.decor.find(x=>x.id===id);
-    return o?`<span class="rchip plain">${o.ic} ${o.t[lang]}</span>`:'';}).join('');
+    return o?`<span class="rchip plain">${o.ic} ${o.t[lang]}</span>`:'';}).join('')+
+    (cup&&cup.id!=='none'?`<span class="rchip plain">🧁 ${cup.t[lang]}</span>`:'');
   /* message, written as a sentence */
   let msgLine='';
   if(S.writing){
@@ -1051,7 +1086,7 @@ R.review=()=>{
   /* nice human lines instead of yes/no rows */
   const extras=[];
   if(S.candles==='yes')extras.push(lang==='en'?'🕯️ Comes with candles':'🕯️ Vem com velas');
-  if(cup&&cup.id!=='none')extras.push(`🧁 ${cup.t[lang]}`);
+  const rush=c.rush||0;
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
@@ -1078,6 +1113,7 @@ R.review=()=>{
         ${sec(lang==='en'?'Colours':'Cores',colChips?`<div class="rchips">${colChips}${pigChips}</div>`:'')}
         ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine)}
         ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'')}
+        ${rush?sec(lang==='en'?'Rush order surcharge':'Taxa de pedido urgente',`<div class="rlines"><span class="rline">+€${rush}</span></div>`):''}
         ${extras.length?`<div class="rsec"><div class="rlab">${lang==='en'?'Also included':'Também incluído'}</div>
           <div class="rlines">${extras.map(e=>`<span class="rline">${e}</span>`).join('')}</div></div>`:''}
         ${sec(lang==='en'?'Pick-up':'Levantamento',
@@ -1130,7 +1166,7 @@ function missing(){
     if(!S.size)add(lang==='en'?'Choose a cake size':'Escolha o tamanho do bolo','.opts');
     else if(!S.shape)add(lang==='en'?'Choose a cake shape':'Escolha a forma do bolo','.shape-row');
   }
-  else if(k==='flavor'){if(!S.flavor)add(lang==='en'?'Choose a flavour':'Escolha um sabor','.acc');}
+  else if(k==='flavor'){if(!S.flavor)add(lang==='en'?'Choose a flavour':'Escolha um sabor','.flavour-group');}
   else if(k==='color'){if(!S.colors.length)add(lang==='en'?'Choose at least one colour':'Escolha pelo menos uma cor','.sw-grid');}
   else if(k==='writing'){
     if(!S.writeMethods.length)add(lang==='en'?'Choose how your message should be written — or tap None':'Escolha como aplicar a mensagem — ou toque em Nenhuma','.opts');
@@ -1199,7 +1235,7 @@ function goNext(){
   if(step<STEPS.length-1){step++;render();}else submit();
 }
 function goBack(){if(step>0){step--;render();}}
-function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;render();}
+function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;startFormAnalytics();render();}
 function isEmbedded(){
   try{return window.parent&&window.parent!==window;}catch(e){return false;}
 }
@@ -1247,6 +1283,9 @@ function buildPayload(photo_urls){
     notesOut=(notesOut?notesOut+"\n\n":"")+"COURIER: Customer would like to arrange a Bolt/Uber courier.";
   }
   const c=calc();
+  if(c.rush){
+    notesOut=(notesOut?notesOut+"\n\n":"")+`RUSH ORDER SURCHARGE: +€${c.rush} for pickup on ${S.pdate}.`;
+  }
   return {
     status:"new", is_read:false, paid:0,
     language:lang.toUpperCase(),
@@ -1288,6 +1327,8 @@ async function submit(){
       ({error}=await sb.from('orders').insert(payload));
     }
     if(error)throw error;
+    formAnalyticsSubmitted=true;
+    trackFormEvent('form_submitted',{step_number:STEPS.length,step_name:'review',duration_seconds:formDuration()},true);
     showDone();
   }catch(e){
     btn.disabled=false; btn.textContent=t('send');
@@ -1363,24 +1404,26 @@ async function sendFeedback(id,btn){
 
 /* ---------- privacy policy ---------- */
 const PRIVACY={
-  en:`<p class="muted">Last updated: 13/07/2026</p>
+  en:`<p class="muted">Last updated: 20/07/2026</p>
     <p>At byamandasoyer, we respect your privacy and are committed to protecting your personal information.</p>
     <h4>Who We Are</h4><p>Amanda's Cakes is a home-based cake studio located in Lisbon, Portugal.</p>
     <p>Contact — Email: byamandasoyer@gmail.com</p>
     <h4>Information We Collect</h4><p>When you contact us or submit an order, we may collect: name, email address, phone number, event details, collection or delivery information, inspiration photos you choose to upload, dietary restrictions or allergy information, and any additional information you provide.</p>
     <p>If you choose to subscribe to our email updates, we also collect your email address for marketing purposes.</p>
+    <h4>Anonymous Website Analytics</h4><p>We collect limited first-party usage statistics to improve the website: page visits, referral or campaign source, order-form opening, form step reached, approximate time spent and successful submission. Analytics never includes your name, contact details, cake choices or message. We do not use analytics cookies or store an analytics identifier on your device. A random identifier is used only to group events from one visit and is not linked to your order or contact information.</p>
     <h4>How We Use Your Information</h4><p>We use your information to process and manage your cake order, communicate with you about your order, arrange collection or delivery, respond to enquiries, improve our customer service, and send email updates only if you have given your consent.</p>
     <p>Dietary restrictions and allergy information are collected solely to help prepare your order safely and are used only for that purpose.</p>
     <h4>Marketing Emails</h4><p>If you subscribe, we may occasionally send updates about workshops, seasonal collections, new products and special offers. You can unsubscribe at any time by contacting us directly via email.</p>
     <h4>Sharing Your Information</h4><p>We do not sell, rent or trade your personal information. Your information may be shared only with trusted service providers where necessary to operate our business, such as payment processors, website hosting providers or email marketing services.</p>
     <h4>How Long We Keep Your Information</h4><p>We keep your personal information only for as long as necessary to fulfil your order, meet legal and accounting obligations, and maintain business records. Marketing email information is kept until you withdraw your consent by emailing us.</p>
     <h4>Contact</h4><p>If you have any questions about this Privacy Policy or how your personal information is handled, please contact Byamandasoyer — Email: byamandasoyer@gmail.com</p>`,
-  pt:`<p class="muted">Última atualização: 13/07/2026</p>
+  pt:`<p class="muted">Última atualização: 20/07/2026</p>
     <p>Na byamandasoyer, respeitamos a sua privacidade e comprometemo-nos a proteger os seus dados pessoais.</p>
     <h4>Quem Somos</h4><p>A Amanda's Cakes é um estúdio de bolos caseiro localizado em Lisboa, Portugal.</p>
     <p>Contacto — Email: byamandasoyer@gmail.com</p>
     <h4>Informações que Recolhemos</h4><p>Quando nos contacta ou submete um pedido, podemos recolher: nome, email, número de telefone, detalhes do evento, informação de levantamento ou entrega, fotos de inspiração que escolha carregar, restrições alimentares ou informação sobre alergias, e qualquer informação adicional que forneça.</p>
     <p>Se optar por subscrever as nossas atualizações por email, recolhemos também o seu email para fins de marketing.</p>
+    <h4>Estatísticas Anónimas do Website</h4><p>Recolhemos estatísticas próprias e limitadas para melhorar o website: visitas, origem ou campanha, abertura do formulário, passo alcançado, tempo aproximado e envio concluído. Estas estatísticas nunca incluem o seu nome, contactos, escolhas do bolo ou mensagem. Não usamos cookies de analytics nem guardamos um identificador de analytics no seu dispositivo. Um identificador aleatório é usado apenas para agrupar os eventos de uma visita e não é associado à encomenda nem aos contactos.</p>
     <h4>Como Usamos as Suas Informações</h4><p>Usamos as suas informações para processar e gerir o seu pedido, comunicar consigo sobre o pedido, organizar o levantamento ou entrega, responder a questões, melhorar o nosso serviço e enviar atualizações por email apenas com o seu consentimento.</p>
     <p>As restrições alimentares e informação sobre alergias são recolhidas apenas para preparar o seu pedido em segurança e usadas exclusivamente para esse fim.</p>
     <h4>Emails de Marketing</h4><p>Se subscrever, poderemos ocasionalmente enviar atualizações sobre workshops, coleções sazonais, novos produtos e ofertas especiais. Pode cancelar a subscrição a qualquer momento contactando-nos por email.</p>
@@ -1399,7 +1442,7 @@ document.getElementById('privacy').addEventListener('click',function(e){if(e.tar
 /* ---------- utils ---------- */
 let pickMonth=null;
 function pad(n){return String(n).padStart(2,'0');}
-function pickDate(iso){S.pdate=iso;R.pickup();validate();}
+function pickDate(iso){S.pdate=iso;R.pickup();renderCart();validate();}
 function shiftMonth(n){pickMonth=new Date(pickMonth.getFullYear(),pickMonth.getMonth()+n,1);R.pickup();}
 function fmtPicked(iso){const d=new Date(iso+'T00:00:00');
   const wd=(lang==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
@@ -1432,7 +1475,12 @@ let _lti=1;
   if(q==='en'||q==='pt')start(q);
   if(qp.get('privacy')==='1')setTimeout(openPrivacy,0);
 }catch(e){}})();
-window.addEventListener('message',function(e){if(e.data&&e.data.t==='byas-restart'){S=DEF();step=0;render();}});
+window.addEventListener('pagehide',trackFormAbandon);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)trackFormAbandon();});
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.t==='byas-restart'){S=DEF();step=0;render();}
+  if(e.data&&e.data.t==='byas-analytics-close')trackFormAbandon();
+});
 </script>
 </body>
 </html>
