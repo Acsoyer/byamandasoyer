@@ -11,8 +11,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>byAmandaSoyer · Lisbon Baking Studio</title>
-<meta name="description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer. Explore flavours and sizes, then request your cake in English or Portuguese.">
+<title>Custom Birthday &amp; Celebration Cakes Lisbon | byAS</title>
+<meta name="description" content="Order custom birthday and celebration cakes handmade in Lisbon by Amanda Soyer. Explore flavours, sizes and designs in English or Portuguese.">
 <meta name="theme-color" content="#73082C">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://byamandasoyer.pt/">
@@ -22,8 +22,8 @@
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="byAmandaSoyer">
-<meta property="og:title" content="byAS · Lisbon Baking Studio">
-<meta property="og:description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer.">
+<meta property="og:title" content="Custom Birthday &amp; Celebration Cakes Lisbon | byAS">
+<meta property="og:description" content="Custom birthday and celebration cakes handmade to order in Lisbon by Amanda Soyer.">
 <meta property="og:url" content="https://byamandasoyer.pt/">
 <meta property="og:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
 <meta property="og:image:width" content="1200">
@@ -32,27 +32,41 @@
 <meta property="og:locale" content="pt_PT">
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="byAS · Lisbon Baking Studio">
-<meta name="twitter:description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer.">
+<meta name="twitter:title" content="Custom Birthday &amp; Celebration Cakes Lisbon | byAS">
+<meta name="twitter:description" content="Custom birthday and celebration cakes handmade to order in Lisbon by Amanda Soyer.">
 <meta name="twitter:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
-  "@type":"Bakery",
-  "name":"byAmandaSoyer Lisbon Baking Studio",
-  "alternateName":"byAS",
-  "url":"https://byamandasoyer.pt/",
-  "logo":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-512x512.png",
-  "image":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg",
-  "description":"Custom celebration cakes handmade in Lisbon by Amanda Soyer.",
-  "email":"byamandasoyer@gmail.com",
-  "telephone":"+351912491965",
-  "priceRange":"€€",
-  "address":{"@type":"PostalAddress","streetAddress":"Rua Francisco Lyon de Castro nº 14","postalCode":"1600-311","addressLocality":"Lisbon","addressCountry":"PT"},
-  "sameAs":["https://www.instagram.com/byamandasoyer","https://www.tiktok.com/@cakeslisbon"],
-  "openingHoursSpecification":[
-    {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday"],"opens":"11:00","closes":"18:00"},
-    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"11:00","closes":"13:00"}
+  "@graph":[
+    {
+      "@type":"WebSite",
+      "@id":"https://byamandasoyer.pt/#website",
+      "name":"byAmandaSoyer",
+      "alternateName":["byAS","byAmandaSoyer Lisbon Baking Studio","byamandasoyer.pt"],
+      "url":"https://byamandasoyer.pt/"
+    },
+    {
+      "@type":"Bakery",
+      "@id":"https://byamandasoyer.pt/#bakery",
+      "name":"byAmandaSoyer Lisbon Baking Studio",
+      "alternateName":"byAS",
+      "url":"https://byamandasoyer.pt/",
+      "logo":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-512x512.png",
+      "image":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg",
+      "description":"Custom birthday and celebration cakes handmade to order in Lisbon by Amanda Soyer.",
+      "servesCuisine":["Custom cakes","Birthday cakes","Celebration cakes"],
+      "areaServed":{"@type":"City","name":"Lisbon"},
+      "email":"byamandasoyer@gmail.com",
+      "telephone":"+351912491965",
+      "priceRange":"€€",
+      "address":{"@type":"PostalAddress","streetAddress":"Rua Francisco Lyon de Castro nº 14","postalCode":"1600-311","addressLocality":"Lisbon","addressCountry":"PT"},
+      "sameAs":["https://www.instagram.com/byamandasoyer","https://www.tiktok.com/@cakeslisbon"],
+      "openingHoursSpecification":[
+        {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday"],"opens":"11:00","closes":"18:00"},
+        {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"11:00","closes":"13:00"}
+      ]
+    }
   ]
 }
 </script>
@@ -80,8 +94,9 @@
   body[data-lang="pt"] .i-en{display:none}
   body[data-lang="en"] .i-pt{display:none}
 
-  .wrap{max-width:var(--col);margin:0 auto;background-color:var(--bg);background-image:url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_paper.jpg");background-size:100% auto;background-repeat:repeat-y;background-position:top center;min-height:100vh;
+  .wrap{max-width:var(--col);margin:0 auto;background-color:var(--bg);min-height:100vh;
     box-shadow:0 0 60px rgba(20,20,20,.08);overflow-x:hidden;position:relative}
+  .visuals-ready .wrap{background-image:url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_paper.jpg");background-size:100% auto;background-repeat:repeat-y;background-position:top center}
 
   /* ---------- top bar ---------- */
   #topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:60;display:flex;
@@ -99,12 +114,14 @@
   /* ---------- hero ---------- */
   .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:0 22px calc(10px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
     background-color:#FBF8F5;
-    background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_paper.jpg");
-    background-size:auto,100% auto;background-repeat:no-repeat,repeat-y;background-position:center,top center}
+    background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16));
+    background-size:auto;background-repeat:no-repeat;background-position:center}
+  .visuals-ready .hero{background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_paper.jpg");background-size:auto,100% auto;background-repeat:no-repeat,repeat-y;background-position:center,top center}
   .hero-mask-defs{position:absolute;width:0;height:0;overflow:hidden}
   .hero-cover{position:relative;z-index:0;flex:0 0 auto;width:auto;height:clamp(210px,27svh,240px);margin:0 -22px;clip-path:url(#byas-hero-mask);overflow:hidden;background:#EDE7DF}
   .hero-cover::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:0 -30px 50px -10px rgba(78,55,43,.2) inset}
-  .hero-cover-image{width:100%;height:100%;object-fit:cover;object-position:50% 46%;transform:scale(1.01)}
+  .hero-cover-image{width:100%;height:100%;object-fit:cover;object-position:50% 46%;transform:scale(1.01);opacity:0;transition:opacity .32s ease}
+  .hero-cover-image.is-loaded{opacity:1}
   .hero-logo-button{position:relative;z-index:3;display:grid;place-items:center;flex:0 0 auto;width:142px;height:142px;margin:-86px auto -2px;padding:9px;border:0;border-radius:50%;background:linear-gradient(180deg,rgba(251,248,245,.98) 0%,rgba(251,248,245,.98) 56%,transparent 56%);cursor:pointer}
   .hero-logo-disc{display:grid;place-items:center;width:124px;height:124px;padding:13px;border:6px solid #fff;border-radius:50%;background:#fff;box-shadow:0 2px 18px rgba(60,34,36,.18),0 0 0 1px rgba(115,8,44,.08)}
   .hero-logo-disc img{width:100%;height:100%;object-fit:contain}
@@ -297,7 +314,7 @@
       </defs>
     </svg>
     <div class="hero-cover">
-      <img class="hero-cover-image" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg" alt="White buttercream piping detail">
+      <img class="hero-cover-image" data-deferred-src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg" alt="Custom white buttercream celebration cake detail by byAS in Lisbon" decoding="async" fetchpriority="low">
     </div>
     <button class="hero-logo-button" onclick="location.reload()" aria-label="Restart or change language" title="Restart">
       <span class="hero-logo-disc">
@@ -307,7 +324,7 @@
     <div class="hero-inner">
       <div class="hero-id">
         <p class="hero-kicker"><span class="i-en">Custom cakes · Lisbon</span><span class="i-pt">Bolos personalizados · Lisboa</span></p>
-        <p class="lede">Lisbon Baking Studio By Amanda</p>
+        <h1 class="lede"><span class="i-en">Birthday &amp; Celebration Cakes in Lisbon</span><span class="i-pt">Bolos de aniversário e celebração em Lisboa</span></h1>
       </div>
 
     <div class="meta">
@@ -478,6 +495,26 @@ document.addEventListener('visibilitychange',function(){if(document.hidden)track
 
 function reduce(){return window.matchMedia('(prefers-reduced-motion:reduce)').matches;}
 
+/* ---------- defer decorative hero visuals until the language choice/idle time ---------- */
+var deferredVisualsStarted=false;
+function loadDeferredVisuals(){
+  if(deferredVisualsStarted)return;
+  deferredVisualsStarted=true;
+  document.documentElement.classList.add('visuals-ready');
+  document.querySelectorAll('img[data-deferred-src]').forEach(function(img){
+    function reveal(){img.classList.add('is-loaded');}
+    img.addEventListener('load',reveal,{once:true});
+    img.src=img.getAttribute('data-deferred-src');
+    img.removeAttribute('data-deferred-src');
+    if(img.complete&&img.naturalWidth)reveal();
+  });
+}
+function scheduleDeferredVisuals(){
+  window.setTimeout(loadDeferredVisuals,1800);
+}
+if(document.readyState==='complete')scheduleDeferredVisuals();
+else window.addEventListener('load',scheduleDeferredVisuals,{once:true});
+
 /* ---------- language ---------- */
 function setLang(l){
   document.documentElement.lang=l;
@@ -490,7 +527,7 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 /* language modal: appears ~100ms after load; choice dismisses it */
 (function(){
   var m=document.getElementById('langModal');
-  function choose(l){setLang(l);m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');}
+  function choose(l){setLang(l);loadDeferredVisuals();m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');}
   m.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){choose(b.dataset.set);};});
   setTimeout(function(){
     m.style.display='flex';document.body.style.overflow='hidden';m.setAttribute('aria-hidden','false');
