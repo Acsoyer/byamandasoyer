@@ -200,16 +200,16 @@
   .cta-row{display:contents}
   .cta.primary{order:3;width:100%;max-width:390px;min-height:64px;margin-top:28px;padding:17px 14px;border-radius:15px;font-size:17px;box-shadow:0 10px 24px rgba(115,8,44,.18)}
   .cta.primary svg{width:22px;height:22px}
-  .hero-gallery{order:4;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:0}
+  .hero-gallery{order:5;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:0}
   .hero-gallery h2{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.15;color:var(--brand);margin:0 0 4px}
   .hero-gallery>p{font-size:12px;line-height:1.4;color:#777074;margin:0 0 10px}
   .cake-strip-shell{width:100%;margin:0;overflow:hidden}
   .cake-strip{gap:11px;padding:0 10px 3px;align-items:center;touch-action:pan-x;cursor:grab;user-select:none;-webkit-user-select:none}
   .cake-strip:active{cursor:grabbing}
-  .cake-thumb{flex:0 0 92px;width:92px;min-width:92px;height:120px;padding:0;border:0;border-radius:0;overflow:visible;background:transparent;box-shadow:none;touch-action:pan-x}
-  .cake-thumb img{display:block;width:100%;height:100%;max-width:100%;object-fit:contain;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none}
+  .cake-thumb{flex:0 0 calc((100% - 22px)/3);width:calc((100% - 22px)/3);min-width:calc((100% - 22px)/3);height:auto;padding:0;border:0;border-radius:10px;overflow:hidden;background:transparent;box-shadow:none;touch-action:pan-x}
+  .cake-thumb img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none}
 
-  .cta.ghost{order:5;width:100%;max-width:390px;min-height:56px;margin-top:22px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(115,8,44,.035);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
+  .cta.ghost{order:4;width:100%;max-width:390px;min-height:56px;margin-top:22px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(115,8,44,.035);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
   .faq-mark{display:grid;place-items:center;width:22px;height:22px;border:1.5px solid currentColor;border-radius:50%;font-size:13px;font-weight:700;line-height:1}
   .social-connect{order:6;width:100%;margin-top:22px;padding-bottom:14px}
   .social-connect>p{margin:0 0 7px;color:#5F585B;font-size:11.5px;font-weight:500;letter-spacing:.02em;text-align:center}
@@ -222,7 +222,7 @@
     .hero-cover{margin-left:-15px;margin-right:-15px}
     .hero .lede{font-size:clamp(13.2px,4.35vw,16px)}
     .hero-gallery{width:calc(100% + 30px);margin-left:-15px;margin-right:-15px}
-    .cake-thumb{flex-basis:84px;width:84px;min-width:84px;height:112px}
+    .cake-thumb{height:auto}
     .socials{gap:8px}
     .socials a{width:42px;height:42px}
   }
@@ -240,7 +240,7 @@
     .hero-gallery{margin-top:15px;padding-top:13px}
     .hero-gallery h2{font-size:19px}
     .hero-gallery>p{font-size:11px;margin-bottom:8px}
-    .cake-thumb{flex-basis:74px;width:74px;min-width:74px;height:96px}
+    .cake-thumb{height:auto}
     .cta.ghost{min-height:50px;margin-top:16px;padding:10px;font-size:12.5px}
     .social-connect{margin-top:15px;padding-bottom:8px}
     .social-connect>p{margin-bottom:6px;font-size:10.5px}
