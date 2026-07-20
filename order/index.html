@@ -4,7 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
-  <title>Your order · by Amanda Soyer</title>
+  <meta name="theme-color" content="#6D2435">
+  <title>Your private order · byAS</title>
+  <link rel="icon" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/apple-touch-icon.png">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="byAmandaSoyer">
+  <meta property="og:title" content="Your private order · byAS">
+  <meta property="og:description" content="Secure order confirmation from Amanda · Confirmação segura da sua encomenda">
+  <meta property="og:url" content="https://byamandasoyer.pt/order/">
+  <meta property="og:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="byAS Lisbon Baking Studio logo">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="pt_PT">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your private order · byAS">
+  <meta name="twitter:description" content="Secure order confirmation from Amanda · Confirmação segura da sua encomenda">
+  <meta name="twitter:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
@@ -33,7 +53,7 @@
     function dateText(iso,time){const d=new Date(iso+'T00:00:00');const date=new Intl.DateTimeFormat(lang==='pt'?'pt-PT':'en-GB',{day:'numeric',month:'long',year:'numeric',weekday:'long'}).format(d);let tm=time||'';if(lang==='en'&&/^\d\d:\d\d$/.test(tm)){const [h,m]=tm.split(':').map(Number);tm=`${h%12||12}:${String(m).padStart(2,'0')}${h>=12?'PM':'AM'}`;}return `${date} · ${tm}`;}
     function listText(value){if(!Array.isArray(value))return value||'';return value.map(v=>Array.isArray(v)?v[0]:v).filter(Boolean).join(', ');}
     function detailRow(label,value){return value?`<div class="row"><span>${esc(label)}</span><b>${esc(value)}</b></div>`:'';}
-    function render(){const x=order;const accepted=x.customer_decision==='accepted';const addons=[listText(x.addons),x.cupcakes&&!/^no cupcakes$/i.test(x.cupcakes)?x.cupcakes:''].filter(Boolean).join(', ');const allergyText=x.allergies==='None declared'?(lang==='pt'?'Nenhuma declarada':'None declared'):x.allergies;document.documentElement.lang=lang;document.title=(lang==='pt'?'A sua encomenda':'Your order')+' · by Amanda Soyer';app.innerHTML=`
+    function render(){const x=order;const accepted=x.customer_decision==='accepted';const addons=[listText(x.addons),x.cupcakes&&!/^no cupcakes$/i.test(x.cupcakes)?x.cupcakes:''].filter(Boolean).join(', ');const allergyText=x.allergies==='None declared'?(lang==='pt'?'Nenhuma declarada':'None declared'):x.allergies;document.documentElement.lang=lang;document.title=(lang==='pt'?'A sua encomenda':'Your order')+' · byAS';app.innerHTML=`
       <section class="card"><h1>${tr('summary')}</h1><p class="customer-name">${esc(x.name)}</p><h2>${esc([x.cake_type,x.shape].filter(Boolean).join(' · '))}</h2><div class="details">${detailRow(tr('cakeSize'),x.cake_size||x.size)}${detailRow(tr('portionSize'),x.portion_size)}${detailRow(tr('flavour'),x.flavor)}${detailRow(tr('colors'),listText(x.colors))}${detailRow(tr('candle'),x.candles)}${detailRow(tr('addons'),addons)}${detailRow(tr('allergies'),allergyText)}${x.writing?`<div class="row"><span>${tr('writing')}</span><b>“${esc(x.writing)}”</b></div>`:''}<div class="row"><span>${tr('pickup')}</span><b>${esc(dateText(x.pickup_date,x.pickup_time))}</b></div></div>${x.courier?`<div class="notice courier">${tr('courier')}</div>`:''}</section>
       <section class="card"><div class="money-grid"><div class="money"><span>${tr('total')}</span><b>${money(x.price)}</b></div><div class="money"><span>${tr('deposit')}</span><b>${money(x.deposit)}</b></div></div><p class="instruction">${tr('intro')}</p>${payMethod(tr('mbway'),[x.mbway,x.mbway_name].filter(Boolean).join(' · '),'mbway')}${payMethod(tr('iban'),x.iban,'iban')}<div class="notice">${tr('after')}</div>${accepted?`<div class="notice"><b>${tr('acceptedTitle')}</b><br>${tr('accepted')}</div>`:`<div class="actions"><button class="btn primary" onclick="respond('accepted')">${tr('accept')}</button><button class="btn secondary" onclick="respond('cancelled')">${tr('cancel')}</button></div>`}<div class="expiry">${tr('expires')}: <span id="countdown"></span></div></section>`;tick();}
     function payMethod(label,value,id){return `<div class="pay-method"><div><small>${esc(label)}</small><code>${esc(value||'—')}</code></div><button class="copy" id="${id}Btn" onclick="copyValue('${id}',decodeURIComponent('${encodeURIComponent(value||'')}'))">${tr('copy')}</button></div>`;}

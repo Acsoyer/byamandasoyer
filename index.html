@@ -12,6 +12,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>byAmandaSoyer · Lisbon Baking Studio</title>
+<meta name="description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer. Explore flavours and sizes, then request your cake in English or Portuguese.">
+<meta name="theme-color" content="#73082C">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://byamandasoyer.pt/">
+<link rel="icon" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="byAmandaSoyer">
+<meta property="og:title" content="byAS · Lisbon Baking Studio">
+<meta property="og:description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer.">
+<meta property="og:url" content="https://byamandasoyer.pt/">
+<meta property="og:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="byAS Lisbon Baking Studio logo">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:locale:alternate" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="byAS · Lisbon Baking Studio">
+<meta name="twitter:description" content="Custom celebration cakes handmade in Lisbon by Amanda Soyer.">
+<meta name="twitter:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/social-preview.png">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Bakery",
+  "name":"byAmandaSoyer Lisbon Baking Studio",
+  "alternateName":"byAS",
+  "url":"https://byamandasoyer.pt/",
+  "logo":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-512x512.png",
+  "image":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg",
+  "description":"Custom celebration cakes handmade in Lisbon by Amanda Soyer.",
+  "email":"byamandasoyer@gmail.com",
+  "telephone":"+351912491965",
+  "priceRange":"€€",
+  "address":{"@type":"PostalAddress","streetAddress":"Rua Francisco Lyon de Castro nº 14","postalCode":"1600-311","addressLocality":"Lisbon","addressCountry":"PT"},
+  "sameAs":["https://www.instagram.com/byamandasoyer","https://www.tiktok.com/@cakeslisbon"],
+  "openingHoursSpecification":[
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday"],"opens":"11:00","closes":"18:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"11:00","closes":"13:00"}
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -400,6 +444,31 @@
 </div>
 
 <script>
+/* ---------- small first-party analytics (no customer details) ---------- */
+var ANALYTICS_URL='https://ivnybivjjydihltknlmo.supabase.co';
+var ANALYTICS_KEY='sb_publishable_JgB-ewQdFNoFS25-tOxp4g_G-I0s1E2';
+var analyticsEnabled=/^(www\.)?byamandasoyer\.pt$/i.test(location.hostname);
+var analyticsStartedAt=Date.now();
+function analyticsUuid(){return window.crypto&&window.crypto.randomUUID?window.crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16);});}
+var analyticsSessionId=analyticsUuid();
+var analyticsParams=new URLSearchParams(location.search);
+function analyticsText(value,max){return String(value||'').trim().slice(0,max);}
+function analyticsReferrer(){try{return document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){return '';}}
+var analyticsRef=analyticsReferrer();
+var analyticsSource=analyticsText(analyticsParams.get('utm_source')||analyticsRef||'Direct',100);
+var analyticsMedium=analyticsText(analyticsParams.get('utm_medium')||'',100);
+var analyticsCampaign=analyticsText(analyticsParams.get('utm_campaign')||'',120);
+function trackSiteEvent(eventName,extra,keepalive){
+  if(!analyticsEnabled)return Promise.resolve();
+  var data=Object.assign({session_id:analyticsSessionId,event_name:eventName,page_name:'landing',source:analyticsSource,medium:analyticsMedium,campaign:analyticsCampaign,referrer_host:analyticsText(analyticsRef,180),language:document.body&&document.body.dataset.lang||document.documentElement.lang||'pt',metadata:{}},extra||{});
+  return fetch(ANALYTICS_URL+'/rest/v1/site_analytics_events',{method:'POST',headers:{apikey:ANALYTICS_KEY,Authorization:'Bearer '+ANALYTICS_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(data),keepalive:!!keepalive}).catch(function(){});
+}
+trackSiteEvent('landing_view');
+var analyticsLastLeave=0;
+function trackLandingLeave(){if(Date.now()-analyticsLastLeave<4000)return;analyticsLastLeave=Date.now();trackSiteEvent('landing_leave',{duration_seconds:Math.min(86400,Math.max(0,Math.round((Date.now()-analyticsStartedAt)/1000)))},true);}
+window.addEventListener('pagehide',trackLandingLeave);
+document.addEventListener('visibilitychange',function(){if(document.hidden)trackLandingLeave();});
+
 function reduce(){return window.matchMedia('(prefers-reduced-motion:reduce)').matches;}
 
 /* ---------- language ---------- */
@@ -450,13 +519,19 @@ function openOrder(){
   if(o.classList.contains('show'))return;
   var l=document.body.dataset.lang||'pt';
   var f=document.getElementById('orderFrame');
-  if(f.src.indexOf('cake-order-form')<0) f.src='cake-order-form.html?lang='+l+'&embed=1';
+  if(f.src.indexOf('cake-order-form')<0){
+    var q=new URLSearchParams({lang:l,embed:'1',sid:analyticsSessionId,src:analyticsSource,med:analyticsMedium,camp:analyticsCampaign,ref:analyticsRef});
+    f.src='cake-order-form.html?'+q.toString();
+  }
+  trackSiteEvent('order_opened');
   o.classList.add('show');o.setAttribute('aria-hidden','false');
   lockPageForOrder();
 }
 function closeOrder(){
   var o=document.getElementById('orderOverlay');
   if(!o.classList.contains('show'))return;
+  var f=document.getElementById('orderFrame');
+  if(f.contentWindow)f.contentWindow.postMessage({t:'byas-analytics-close'},'*');
   o.classList.remove('show');o.setAttribute('aria-hidden','true');
   unlockPageFromOrder();
 }
