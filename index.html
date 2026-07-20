@@ -36,7 +36,7 @@
   body[data-lang="pt"] .i-en{display:none}
   body[data-lang="en"] .i-pt{display:none}
 
-  .wrap{max-width:var(--col);margin:0 auto;background-color:var(--bg);background-image:url("background-pattern.svg");background-size:92px 92px;min-height:100vh;
+  .wrap{max-width:var(--col);margin:0 auto;background-color:var(--bg);background-image:url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_image.jpg");background-size:100% auto;background-repeat:repeat-y;background-position:top center;min-height:100vh;
     box-shadow:0 0 60px rgba(20,20,20,.08);overflow-x:hidden;position:relative}
 
   /* ---------- top bar ---------- */
@@ -53,23 +53,23 @@
   .langtog button.on{background:var(--brand);color:#fff}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:calc(clamp(88px,15svh,124px) + env(safe-area-inset-top)) 22px calc(10px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
+  .hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;padding:0 22px calc(10px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;position:relative;isolation:isolate;
     background-color:#FBF8F5;
-    background-image:
-      radial-gradient(circle at 50% 38%,rgba(255,255,255,.96) 0,rgba(255,255,255,.72) 30%,rgba(251,248,245,.18) 64%),
-      url("background-pattern.svg");
-    background-size:auto,92px 92px}
-  .hero::before{content:"";position:absolute;inset:8px;border:1px solid rgba(115,8,44,.1);border-radius:30px;z-index:-1;pointer-events:none}
-  .hero-inner{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:flex-start;align-items:center;gap:19px;width:100%;padding:0 0 4px}
+    background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),url("https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/background_image.jpg");
+    background-size:auto,100% auto;background-repeat:no-repeat,repeat-y;background-position:center,top center}
+  .hero-mask-defs{position:absolute;width:0;height:0;overflow:hidden}
+  .hero-cover{position:relative;z-index:0;flex:0 0 auto;width:auto;height:clamp(210px,27svh,240px);margin:0 -22px;clip-path:url(#byas-hero-mask);overflow:hidden;background:#EDE7DF}
+  .hero-cover::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:0 -30px 50px -10px rgba(78,55,43,.2) inset}
+  .hero-cover-image{width:100%;height:100%;object-fit:cover;object-position:50% 46%;transform:scale(1.01)}
+  .hero-logo-button{position:relative;z-index:3;display:grid;place-items:center;flex:0 0 auto;width:142px;height:142px;margin:-86px auto -2px;padding:9px;border:0;border-radius:50%;background:linear-gradient(180deg,rgba(251,248,245,.98) 0%,rgba(251,248,245,.98) 56%,transparent 56%);cursor:pointer}
+  .hero-logo-disc{display:grid;place-items:center;width:124px;height:124px;padding:13px;border:6px solid #fff;border-radius:50%;background:#fff;box-shadow:0 2px 18px rgba(60,34,36,.18),0 0 0 1px rgba(115,8,44,.08)}
+  .hero-logo-disc img{width:100%;height:100%;object-fit:contain}
+  .hero-logo-button:active .hero-logo-disc{transform:scale(.96)}
+  .hero-inner{display:flex;flex:1;min-height:0;flex-direction:column;justify-content:flex-start;align-items:center;gap:16px;width:100%;padding:0 0 4px}
   .hero-id{display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;z-index:1;width:100%}
   .hero-kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 2px;padding:7px 13px;border:1px solid rgba(115,8,44,.14);border-radius:99px;background:rgba(255,255,255,.66);color:var(--brand);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
   .hero-kicker::before,.hero-kicker::after{content:"";width:3px;height:3px;border-radius:50%;background:var(--brand);opacity:.45}
-  .biglogo-btn{width:min(95vw,390px);min-height:104px;border:0;background:transparent;padding:2px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;z-index:2}
-  .hero .biglogo{width:100%;max-width:370px;margin:0 auto;filter:none}
   .hero .lede{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--brand);margin:0 auto;max-width:350px;line-height:1.35;letter-spacing:-.01em}
-  .hero-ornament{display:flex;align-items:center;gap:9px;width:88px;margin:1px auto;color:var(--brand);opacity:.4}
-  .hero-ornament::before,.hero-ornament::after{content:"";height:1px;flex:1;background:currentColor}
-  .hero-ornament span{font-size:10px;line-height:1}
   .meta{font-size:13px;color:#6F6569;line-height:1.7;margin:0;padding:12px 16px;border:1px solid rgba(115,8,44,.12);border-radius:15px;background:rgba(255,255,255,.62);width:min(100%,380px)}
   .meta b{color:var(--gray);font-weight:600}
   .meta>div+div{margin-top:8px}
@@ -88,14 +88,13 @@
   .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:9px;text-decoration:underline;text-underline-offset:4px;font-size:14px}
 
   @media (max-height:700px){
-    .hero{padding-top:calc(clamp(66px,12svh,86px) + env(safe-area-inset-top));padding-bottom:calc(7px + env(safe-area-inset-bottom))}
-    .hero::before{inset:6px;border-radius:24px}
-    .hero-inner{gap:10px;padding:0 0 2px}
+    .hero{padding-bottom:calc(7px + env(safe-area-inset-bottom))}
+    .hero-cover{height:174px}
+    .hero-logo-button{width:120px;height:120px;margin-top:-70px;padding:8px}
+    .hero-logo-disc{width:104px;height:104px;padding:11px;border-width:5px}
+    .hero-inner{gap:8px;padding:0 0 2px}
     .hero-kicker{margin-bottom:0;padding:5px 10px;font-size:10px}
-    .biglogo-btn{min-height:78px;width:min(90vw,330px)}
-    .hero .biglogo{max-width:320px}
     .hero .lede{font-size:17.5px}
-    .hero-ornament{margin:0 auto}
     .meta{padding:8px 12px;line-height:1.5;font-size:12px}
     .socials a{width:42px;height:42px}
     .socials svg{width:20px;height:20px}
@@ -141,18 +140,18 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials — no card, corner quote marks */
-  #testimonials{background-color:var(--brand);background-image:url("background-pattern-light.svg");background-size:92px 92px;color:#fff;padding:50px 24px 38px;margin:clamp(150px,20svh,190px) 0 0;min-height:330px}
+  #testimonials{background:var(--brand);color:#fff;padding:50px 14px 38px;margin:clamp(150px,20svh,190px) 0 0;min-height:330px}
   #testimonials .sec-title{color:#fff}
   #testimonials .sec-intro{color:#e7c6d0;margin-bottom:22px}
   #testiTrack{padding-left:0;padding-right:0;margin:0}
   #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
-  .quote{position:relative;padding:34px 12px 48px;text-align:left;min-height:150px;
+  .quote{position:relative;padding:34px 2px 48px;text-align:left;min-height:150px;
     display:flex;flex-direction:column;justify-content:center}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:#fff;opacity:.2;pointer-events:none}
-  .quote .qm-o{top:14px;left:8px}
-  .quote .qm-c{bottom:6px;right:12px}
+  .quote .qm-o{top:14px;left:2px}
+  .quote .qm-c{bottom:6px;right:2px}
   .quote-text{font-family:var(--sans);font-style:normal;font-size:15px;line-height:1.55;color:#fff;margin:0;letter-spacing:-.01em}
-  .quote-by{position:absolute;right:12px;bottom:13px;margin:0;font-size:12px;font-weight:600;letter-spacing:.05em;color:#e7c6d0;text-align:right}
+  .quote-by{position:absolute;right:2px;bottom:13px;margin:0;font-size:12px;font-weight:600;letter-spacing:.05em;color:#e7c6d0;text-align:right}
   #testimonials .dot{background:rgba(255,255,255,.3)}
   #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
@@ -246,14 +245,25 @@
 
   <!-- hero -->
   <header class="hero">
+    <svg class="hero-mask-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="byas-hero-mask" clipPathUnits="objectBoundingBox">
+          <path d="M 0,1 L 0,0 L 1,0 L 1,1 C .65 .80, .35 .80, 0 1 Z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+    <div class="hero-cover">
+      <img class="hero-cover-image" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/header_Image.jpg" alt="White buttercream piping detail">
+    </div>
+    <button class="hero-logo-button" onclick="location.reload()" aria-label="Restart or change language" title="Restart">
+      <span class="hero-logo-disc">
+        <img src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAS_Logo_NoBackground.png" alt="byAS Lisbon Baking Studio">
+      </span>
+    </button>
     <div class="hero-inner">
       <div class="hero-id">
         <p class="hero-kicker"><span class="i-en">Custom cakes · Lisbon</span><span class="i-pt">Bolos personalizados · Lisboa</span></p>
-        <button class="biglogo-btn" onclick="location.reload()" aria-label="Restart / change language" title="Restart">
-          <img class="biglogo" src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAmandaSoyer_Logo_NoBackground.png" alt="by Amanda Soyer — Lisbon Baking Studio">
-        </button>
         <p class="lede">Lisbon Baking Studio By Amanda</p>
-        <div class="hero-ornament" aria-hidden="true"><span>✦</span></div>
       </div>
 
     <div class="meta">
