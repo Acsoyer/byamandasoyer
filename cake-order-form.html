@@ -10,7 +10,6 @@
 <style>
   :root{
     --bg:#F7F6F3; --card:#FFFFFF; --ink:#4A4446; --ink-soft:#8C8C8C; --ink-faint:#B7B1AC;
-    --ink-faint-blocked:#967984; --blocked-pink:#F2E8EB;
     --line:#E6E2DC; --brand:#73082C; --accent:#73082C; --accent-soft:#F2E2E8; --pistachio:#73082C;
     --maroon:#73082C; --shadow-sm:0 3px 12px rgba(20,20,20,.06); --radius:20px;
     --ink-quiet:#6E4351;   /* readable but still quiet — for text on pink surfaces */
@@ -187,14 +186,14 @@
   .fdp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
   .fdp-dow{text-align:center;font-size:10.5px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;padding:2px 0}
   .fdp-cell{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink)}
-  .fdp-cell.past{color:var(--ink-faint);opacity:.35;cursor:default}
-  .fdp-cell.off{color:var(--ink-faint-blocked);opacity:.68;cursor:default;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#8A5E6C}
-  .fdp-cell.soon{color:var(--ink-faint-blocked);background:var(--blocked-pink);opacity:.72;cursor:default}
-  .fdp-cell.soon.off{background:var(--blocked-pink);opacity:.72}
+  .fdp-cell.past,.fdp-cell.off,.fdp-cell.soon{color:var(--ink-faint);opacity:.35;cursor:default}
+  .fdp-cell.off:not(.past),.fdp-cell.soon{cursor:pointer}
+  .fdp-cell.today{opacity:1;color:#E6E4E2}
+  .fdp-cell.today::before{content:"";position:absolute;width:29px;height:29px;border:1px solid #C7AEB7;border-radius:50%;pointer-events:none}
   .fdp-cell.empty{cursor:default}
   .fdp-cell.sel{background:var(--accent);color:#fff}
-  .fdp-cell.rush:not(.sel){border:1.5px solid #C28A34;color:#6E4A18;background:transparent}
-  .fdp-cell.rush:not(.sel)::after{content:"€";position:absolute;right:3px;top:2px;font-size:7px;font-weight:800;line-height:1;color:#A46919}
+  .fdp-cell.rush:not(.sel){color:#6E4A18;background:transparent}
+  .fdp-cell.rush:not(.sel)::after{content:"€";position:absolute;left:calc(50% + 8px);top:50%;transform:translateY(-70%);font-size:9px;font-weight:800;line-height:1;color:#A46919;pointer-events:none}
   .fdp-cell.rush.sel{background:var(--accent);border-color:var(--accent);color:#fff}
   .tslot{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:7px 0;text-align:center;font-size:12.5px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
   .tslot.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
@@ -226,8 +225,7 @@
   .rc-forlbl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
   .rc-name{display:block;font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:600;color:var(--brand);line-height:1.2;margin-top:3px}
   .rc-hero{padding:13px 18px 15px;border-bottom:1px solid var(--line)}
-  .rc-summary-title{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:600;color:var(--brand);margin-bottom:8px}
-  .rc-summary{display:flex;flex-direction:column;gap:0;background:#FAF8F6;border:1px solid #ECE6E1;border-radius:14px;padding:2px 11px}
+  .rc-summary{display:flex;flex-direction:column;gap:0;background:transparent;border:none;border-radius:0;padding:0}
   .rc-spec{display:grid;grid-template-columns:58px 1fr;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dashed #DED7D1}
   .rc-spec:last-child{border-bottom:none}
   .rc-sk{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
@@ -255,14 +253,17 @@
   .rcour{display:flex;flex-direction:column;gap:4px;margin-top:11px;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:12px}
   .rc-cline{font-size:13px;font-weight:700;color:var(--ink)}
   .rc-cnote{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
-  .receipt{margin:5px 0 13px;padding:11px 12px 10px;background:#FBFAF7;border:1px solid #E2DDD6;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
-  .receipt-head{font-family:'Playfair Display',Georgia,serif;font-size:14px;font-weight:600;color:var(--brand);margin-bottom:8px;text-align:center}
-  .receipt-row{display:grid;grid-template-columns:auto minmax(12px,1fr) auto;align-items:end;gap:6px;margin:5px 0;font-size:11.5px;line-height:1.25}
-  .receipt-name{min-width:0;color:var(--ink);font-weight:500}
-  .receipt-dots{border-bottom:1px dotted #BBB2AA;transform:translateY(-3px)}
-  .receipt-price{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .receipt-price.free{color:#2F7A57}
-  .receipt-price.quote{color:var(--brand);font-size:10.5px}
+  .receipt{margin:5px 0 13px;padding:9px 8px 8px;background:#fff;border:1px solid #E6E6E3;border-radius:10px;color:#202020;
+    font-family:ui-monospace,'SFMono-Regular',Menlo,Monaco,Consolas,'Liberation Mono',monospace;box-shadow:0 2px 8px rgba(20,20,20,.035)}
+  .receipt-head{font-family:inherit;font-size:12px;font-weight:700;color:#202020;margin:1px 4px 7px;text-align:center;text-transform:uppercase;letter-spacing:.04em}
+  .receipt-row{display:grid;grid-template-columns:auto minmax(10px,1fr) auto;align-items:end;gap:5px;margin:0;padding:6px 6px;font-size:11px;line-height:1.25}
+  .receipt-row:nth-child(even){background:#F7F7F5}
+  .receipt-row:nth-child(odd){background:#FFFFFF}
+  .receipt-name{min-width:0;color:#202020;font-weight:500}
+  .receipt-dots{border-bottom:1px dotted #AFAFA9;transform:translateY(-3px)}
+  .receipt-price{color:#111;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .receipt-price.free,.receipt-price.quote{color:#111}
+  .receipt-price.quote{font-size:10px}
   .rc-total{display:flex;align-items:center;justify-content:space-between;gap:12px;
     background:#EEEAE5;border-top:1px solid #CFC7BF;padding:16px 18px;box-shadow:inset 0 3px 8px rgba(74,68,70,.035)}
   .rc-tl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
@@ -965,10 +966,11 @@ R.pickup=()=>{
   let cells='';
   for(let i=0;i<startDow;i++)cells+=`<div class="fdp-cell empty"></div>`;
   for(let d=1;d<=days;d++){
-    const iso=`${y}-${pad(m+1)}-${pad(d)}`;const dd=new Date(y,m,d);const ahead=daysUntilPickup(iso);const past=ahead<0;const soon=ahead>=0&&ahead<3;const rush=ahead===3;const sel=iso===S.pdate;
+    const iso=`${y}-${pad(m+1)}-${pad(d)}`;const dd=new Date(y,m,d);const ahead=daysUntilPickup(iso);const past=ahead<0;const today=ahead===0;const soon=ahead>=0&&ahead<3;const rush=ahead===3;const sel=iso===S.pdate;
     const off=(dd.getDay()===1||dd.getDay()===2);/* Monday & Tuesday closed */
     const disabled=past||soon||off;
-    cells+=`<div class="fdp-cell ${past?'past':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${disabled?'':`onclick="pickDate('${iso}')"`}>${d}</div>`;
+    const click=past?'':(disabled?'onclick="showDateUnavailable()"':`onclick="pickDate('${iso}')"`);
+    cells+=`<div class="fdp-cell ${past?'past':''} ${today?'today':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${click}>${d}</div>`;
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
   const selectedRush=rushSurcharge();
@@ -1149,7 +1151,6 @@ R.review=()=>{
       </div>
 
       <div class="rc-hero">
-        <div class="rc-summary-title">${lang==='en'?'Your cake at a glance':'O seu bolo, em resumo'}</div>
         <div class="rc-summary">
           <div class="rc-spec"><span class="rc-sk">${lang==='en'?'Size':'Tamanho'}</span>
             <span class="rc-sv">${sizeName}${portions?`<em>${portions}</em>`:''}</span></div>
@@ -1210,6 +1211,15 @@ function bindSwatchMulti(field,max,pcId){
 
 /* ---------- validation ---------- */
 /* what's still missing on this step — drives both the Continue state and the error hints */
+let errorToastTimer=null;
+function armToastTimer(){
+  if(errorToastTimer)clearTimeout(errorToastTimer);
+  errorToastTimer=setTimeout(()=>{
+    errorToastTimer=null;
+    document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+    const t=document.getElementById('errToast');if(t)t.classList.remove('show');
+  },2000);
+}
 function missing(){
   const k=STEPS[step];const M=[];
   const add=(msg,sel)=>M.push({msg,sel});
@@ -1264,10 +1274,19 @@ function paintErrors(M){
   const t=document.getElementById('errToast');
   t.innerHTML=M.map(m=>`<span>${m.msg}</span>`).join('');
   t.classList.add('show');
+  armToastTimer();
+}
+function showToastMessage(msg){
+  document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
+  const t=document.getElementById('errToast');if(!t)return;
+  t.innerHTML=`<span>${msg}</span>`;
+  t.classList.add('show');
+  armToastTimer();
 }
 function clearErrors(){
   document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
   const t=document.getElementById('errToast'); if(t)t.classList.remove('show');
+  if(errorToastTimer){clearTimeout(errorToastTimer);errorToastTimer=null;}
 }
 function showMissing(){
   const M=missing(); if(!M.length)return;
@@ -1494,6 +1513,7 @@ document.getElementById('privacy').addEventListener('click',function(e){if(e.tar
 let pickMonth=null;
 function pad(n){return String(n).padStart(2,'0');}
 function pickDate(iso){S.pdate=iso;pickupScrollAfterPick=true;R.pickup();renderCart();validate();}
+function showDateUnavailable(){showToastMessage(lang==='en'?'Off days: next 2 days - Mon-Tue':'Folgas: Seg-Ter - Próximos 2 dias');}
 function shiftMonth(n){pickMonth=new Date(pickMonth.getFullYear(),pickMonth.getMonth()+n,1);R.pickup();}
 function fmtPicked(iso){const d=new Date(iso+'T00:00:00');
   const wd=(lang==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
