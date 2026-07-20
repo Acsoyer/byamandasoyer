@@ -190,28 +190,26 @@
   .hero-logo-disc{width:108px;height:108px;padding:11px;border-width:5px}
   .hero-inner{flex:0 0 auto;display:flex;gap:0;padding:0 0 4px}
   .hero-id{order:1;margin-top:17px;gap:0}
-  .hero .lede{font-size:28px;line-height:1.13;max-width:410px;font-weight:600;letter-spacing:-.025em}
+  .hero .lede{max-width:none;font-size:clamp(13.8px,4.45vw,19px);line-height:1.15;font-weight:600;letter-spacing:-.025em;white-space:nowrap}
   .meta{order:2;width:100%;margin:12px 0 0;padding:0;border:0;border-radius:0;background:transparent;font-size:13px;line-height:1.45}
   .meta>div+div{margin-top:12px}
   .hero-location{display:flex;align-items:center;justify-content:center;gap:7px;color:#645B5F}
   .hero-location svg{width:17px;height:17px;flex:0 0 auto;fill:none;stroke:var(--brand);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-  .appointment{color:#777074;font-size:12.5px;font-weight:500}
+  .appointment{color:#645B5F;font-size:13px;font-weight:400}
 
   .cta-row{display:contents}
   .cta.primary{order:3;width:100%;max-width:390px;min-height:64px;margin-top:22px;padding:17px 14px;border-radius:15px;font-size:17px;box-shadow:0 10px 24px rgba(115,8,44,.18)}
   .cta.primary svg{width:22px;height:22px}
-  .hero-gallery{order:4;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:1px solid rgba(115,8,44,.055)}
+  .hero-gallery{order:4;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:0}
   .hero-gallery h2{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.15;color:var(--brand);margin:0 0 4px}
   .hero-gallery>p{font-size:12px;line-height:1.4;color:#777074;margin:0 0 10px}
   .cake-strip-shell{width:100%;margin:0;overflow:hidden}
-  .cake-strip{gap:10px;padding:0 9px 3px;align-items:center}
-  .cake-thumb{flex:0 0 auto;width:auto;min-width:68px;height:92px;padding:0;border:0;border-radius:0;overflow:visible;background:transparent;box-shadow:none}
-  .cake-thumb img{display:block;width:auto;height:100%;max-width:none;object-fit:contain;border-radius:10px;opacity:0;transition:opacity .25s}
-  .cake-strip-dots{display:flex;align-items:center;justify-content:center;gap:8px;height:16px;margin-top:5px}
-  .cake-strip-dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(115,8,44,.13);transition:width .2s,background .2s}
-  .cake-strip-dots i.active{width:7px;height:7px;background:var(--brand)}
+  .cake-strip{gap:11px;padding:0 10px 3px;align-items:center;touch-action:pan-x;cursor:grab;user-select:none;-webkit-user-select:none}
+  .cake-strip:active{cursor:grabbing}
+  .cake-thumb{flex:0 0 84px;width:84px;min-width:84px;height:108px;padding:0;border:0;border-radius:0;overflow:visible;background:transparent;box-shadow:none;touch-action:pan-x}
+  .cake-thumb img{display:block;width:100%;height:100%;max-width:100%;object-fit:contain;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none}
 
-  .cta.ghost{order:5;width:100%;max-width:390px;min-height:56px;margin-top:14px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(255,255,255,.22);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
+  .cta.ghost{order:5;width:100%;max-width:390px;min-height:56px;margin-top:14px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(115,8,44,.035);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
   .faq-mark{display:grid;place-items:center;width:22px;height:22px;border:1.5px solid currentColor;border-radius:50%;font-size:13px;font-weight:700;line-height:1}
   .social-connect{order:6;width:100%;margin-top:16px}
   .social-connect>p{margin:0 0 7px;color:#5F585B;font-size:11.5px;font-weight:500;letter-spacing:.02em;text-align:center}
@@ -222,9 +220,9 @@
   @media (max-width:370px){
     .hero{padding-left:15px;padding-right:15px}
     .hero-cover{margin-left:-15px;margin-right:-15px}
-    .hero .lede{font-size:25px}
+    .hero .lede{font-size:clamp(13.2px,4.35vw,16px)}
     .hero-gallery{width:calc(100% + 30px);margin-left:-15px;margin-right:-15px}
-    .cake-thumb{height:92px;min-width:66px}
+    .cake-thumb{flex-basis:78px;width:78px;min-width:78px;height:100px}
     .socials{gap:8px}
     .socials a{width:42px;height:42px}
   }
@@ -234,7 +232,7 @@
     .hero-logo-button{width:112px;height:112px;margin-top:-61px;padding:7px}
     .hero-logo-disc{width:98px;height:98px;padding:10px;border-width:4px}
     .hero-id{margin-top:8px}
-    .hero .lede{font-size:23px}
+    .hero .lede{font-size:clamp(13px,4.2vw,17px)}
     .meta{margin-top:8px;font-size:11.5px}
     .meta>div+div{margin-top:6px}
     .appointment{font-size:11.5px}
@@ -242,8 +240,7 @@
     .hero-gallery{margin-top:15px;padding-top:13px}
     .hero-gallery h2{font-size:19px}
     .hero-gallery>p{font-size:11px;margin-bottom:8px}
-    .cake-thumb{height:72px;min-width:54px}
-    .cake-strip-dots{margin-top:3px;height:13px}
+    .cake-thumb{flex-basis:68px;width:68px;min-width:68px;height:86px}
     .cta.ghost{min-height:50px;margin-top:10px;padding:10px;font-size:12.5px}
     .social-connect{margin-top:11px}
     .social-connect>p{margin-bottom:6px;font-size:10.5px}
@@ -410,7 +407,7 @@
     </button>
     <div class="hero-inner">
       <div class="hero-id">
-        <h1 class="lede"><span class="i-en">Custom Birthday &amp;<br>Celebration Cakes in Lisbon</span><span class="i-pt">Bolos personalizados para<br>aniversários e celebrações em Lisboa</span></h1>
+        <h1 class="lede"><span class="i-en">Birthday &amp; Celebration Cakes in Lisbon</span><span class="i-pt">Bolos de Aniversário e Celebrações em Lisboa</span></h1>
       </div>
 
     <div class="meta">
@@ -448,7 +445,6 @@
       <div class="cake-strip-shell" aria-label="Cake gallery">
         <div class="cake-strip" id="cakeStrip"></div>
       </div>
-      <div class="cake-strip-dots" id="cakeStripDots" aria-hidden="true"><i class="active"></i><i></i><i></i><i></i></div>
     </div>
 
     <div class="cta-row">
@@ -609,7 +605,7 @@ document.addEventListener('visibilitychange',function(){if(document.hidden)track
 function reduce(){return window.matchMedia('(prefers-reduced-motion:reduce)').matches;}
 
 /* ---------- decorative randomized cake strip ---------- */
-var cakeStripStarted=false,cakeStripDragging=false,cakeStripLastFrame=0,cakeStripPosition=0,cakeLightboxOpener=null;
+var cakeStripStarted=false,cakeStripDragging=false,cakeStripLastFrame=0,cakeStripPosition=0,cakeStripManualUntil=0,cakeStripMoved=false,cakeStripPointerX=0,cakeLightboxOpener=null;
 function cakeImageUrl(n){return 'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_'+String(n).padStart(2,'0')+'.jpg';}
 function shuffleCakes(items){
   for(var i=items.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=items[i];items[i]=items[j];items[j]=tmp;}
@@ -629,29 +625,31 @@ function closeCakeLightbox(){
 function initCakeStrip(){
   if(cakeStripStarted)return;cakeStripStarted=true;
   var track=document.getElementById('cakeStrip');if(!track)return;
-  var dots=Array.from(document.querySelectorAll('#cakeStripDots i')),activeDot=0;
   var order=shuffleCakes(Array.from({length:25},function(_,i){return i+1;}));
   var doubled=order.concat(order);
   track.innerHTML=doubled.map(function(n){var u=cakeImageUrl(n),alt='Custom cake by Amanda Soyer '+String(n).padStart(2,'0');return '<button class="cake-thumb" type="button" data-url="'+u+'" aria-label="Open '+alt+'"><img data-cake-src="'+u+'" alt="'+alt+'" decoding="async"></button>';}).join('');
+  var halfway=track.scrollWidth/2;
+  window.addEventListener('resize',function(){halfway=track.scrollWidth/2;},{passive:true});
   var imgs=track.querySelectorAll('img[data-cake-src]');
   function loadCake(img){if(!img||!img.hasAttribute('data-cake-src'))return;img.onload=function(){img.classList.add('loaded');};img.src=img.getAttribute('data-cake-src');img.removeAttribute('data-cake-src');if(img.complete&&img.naturalWidth)img.classList.add('loaded');}
   if('IntersectionObserver' in window){
     var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){loadCake(entry.target);observer.unobserve(entry.target);}});},{root:track,rootMargin:'0px 220px'});
     imgs.forEach(function(img){observer.observe(img);});
   }else imgs.forEach(loadCake);
-  track.querySelectorAll('.cake-thumb').forEach(function(button){button.onclick=function(){openCakeLightbox(button.dataset.url,button.querySelector('img').alt,button);};});
-  track.addEventListener('pointerdown',function(){cakeStripDragging=true;cakeStripPosition=track.scrollLeft;});
-  ['pointerup','pointercancel','pointerleave'].forEach(function(name){track.addEventListener(name,function(){cakeStripDragging=false;cakeStripPosition=track.scrollLeft;});});
+  track.querySelectorAll('.cake-thumb').forEach(function(button){button.onclick=function(){if(cakeStripMoved){cakeStripMoved=false;return;}openCakeLightbox(button.dataset.url,button.querySelector('img').alt,button);};});
+  track.addEventListener('pointerdown',function(e){cakeStripDragging=true;cakeStripMoved=false;cakeStripPointerX=e.clientX;cakeStripPosition=track.scrollLeft;cakeStripManualUntil=Infinity;});
+  track.addEventListener('pointermove',function(e){if(!cakeStripDragging)return;if(Math.abs(e.clientX-cakeStripPointerX)>5)cakeStripMoved=true;cakeStripPosition=track.scrollLeft;});
+  function releaseCakeStrip(){if(!cakeStripDragging)return;cakeStripDragging=false;cakeStripPosition=track.scrollLeft;cakeStripManualUntil=performance.now()+1900;}
+  ['pointerup','pointercancel','pointerleave'].forEach(function(name){track.addEventListener(name,releaseCakeStrip);});
+  track.addEventListener('scroll',function(){if(cakeStripDragging||performance.now()<cakeStripManualUntil)cakeStripPosition=track.scrollLeft;},{passive:true});
   function moveStrip(now){
     if(!cakeStripLastFrame)cakeStripLastFrame=now;
     var elapsed=Math.min(40,now-cakeStripLastFrame);cakeStripLastFrame=now;
-    if(!cakeStripDragging&&!reduce())cakeStripPosition+=elapsed*.012;
-    var halfway=track.scrollWidth/2;if(halfway&&cakeStripPosition>=halfway)cakeStripPosition-=halfway;
-    if(!cakeStripDragging)track.scrollLeft=cakeStripPosition;
-    if(halfway&&dots.length){
-      var nextDot=Math.min(dots.length-1,Math.floor((cakeStripPosition/halfway)*dots.length));
-      if(nextDot!==activeDot){dots[activeDot].classList.remove('active');dots[nextDot].classList.add('active');activeDot=nextDot;}
-    }
+    var autoMove=!cakeStripDragging&&now>=cakeStripManualUntil&&!reduce();
+    if(autoMove)cakeStripPosition+=elapsed*.04;
+    else cakeStripPosition=track.scrollLeft;
+    if(halfway&&cakeStripPosition>=halfway)cakeStripPosition-=halfway;
+    if(autoMove)track.scrollLeft=cakeStripPosition;
     window.requestAnimationFrame(moveStrip);
   }
   window.requestAnimationFrame(moveStrip);
