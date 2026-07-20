@@ -183,6 +183,74 @@
     .cta.ghost{padding:6px;font-size:13px}
   }
 
+  /* ---------- v40 mockup-led mobile hero ---------- */
+  .hero{min-height:100vh;min-height:100svh;padding:0 18px calc(22px + env(safe-area-inset-bottom));overflow:hidden}
+  .hero-cover{height:clamp(168px,20.5svh,195px);margin:0 -18px}
+  .hero-logo-button{width:124px;height:124px;margin:-68px auto 0;padding:8px;background:linear-gradient(180deg,rgba(251,248,245,.98) 0%,rgba(251,248,245,.98) 55%,transparent 55%)}
+  .hero-logo-disc{width:108px;height:108px;padding:11px;border-width:5px}
+  .hero-inner{flex:0 0 auto;display:flex;gap:0;padding:0 0 4px}
+  .hero-id{order:1;margin-top:17px;gap:0}
+  .hero .lede{font-size:28px;line-height:1.13;max-width:410px;font-weight:600;letter-spacing:-.025em}
+  .meta{order:2;width:100%;margin:12px 0 0;padding:0;border:0;border-radius:0;background:transparent;font-size:13px;line-height:1.45}
+  .meta>div+div{margin-top:12px}
+  .hero-location{display:flex;align-items:center;justify-content:center;gap:7px;color:#645B5F}
+  .hero-location svg{width:17px;height:17px;flex:0 0 auto;fill:none;stroke:var(--brand);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .appointment{color:#777074;font-size:12.5px;font-weight:500}
+
+  .cta-row{display:contents}
+  .cta.primary{order:3;width:100%;max-width:390px;min-height:64px;margin-top:22px;padding:17px 14px;border-radius:15px;font-size:17px;box-shadow:0 10px 24px rgba(115,8,44,.18)}
+  .cta.primary svg{width:22px;height:22px}
+  .hero-gallery{order:4;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:1px solid rgba(115,8,44,.055)}
+  .hero-gallery h2{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.15;color:var(--brand);margin:0 0 4px}
+  .hero-gallery>p{font-size:12px;line-height:1.4;color:#777074;margin:0 0 10px}
+  .cake-strip-shell{width:100%;margin:0;overflow:hidden}
+  .cake-strip{gap:10px;padding:0 9px 3px;align-items:center}
+  .cake-thumb{flex:0 0 auto;width:auto;min-width:68px;height:92px;padding:0;border:0;border-radius:0;overflow:visible;background:transparent;box-shadow:none}
+  .cake-thumb img{display:block;width:auto;height:100%;max-width:none;object-fit:contain;border-radius:10px;opacity:0;transition:opacity .25s}
+  .cake-strip-dots{display:flex;align-items:center;justify-content:center;gap:8px;height:16px;margin-top:5px}
+  .cake-strip-dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(115,8,44,.13);transition:width .2s,background .2s}
+  .cake-strip-dots i.active{width:7px;height:7px;background:var(--brand)}
+
+  .cta.ghost{order:5;width:100%;max-width:390px;min-height:56px;margin-top:14px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(255,255,255,.22);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
+  .faq-mark{display:grid;place-items:center;width:22px;height:22px;border:1.5px solid currentColor;border-radius:50%;font-size:13px;font-weight:700;line-height:1}
+  .social-connect{order:6;width:100%;margin-top:16px}
+  .social-connect>p{margin:0 0 7px;color:#5F585B;font-size:11.5px;font-weight:500;letter-spacing:.02em;text-align:center}
+  .socials{gap:11px}
+  .socials a{width:42px;height:42px;background:rgba(255,255,255,.44);border-color:rgba(115,8,44,.23)}
+  .socials svg{width:21px;height:21px}
+
+  @media (max-width:370px){
+    .hero{padding-left:15px;padding-right:15px}
+    .hero-cover{margin-left:-15px;margin-right:-15px}
+    .hero .lede{font-size:25px}
+    .hero-gallery{width:calc(100% + 30px);margin-left:-15px;margin-right:-15px}
+    .cake-thumb{height:92px;min-width:66px}
+    .socials{gap:8px}
+    .socials a{width:42px;height:42px}
+  }
+
+  @media (max-height:700px){
+    .hero-cover{height:160px}
+    .hero-logo-button{width:112px;height:112px;margin-top:-61px;padding:7px}
+    .hero-logo-disc{width:98px;height:98px;padding:10px;border-width:4px}
+    .hero-id{margin-top:8px}
+    .hero .lede{font-size:23px}
+    .meta{margin-top:8px;font-size:11.5px}
+    .meta>div+div{margin-top:6px}
+    .appointment{font-size:11.5px}
+    .cta.primary{min-height:58px;margin-top:14px;padding:14px;font-size:15.5px}
+    .hero-gallery{margin-top:15px;padding-top:13px}
+    .hero-gallery h2{font-size:19px}
+    .hero-gallery>p{font-size:11px;margin-bottom:8px}
+    .cake-thumb{height:72px;min-width:54px}
+    .cake-strip-dots{margin-top:3px;height:13px}
+    .cta.ghost{min-height:50px;margin-top:10px;padding:10px;font-size:12.5px}
+    .social-connect{margin-top:11px}
+    .social-connect>p{margin-bottom:6px;font-size:10.5px}
+    .socials a{width:38px;height:38px}
+    .socials svg{width:18px;height:18px}
+  }
+
   /* ---------- sections ---------- */
   section{padding:34px 24px 10px;scroll-margin-top:var(--topbar)}
   #inspiration{margin-top:60px}
@@ -342,16 +410,20 @@
     </button>
     <div class="hero-inner">
       <div class="hero-id">
-        <p class="hero-kicker"><span class="i-en">Custom cakes - Workshops</span><span class="i-pt">Bolos personalizados - Workshops</span></p>
-        <h1 class="lede"><span class="i-en">Birthday &amp; Celebration Cakes in Lisbon</span><span class="i-pt">Bolos de aniversário e celebração em Lisboa</span></h1>
+        <h1 class="lede"><span class="i-en">Custom Birthday &amp;<br>Celebration Cakes in Lisbon</span><span class="i-pt">Bolos personalizados para<br>aniversários e celebrações em Lisboa</span></h1>
       </div>
 
     <div class="meta">
-      <div>Entrecampos, Lisbon 1600-311</div>
-      <div><b><span class="i-en">Wed–Fri</span><span class="i-pt">Qua–Sex</span></b> 11:00–18:00 &nbsp;·&nbsp; <b><span class="i-en">Sat–Sun</span><span class="i-pt">Sáb–Dom</span></b> 11:00–13:00</div>
+      <div class="hero-location">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-6.1 6-12A6 6 0 0 0 6 9c0 5.9 6 12 6 12Z"/><circle cx="12" cy="9" r="2.2"/></svg>
+        <span class="i-en">Entrecampos, Lisbon, 1600-311</span><span class="i-pt">Entrecampos, Lisboa, 1600-311</span>
+      </div>
+      <div class="appointment"><span class="i-en">Collection by appointment only</span><span class="i-pt">Levantamento apenas por marcação</span></div>
     </div>
 
-    <nav class="socials" aria-label="Social links">
+    <div class="social-connect">
+      <p><span class="i-en">Connect with me</span><span class="i-pt">Ligue-se a mim</span></p>
+      <nav class="socials" aria-label="Social links">
       <a href="https://www.instagram.com/byamandasoyer" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
       </a>
@@ -367,10 +439,16 @@
       <a href="mailto:byamandasoyer@gmail.com" aria-label="Email">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
       </a>
-    </nav>
+      </nav>
+    </div>
 
-    <div class="cake-strip-shell" aria-label="Cake gallery">
-      <div class="cake-strip" id="cakeStrip"></div>
+    <div class="hero-gallery">
+      <h2><span class="i-en">Need inspiration?</span><span class="i-pt">Precisa de inspiração?</span></h2>
+      <p><span class="i-en">Browse some of my recent cakes.</span><span class="i-pt">Veja alguns dos meus bolos mais recentes.</span></p>
+      <div class="cake-strip-shell" aria-label="Cake gallery">
+        <div class="cake-strip" id="cakeStrip"></div>
+      </div>
+      <div class="cake-strip-dots" id="cakeStripDots" aria-hidden="true"><i class="active"></i><i></i><i></i><i></i></div>
     </div>
 
     <div class="cta-row">
@@ -379,6 +457,7 @@
         <span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua encomenda</span>
       </button>
       <button class="cta ghost" onclick="goTo('faq')">
+        <span class="faq-mark" aria-hidden="true">?</span>
         <span class="i-en">Frequently Asked Questions</span><span class="i-pt">Perguntas Frequentes</span>
       </button>
     </div>
@@ -550,6 +629,7 @@ function closeCakeLightbox(){
 function initCakeStrip(){
   if(cakeStripStarted)return;cakeStripStarted=true;
   var track=document.getElementById('cakeStrip');if(!track)return;
+  var dots=Array.from(document.querySelectorAll('#cakeStripDots i')),activeDot=0;
   var order=shuffleCakes(Array.from({length:25},function(_,i){return i+1;}));
   var doubled=order.concat(order);
   track.innerHTML=doubled.map(function(n){var u=cakeImageUrl(n),alt='Custom cake by Amanda Soyer '+String(n).padStart(2,'0');return '<button class="cake-thumb" type="button" data-url="'+u+'" aria-label="Open '+alt+'"><img data-cake-src="'+u+'" alt="'+alt+'" decoding="async"></button>';}).join('');
@@ -568,6 +648,10 @@ function initCakeStrip(){
     if(!cakeStripDragging&&!reduce())cakeStripPosition+=elapsed*.012;
     var halfway=track.scrollWidth/2;if(halfway&&cakeStripPosition>=halfway)cakeStripPosition-=halfway;
     if(!cakeStripDragging)track.scrollLeft=cakeStripPosition;
+    if(halfway&&dots.length){
+      var nextDot=Math.min(dots.length-1,Math.floor((cakeStripPosition/halfway)*dots.length));
+      if(nextDot!==activeDot){dots[activeDot].classList.remove('active');dots[nextDot].classList.add('active');activeDot=nextDot;}
+    }
     window.requestAnimationFrame(moveStrip);
   }
   window.requestAnimationFrame(moveStrip);
