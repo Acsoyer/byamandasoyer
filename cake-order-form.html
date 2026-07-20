@@ -935,7 +935,7 @@ R.contact=()=>{
        <div class="code-wrap ${S.wcodeCustom?'custom':''}">${codeControl}</div>
        <input id="wnum" type="tel" placeholder="912 345 678" value="${esc(S.wnum)}"></div>
        ${S.wcodeCustom?`<button type="button" class="linklike" id="revertCode">↩ ${lang==='en'?'pick from list':'escolher da lista'}</button>`:''}</div>
-     <div class="field"><label>Instagram</label>
+     <div class="field"><label>Instagram <span class="opt-note">(${t('optional')})</span></label>
        <div class="ig-wrap"><span class="at">@</span><input id="insta" type="text" placeholder="username" value="${esc(S.instagram)}"></div></div>`;
   document.getElementById('name').oninput=e=>{S.name=e.target.value;validate();};
   const sel=document.getElementById('wcode');
@@ -1241,7 +1241,6 @@ function missing(){
   else if(k==='contact'){
     if(!S.name.trim())add(lang==='en'?'Enter your full name':'Indique o seu nome completo','#name');
     if(S.wnum.trim().length<=3)add(lang==='en'?'Enter your WhatsApp number':'Indique o seu número de WhatsApp','#wnum');
-    if(!S.instagram.trim())add(lang==='en'?'Enter your Instagram username':'Indique o seu utilizador de Instagram','#insta');
   }
   else if(k==='pickup'){
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
