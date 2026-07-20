@@ -142,7 +142,7 @@
   .socials svg{width:23px;height:23px}
 
   .cake-strip-shell{width:calc(100% + 44px);margin:-3px -22px 0;overflow:hidden;flex:0 0 auto}
-  .cake-strip{display:flex;gap:8px;overflow-x:auto;padding:3px 12px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain}
+  .cake-strip{display:flex;gap:8px;overflow-x:auto;padding:3px 12px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:auto;overscroll-behavior-x:contain}
   .cake-strip::-webkit-scrollbar{display:none}
   .cake-thumb{flex:0 0 68px;width:68px;height:68px;padding:0;border:2px solid rgba(255,255,255,.88);border-radius:16px;overflow:hidden;background:#EDE7DF;box-shadow:0 3px 10px rgba(75,45,53,.12);cursor:zoom-in;transition:transform .14s,opacity .2s}
   .cake-thumb:active{transform:scale(.94)}
@@ -198,21 +198,20 @@
   .appointment{color:#645B5F;font-size:13px;font-weight:400}
 
   .cta-row{display:contents}
-  .cta.primary{order:3;width:100%;max-width:390px;min-height:64px;margin-top:28px;padding:17px 14px;border-radius:15px;font-size:17px;box-shadow:0 10px 24px rgba(115,8,44,.18)}
+  .cta.primary{order:4;width:100%;max-width:390px;min-height:64px;margin-top:18px;padding:17px 14px;border-radius:15px;font-size:17px;box-shadow:0 10px 24px rgba(115,8,44,.18)}
   .cta.primary svg{width:22px;height:22px}
-  .hero-gallery{order:5;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:0}
+  .hero-gallery{order:6;width:calc(100% + 36px);margin:18px -18px 0;padding:16px 0 0;border-top:0}
   .hero-gallery h2{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.15;color:var(--brand);margin:0 0 4px}
   .hero-gallery>p{font-size:12px;line-height:1.4;color:#777074;margin:0 0 10px}
   .cake-strip-shell{width:100%;margin:0;overflow:hidden}
-  .cake-strip{gap:11px;padding:0 10px 3px;align-items:center;touch-action:pan-x;cursor:grab;user-select:none;-webkit-user-select:none}
+  .cake-strip{gap:11px;padding:0 10px 3px;align-items:center;touch-action:auto;cursor:grab;user-select:none;-webkit-user-select:none}
   .cake-strip:active{cursor:grabbing}
-  .cake-thumb{flex:0 0 calc((100% - 22px)/3);width:calc((100% - 22px)/3);min-width:calc((100% - 22px)/3);height:auto;padding:0;border:0;border-radius:10px;overflow:hidden;background:transparent;box-shadow:none;touch-action:pan-x}
+  .cake-thumb{flex:0 0 calc((100% - 22px)/3);width:calc((100% - 22px)/3);min-width:calc((100% - 22px)/3);height:auto;padding:0;border:0;border-radius:10px;overflow:hidden;background:transparent;box-shadow:none;touch-action:auto}
   .cake-thumb img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;opacity:0;transition:opacity .25s;pointer-events:none}
 
-  .cta.ghost{order:4;width:100%;max-width:390px;min-height:56px;margin-top:22px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(115,8,44,.035);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
+  .cta.ghost{order:5;width:100%;max-width:390px;min-height:56px;margin-top:22px;padding:12px;border:1px solid rgba(115,8,44,.64);border-radius:14px;background:rgba(115,8,44,.035);color:var(--brand);font-size:14px;text-decoration:none;box-shadow:none}
   .faq-mark{display:grid;place-items:center;width:22px;height:22px;border:1.5px solid currentColor;border-radius:50%;font-size:13px;font-weight:700;line-height:1}
-  .social-connect{order:6;width:100%;margin-top:22px;padding-bottom:14px}
-  .social-connect>p{margin:0 0 7px;color:#5F585B;font-size:11.5px;font-weight:500;letter-spacing:.02em;text-align:center}
+  .social-connect{order:3;width:100%;margin-top:22px;padding-bottom:0}
   .socials{gap:11px}
   .socials a{width:42px;height:42px;background:rgba(255,255,255,.44);border-color:rgba(115,8,44,.23)}
   .socials svg{width:21px;height:21px}
@@ -236,14 +235,13 @@
     .meta{margin-top:8px;font-size:11.5px}
     .meta>div+div{margin-top:6px}
     .appointment{font-size:11.5px}
-    .cta.primary{min-height:58px;margin-top:19px;padding:14px;font-size:15.5px}
+    .cta.primary{min-height:58px;margin-top:14px;padding:14px;font-size:15.5px}
     .hero-gallery{margin-top:15px;padding-top:13px}
     .hero-gallery h2{font-size:19px}
     .hero-gallery>p{font-size:11px;margin-bottom:8px}
     .cake-thumb{height:auto}
     .cta.ghost{min-height:50px;margin-top:16px;padding:10px;font-size:12.5px}
-    .social-connect{margin-top:15px;padding-bottom:8px}
-    .social-connect>p{margin-bottom:6px;font-size:10.5px}
+    .social-connect{margin-top:15px;padding-bottom:0}
     .socials a{width:38px;height:38px}
     .socials svg{width:18px;height:18px}
   }
@@ -419,16 +417,12 @@
     </div>
 
     <div class="social-connect">
-      <p><span class="i-en">Connect with me</span><span class="i-pt">Ligue-se a mim</span></p>
       <nav class="socials" aria-label="Social links">
       <a href="https://www.instagram.com/byamandasoyer" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
       </a>
       <a href="https://www.facebook.com/p/Custom-Cakes-By-Amanda-Soyer-61561880114999/" target="_blank" rel="noopener" aria-label="Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.7 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.5 1.6-1.5H17V4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1v2H8v3h2.6v8h3.1Z"/></svg>
-      </a>
-      <a href="https://www.tiktok.com/@cakeslisbon" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.9v2.6c-1.4 0-2.7-.4-3.8-1.1v5.9a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v2.7a3 3 0 1 0 2.1 2.9V3h3z"/></svg>
       </a>
       <a href="https://wa.me/+351912491965" target="_blank" rel="noopener" aria-label="WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg>
@@ -528,7 +522,6 @@
     <div class="fsoc">
       <a href="https://www.instagram.com/byamandasoyer" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
       <a href="https://www.facebook.com/p/Custom-Cakes-By-Amanda-Soyer-61561880114999/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.7 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.5 1.6-1.5H17V4a21 21 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1v2H8v3h2.6v8h3.1Z"/></svg></a>
-      <a href="https://www.tiktok.com/@cakeslisbon" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2 1.5 3.5 3.5 3.9v2.6c-1.4 0-2.7-.4-3.8-1.1v5.9a5.7 5.7 0 1 1-5.7-5.7c.3 0 .6 0 .9.1v2.7a3 3 0 1 0 2.1 2.9V3h3z"/></svg></a>
       <a href="https://wa.me/+351912491965" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.5-5.8c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3c-.3.3-.9.9-.9 2.1s.9 2.5 1.1 2.6c.1.2 1.8 2.7 4.3 3.8 1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg></a>
       <a href="mailto:byamandasoyer@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a>
     </div>
@@ -679,6 +672,41 @@ function scheduleDeferredVisuals(){
 if(document.readyState==='complete')scheduleDeferredVisuals();
 else window.addEventListener('load',scheduleDeferredVisuals,{once:true});
 
+/* ---------- one-time vertical scroll hint after language choice ---------- */
+var pageScrollHintTimers=[];
+var pageScrollHintRunning=false;
+var pageScrollHintCancelled=false;
+var pageScrollHintScheduled=false;
+function cancelPageScrollHint(){
+  pageScrollHintCancelled=true;
+  pageScrollHintTimers.forEach(function(timer){window.clearTimeout(timer);});
+  pageScrollHintTimers=[];
+  if(pageScrollHintRunning)window.scrollTo({top:window.scrollY,behavior:'auto'});
+  pageScrollHintRunning=false;
+}
+function schedulePageScrollHint(){
+  if(pageScrollHintScheduled)return;
+  pageScrollHintScheduled=true;
+  ['pointerdown','touchstart','wheel','keydown'].forEach(function(name){
+    window.addEventListener(name,cancelPageScrollHint,{passive:true,once:true});
+  });
+  window.addEventListener('scroll',function(){
+    if(!pageScrollHintRunning&&window.scrollY>8)cancelPageScrollHint();
+  },{passive:true});
+  pageScrollHintTimers.push(window.setTimeout(function(){
+    if(pageScrollHintCancelled||reduce()||window.scrollY>8||document.documentElement.scrollHeight<=window.innerHeight+80)return;
+    var startY=window.scrollY;
+    var hintDistance=Math.min(76,document.documentElement.scrollHeight-window.innerHeight-startY);
+    if(hintDistance<36)return;
+    pageScrollHintRunning=true;
+    window.scrollTo({top:startY+hintDistance,behavior:'smooth'});
+    pageScrollHintTimers.push(window.setTimeout(function(){
+      if(!pageScrollHintCancelled)window.scrollTo({top:startY,behavior:'smooth'});
+    },650));
+    pageScrollHintTimers.push(window.setTimeout(function(){pageScrollHintRunning=false;},1450));
+  },4500));
+}
+
 /* ---------- language ---------- */
 function setLang(l){
   document.documentElement.lang=l;
@@ -691,7 +719,7 @@ document.getElementById('yr').textContent=new Date().getFullYear();
 /* language modal: appears ~100ms after load; choice dismisses it */
 (function(){
   var m=document.getElementById('langModal');
-  function choose(l){setLang(l);loadDeferredVisuals();m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');}
+  function choose(l){setLang(l);loadDeferredVisuals();m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');schedulePageScrollHint();}
   m.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){choose(b.dataset.set);};});
   setTimeout(function(){
     m.style.display='flex';document.body.style.overflow='hidden';m.setAttribute('aria-hidden','false');
