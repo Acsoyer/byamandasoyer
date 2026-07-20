@@ -454,10 +454,17 @@ var analyticsSessionId=analyticsUuid();
 var analyticsParams=new URLSearchParams(location.search);
 function analyticsText(value,max){return String(value||'').trim().slice(0,max);}
 function analyticsReferrer(){try{return document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):'';}catch(e){return '';}}
+var analyticsShortPath=location.pathname.replace(/\/+$/,'').toLowerCase();
+var analyticsShortLinks={
+  '/ig':{source:'instagram',medium:'social',campaign:'bio'},
+  '/fb':{source:'facebook',medium:'social',campaign:'page'},
+  '/tt':{source:'tiktok',medium:'social',campaign:'bio'}
+};
+var analyticsShortAttribution=analyticsShortLinks[analyticsShortPath]||{};
 var analyticsRef=analyticsReferrer();
-var analyticsSource=analyticsText(analyticsParams.get('utm_source')||analyticsRef||'Direct',100);
-var analyticsMedium=analyticsText(analyticsParams.get('utm_medium')||'',100);
-var analyticsCampaign=analyticsText(analyticsParams.get('utm_campaign')||'',120);
+var analyticsSource=analyticsText(analyticsParams.get('utm_source')||analyticsShortAttribution.source||analyticsRef||'Direct',100);
+var analyticsMedium=analyticsText(analyticsParams.get('utm_medium')||analyticsShortAttribution.medium||'',100);
+var analyticsCampaign=analyticsText(analyticsParams.get('utm_campaign')||analyticsShortAttribution.campaign||'',120);
 function trackSiteEvent(eventName,extra,keepalive){
   if(!analyticsEnabled)return Promise.resolve();
   var data=Object.assign({session_id:analyticsSessionId,event_name:eventName,page_name:'landing',source:analyticsSource,medium:analyticsMedium,campaign:analyticsCampaign,referrer_host:analyticsText(analyticsRef,180),language:document.body&&document.body.dataset.lang||document.documentElement.lang||'pt',metadata:{}},extra||{});

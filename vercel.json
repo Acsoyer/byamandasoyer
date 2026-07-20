@@ -1,5 +1,8 @@
 {
   "rewrites": [
+    { "source": "/ig", "destination": "/index.html" },
+    { "source": "/fb", "destination": "/index.html" },
+    { "source": "/tt", "destination": "/index.html" },
     { "source": "/order/:token", "destination": "/order/index.html?token=:token" }
   ]
 }
