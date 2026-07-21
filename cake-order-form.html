@@ -166,7 +166,7 @@
   .row2{display:flex;gap:10px}
   .code-wrap{flex:0 0 118px;position:relative}
   select.code{padding-right:26px;appearance:none;-webkit-appearance:none;font-weight:600}
-  .code-wrap::after{content:"▾";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none;font-size:12px}
+  .code-wrap::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none;font-size:18px;font-weight:700;line-height:1}
   .code-wrap.custom::after{display:none}
   .linklike{background:none;border:none;color:var(--accent);font-family:inherit;font-weight:600;font-size:12.5px;cursor:pointer;padding:8px 2px 0;display:inline-block}
   .ig-wrap{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow-sm);overflow:hidden}
@@ -253,8 +253,8 @@
   .rcour{display:flex;flex-direction:column;gap:4px;margin-top:11px;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:12px}
   .rc-cline{font-size:13px;font-weight:700;color:var(--ink)}
   .rc-cnote{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
-  .receipt{margin:5px 0 13px;padding:9px 8px 8px;background:#fff;border:1px solid #E6E6E3;border-radius:10px;color:#202020;
-    font-family:ui-monospace,'SFMono-Regular',Menlo,Monaco,Consolas,'Liberation Mono',monospace;box-shadow:0 2px 8px rgba(20,20,20,.035)}
+  .receipt{margin:5px 0 13px;padding:9px 8px 8px;background:#fff;border:1px solid #D2D2CD;border-radius:0;color:#202020;
+    font-family:ui-monospace,'SFMono-Regular',Menlo,Monaco,Consolas,'Liberation Mono',monospace;box-shadow:none}
   .receipt-head{font-family:inherit;font-size:12px;font-weight:700;color:#202020;margin:1px 4px 7px;text-align:center;text-transform:uppercase;letter-spacing:.04em}
   .receipt-row{display:grid;grid-template-columns:auto minmax(10px,1fr) auto;align-items:end;gap:5px;margin:0;padding:6px 6px;font-size:11px;line-height:1.25}
   .receipt-row:nth-child(even){background:#F7F7F5}
@@ -265,9 +265,12 @@
   .receipt-price.free,.receipt-price.quote{color:#111}
   .receipt-price.quote{font-size:10px}
   .rc-total{display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:#EEEAE5;border-top:1px solid #CFC7BF;padding:16px 18px;box-shadow:inset 0 3px 8px rgba(74,68,70,.035)}
+    background:#EEEAE5;border:1.5px solid #B8B0A8;border-top:1.5px dashed #8F867E;padding:16px 18px;box-shadow:inset 0 3px 8px rgba(74,68,70,.035)}
   .rc-tl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
   .rc-tv{font-family:'Montserrat',system-ui,sans-serif;font-size:24px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .rsec.before-receipt{border-bottom:0}
+  .review-note{display:grid!important;grid-template-columns:26px minmax(0,1fr);align-items:start;gap:10px;background:#FFF5DC!important;border:1.5px solid #D3AE58!important;color:#473616!important;font-weight:500;line-height:1.55;padding:13px 14px!important}
+  .review-note-icon{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid #8A6416;border-radius:50%;color:#704E0B;font-size:14px;font-weight:800;line-height:1}
   .rtotal .v{font-family:'Playfair Display',Georgia,serif;font-size:22px}
 
   #lang{position:absolute;inset:0;background:linear-gradient(160deg,#F7F6F3,#F2E2E8);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center}
@@ -884,7 +887,7 @@ R.photo=()=>{
       <span class="t1">${lang==='en'?'Add a photo':'Adicionar foto'}</span>
       <span class="t2">${n===0?(lang==='en'?'required':'obrigatória'):(lang==='en'?`${n}/3 added`:`${n}/3 adicionadas`)}</span>
     </button>`:'';
-  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("At least 1 photo is required, up to 3 — this is how Amanda understands your vision.","É necessária pelo menos 1 foto, até um máximo de 3 — é assim que a Amanda percebe a sua visão."))+
+  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("At least 1 photo is required, up to 3 — this helps me understand your vision.","É necessária pelo menos 1 foto, até um máximo de 3 — isto ajuda-me a perceber a sua visão."))+
     `<input type="file" accept="image/*" id="photoInput" multiple style="display:none">
      <div class="photo-grid">${thumbs}${adder}</div>
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
@@ -953,9 +956,10 @@ function pickNote(){
     : (lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.'
                   :'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.');
 }
-let pickupHintMoved=false, pickupScrollAfterPick=false;
+let pickupScrollAfterPick=false;
 R.pickup=()=>{
   const courierOK=(S.size==='XS'||S.size==='S'||S.size==='M');
+  if(!courierOK)S.courier=false;
   const t0=new Date();t0.setHours(0,0,0,0);
   if(!pickMonth){const base=S.pdate?new Date(S.pdate+'T00:00:00'):t0;pickMonth=new Date(base.getFullYear(),base.getMonth(),1);}
   const y=pickMonth.getFullYear(),m=pickMonth.getMonth();
@@ -991,17 +995,20 @@ R.pickup=()=>{
      </div>
      <div class="fdp-selected ${S.pdate?'':'empty'}" id="pickupSelected" style="margin-top:11px;margin-bottom:0">${disp}</div>
      <div class="field" id="pickupTimes" style="margin-top:12px;margin-bottom:10px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
+     ${!S.courier?`<p class="note" id="pickNote">${pickNote()}</p>`:''}
      ${courierOK?`<button class="opt multi ${S.courier?'sel':''}" id="courierBtn" style="margin-top:9px;padding-top:11px;padding-bottom:11px">
        <span class="ic"><span style="font-size:20px">🛵</span></span>
        <span class="tx"><span class="tt">${lang==='en'?'I would like to arrange a Bolt or Uber courier':'Gostaria de solicitar um estafeta Bolt ou Uber'}</span></span>
        <span class="chk">${tick()}</span></button>`:''}
-     <p class="note" id="pickNote">${pickNote()}</p>`;
+     ${S.courier?`<p class="note" id="pickNote">${pickNote()}</p>`:''}`;
   if(courierOK){
     const cb=document.getElementById('courierBtn');
     cb.onclick=()=>{
+      const currentScroll=B().scrollTop;
       S.courier=!S.courier;
-      cb.classList.toggle('sel',S.courier);
-      document.getElementById('pickNote').textContent=pickNote();
+      R.pickup();
+      B().scrollTop=currentScroll;
+      validate();
     };
   }
   B().querySelectorAll('.tslot').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
@@ -1015,10 +1022,6 @@ R.pickup=()=>{
         body.scrollTo({top:Math.max(0,top-5),behavior:'smooth'});
       }
     });
-  }
-  if(!pickupHintMoved){
-    pickupHintMoved=true;
-    setTimeout(()=>{if(STEPS[step]==='pickup')B().scrollTo({top:Math.min(150,Math.max(0,B().scrollHeight-B().clientHeight)),behavior:'smooth'});},600);
   }
 };
 R.heard=()=>{
@@ -1098,7 +1101,8 @@ R.review=()=>{
   const receipt=[];
   const addReceipt=(name,price,kind='')=>receipt.push({name,price,kind});
   if(sz){
-    addReceipt(`${lang==='en'?'Base cake':'Bolo base'} · ${sizeName}`,
+    const cakeDescription=lang==='en'?`${sizeName} Size${shapeName?`, ${shapeName} Shape`:''}`:`Tamanho ${sizeName}${shapeName?`, Forma ${shapeName}`:''}`;
+    addReceipt(cakeDescription,
       sz.price==null?(lang==='en'?'To quote':'A orçamentar'):`€${sz.price}`,sz.price==null?'quote':'');
   }
   const shp=sh?shapePrice(sh.id):0;
@@ -1142,7 +1146,10 @@ R.review=()=>{
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
-  const sec=(label,inner)=>inner?`<div class="rsec"><div class="rlab">${label}</div>${inner}</div>`:'';
+  const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
+  const reviewNotice=c.custom
+    ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
+    : (lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
   B().innerHTML=head(lg("Review your order","Rever o seu pedido"),lg("I'll confirm availability and send your final quote via WhatsApp within 24 to 48 hours.","Vou confirmar a disponibilidade e enviar o orçamento final por WhatsApp dentro de 24 a 48 horas."))+
     `<div class="rcard">
       <div class="rc-for">
@@ -1171,8 +1178,8 @@ R.review=()=>{
           `<div class="rpick"><span class="rp-d">${S.pdate?fmtPickedShort(S.pdate):''}</span><span class="rp-t">${S.ptime||''}</span></div>`
           +(S.courier?`<div class="rcour">
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
-              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — please tell Amanda 8–10 minutes before you request it, and send the tracking link once booked.':'É você que reserva e paga o estafeta — avise a Amanda 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que estiver marcado.'}</span>
-            </div>`:''))}
+              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — please notify me 8–10 minutes before you request it, and send me the tracking link once booked.':'É você que reserva e paga o estafeta — avise-me 8 a 10 minutos antes de o solicitar e envie-me o link de acompanhamento assim que estiver marcado.'}</span>
+            </div>`:''),'before-receipt')}
         ${receiptHtml}
       </div>
 
@@ -1181,7 +1188,7 @@ R.review=()=>{
         <span class="rc-tv">${totalTxt}</span>
       </div>
     </div>
-    <p class="note soft">${lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. Your exact quote comes by WhatsApp.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. O orçamento exato será enviado por WhatsApp.`}</p>`;
+    <p class="note soft review-note"><span class="review-note-icon" aria-hidden="true">!</span><span>${reviewNotice}</span></p>`;
 };
 
 /* ---------- binders ---------- */
@@ -1422,8 +1429,8 @@ function showDone(){
   const d=document.getElementById('done');const fn=(S.name.split(' ')[0]||'');
   document.getElementById('doneH').textContent=lang==='en'?'Order sent! 🎂':'Pedido enviado! 🎂';
   document.getElementById('doneP').textContent=lang==='en'
-    ?`Thanks ${fn}! Amanda will check availability and send your quote by WhatsApp (Sun–Wed until 12:00).`
-    :`Obrigada ${fn}! A Amanda confirma disponibilidade e envia o orçamento por WhatsApp (Dom–Qua até às 12:00).`;
+    ?`Thanks ${fn}! I will check availability and send your quote by WhatsApp (Sun–Wed until 12:00).`
+    :`Obrigada ${fn}! Vou confirmar a disponibilidade e enviar-lhe o orçamento por WhatsApp (Dom–Qua até às 12:00).`;
   document.getElementById('doneP2').textContent=lang==='en'?'Your date is secured after the 50% deposit.':'A sua data fica reservada após o sinal de 50%.';
   document.getElementById('surveyQ').textContent=lang==='en'?'How was your ordering experience?':'Como foi a sua experiência de encomenda?';
   document.getElementById('fbRow').innerHTML=FEEDBACK.map(f=>
