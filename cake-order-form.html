@@ -30,13 +30,13 @@
   #topbar{padding:calc(8px + env(safe-area-inset-top)); padding-right: 20px;padding-bottom: 5px;padding-left: 16px;flex:0 0 auto}
   @media (min-width:441px){#topbar{padding-top:22px}}
   .mini-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin-bottom:9px;font-size:12px;font-weight:600;letter-spacing:.03em}
-  .mini-row .toplogo{justify-self:start;height:40px;width:auto;display:block;opacity:.9}
-  .mini-row .top-actions{justify-self:end;display:flex;align-items:center;gap:4px}
-  .mini-row .iconbtn{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);
+  .mini-row .toplogo{justify-self:start;height:40px;width:auto;display:block;opacity:.9;transform:scale(1.5);transform-origin:left center}
+  .mini-row .top-actions{justify-self:end;display:flex;align-items:center;gap:5px}
+  .mini-row .iconbtn{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);
     color:var(--brand);font-family:inherit;font-size:15px;line-height:1;cursor:pointer;padding:0;
     display:flex;align-items:center;justify-content:center;transition:transform .12s,background .12s}
   .mini-row .iconbtn:active{transform:scale(.9);background:var(--accent-soft)}
-  .mini-row #closeBtn{font-size:18px}
+  .mini-row #closeBtn{font-size:22px}
   body.embed .mini-row{display:none}
   body.embed #topbar{padding-top:calc(12px + env(safe-area-inset-top))}
   .mini-row .stepno{justify-self:center;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -138,11 +138,11 @@
   .divlabel .ln{flex:1;height:1px;background:var(--line)}
 
   /* swatches named */
-  .sw-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px 8px}
+  .sw-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px 8px}
   .sw-grid.is-disabled{opacity:.4;pointer-events:none;filter:grayscale(.35)}
   .disabled-note{background:var(--accent-soft);color:var(--brand);border-radius:14px;padding:14px;text-align:center;font-weight:600;font-size:13.5px;margin-bottom:16px}
-  .sw{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-width:0}
-  .sw .chip{width:100%;aspect-ratio:1;border-radius:9px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
+  .sw{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:0}
+  .sw .chip{width:100%;height:36px;border-radius:9px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
   .sw:active .chip{transform:scale(.92)}
   .sw.sel .chip{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
   .sw.sel .chip::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.4)}
@@ -152,7 +152,7 @@
   .sw-price{font-size:9.5px;line-height:1;color:var(--brand);font-weight:700;text-align:center;margin-top:-1px}
   .pig-desc{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:0 0 11px}
   .pickcount{font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;text-align:center}
-  .colour-pricing{border-top:1px solid var(--line);margin-top:18px;padding:14px 2px 4px}
+  .colour-pricing{border-top:1px solid var(--line);margin-top:13px;padding:10px 2px 2px}
   .colour-pricing-title{display:flex;align-items:center;gap:7px;color:var(--brand);font-weight:700;font-size:13px;margin-bottom:8px}
   .colour-pricing-icon{width:17px;height:17px;border:1.5px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:800;line-height:1}
   .colour-pricing ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:11px;line-height:1.45}
@@ -197,7 +197,7 @@
   .fdp-cell.empty{cursor:default}
   .fdp-cell.sel{background:var(--accent);color:#fff}
   .fdp-cell.rush:not(.sel){color:#6E4A18;background:transparent}
-  .fdp-cell.rush:not(.sel)::after{content:"€";position:absolute;left:calc(50% + 8px);top:50%;transform:translateY(-70%);font-size:9px;font-weight:800;line-height:1;color:#A46919;pointer-events:none}
+  .fdp-cell.rush:not(.sel)::after{content:"";position:absolute;left:calc(50% + 10px);top:50%;width:5px;height:5px;transform:translateY(-50%);border-radius:50%;background:#D3AE58;opacity:.52;pointer-events:none}
   .fdp-cell.rush.sel{background:var(--accent);border-color:var(--accent);color:#fff}
   .tslot{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:7px 0;text-align:center;font-size:12.5px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
   .tslot.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
@@ -736,7 +736,6 @@ R.size=()=>{
     validate();
   });
 };
-let flavHintMoved=false;
 R.flavor=()=>{
   let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
   const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
@@ -750,10 +749,6 @@ R.flavor=()=>{
     });
   }
   B().innerHTML=h;
-  if(!flavHintMoved){
-    flavHintMoved=true;
-    setTimeout(()=>{if(STEPS[step]==='flavor')B().scrollTo({top:Math.min(86,Math.max(0,B().scrollHeight-B().clientHeight)),behavior:'smooth'});},520);
-  }
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
     change(el,()=>{S.flavor=el.dataset.id;});
     R.flavor();validate();
@@ -778,9 +773,9 @@ R.color=()=>{
   const swatches=options.map(o=>{const sel=o.high?S.pigment.includes(o.pid):S.colors.includes(o.h);
     return `<div class="sw ${sel?'sel':''} ${isLight(o.c)?'light':''}" data-kind="${o.high?'pigment':'standard'}" data-value="${o.high?o.pid:o.h}"><div class="chip" style="background:${o.c}"></div><div class="nm">${o.t[lang]}</div>${o.high?'<div class="sw-price">+€5</div>':''}</div>`;}).join('');
   const pricing=lang==='en'
-    ?['Up to two colours included in price.','Each additional colour may incur an extra charge.','Dark and neon colours require extra colouring to achieve a rich, even finish. When used to cover the entire cake, they add €5.']
-    :['Até duas cores incluídas no preço.','Cada cor adicional pode implicar um custo extra.','Cores escuras e néon exigem coloração adicional para obter um acabamento rico e uniforme. Quando usadas para cobrir todo o bolo, acrescem €5.'];
-  B().innerHTML=head(lg("Cake colours","Cor do bolo"),lg("Choose up to 2 colours.","Escolha até 2 cores."))+
+    ?['Dark and neon colors require extra colouring to achieve a rich, even finish. When used to cover the entire cake, they add €5.']
+    :['Cores escuras e néon exigem coloração adicional para obter um acabamento rico e uniforme. Quando usadas para cobrir todo o bolo, acrescem €5.'];
+  B().innerHTML=head(lg("Cake colours","Cor do bolo"),lg("Up to two colours included in price. Each additional colour may incur an extra charge.","Até duas cores incluídas no preço. Cada cor adicional pode implicar um custo extra."))+
     `<div class="sw-grid">${swatches}</div>`+
     `<section class="colour-pricing"><div class="colour-pricing-title"><span class="colour-pricing-icon">!</span><span>${lang==='en'?'Pricing':'Preços'}</span></div><ul>${pricing.map(line=>`<li>${line}</li>`).join('')}</ul></section>`;
   B().querySelectorAll('.sw[data-kind]').forEach(el=>el.onclick=()=>{
@@ -910,8 +905,8 @@ R.photo=()=>{
      <div class="photo-grid">${thumbs}${adder}</div>
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
      <div class="tier"><span>${lang==='en'?'Anything else?':'Mais alguma coisa?'}</span><span class="ln"></span></div>
-     <div class="field"><label>${lang==='en'?'Tell me anything you think I should know':'Diga-me tudo o que acha que devo saber'} <span class="opt-note">(${t('optional')})</span></label>
-       <textarea id="notes" placeholder="${lang==='en'?'e.g. I want red for the cake, but a darker red':'ex. quero o bolo em vermelho, mas um vermelho mais escuro'}">${esc(S.notes)}</textarea></div>`;
+     <div class="field"><label>${lang==='en'?'Tell me anything you think I should know about your vision for the cake.':'Diga-me tudo o que acha que devo saber sobre a sua visão para o bolo.'} <span class="opt-note">(${t('optional')})</span></label>
+       <textarea id="notes" placeholder="${lang==='en'?'e.g., the theme party is Little Mermaid':'ex.: o tema da festa é A Pequena Sereia'}">${esc(S.notes)}</textarea></div>`;
   const inp=document.getElementById('photoInput');
   const drop=document.getElementById('drop');
   if(drop)drop.onclick=()=>inp.click();
