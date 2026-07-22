@@ -270,11 +270,13 @@
   .receipt-price{color:#111;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
   .receipt-price.free,.receipt-price.quote{color:#111}
   .receipt-price.quote{font-size:10px}
-  .rc-total{display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:#EEEAE5;border:1.5px solid #B8B0A8;border-top:1.5px dashed #8F867E;padding:16px 18px;box-shadow:inset 0 3px 8px rgba(74,68,70,.035)}
+  .rc-total{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:#EEEAE5;border:0;border-top:1.5px dashed #8F867E;padding:16px 18px;box-shadow:inset 0 3px 8px rgba(74,68,70,.035)}
+  .rc-total::after{content:"";position:absolute;inset:0;pointer-events:none;border:1.5px solid #B8B0A8;border-top:0;border-radius:0 0 20px 20px}
   .rc-tl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
   .rc-tv{font-family:'Montserrat',system-ui,sans-serif;font-size:24px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
   .rsec.before-receipt{border-bottom:0}
+  .review-photo-proof{display:flex;align-items:center;justify-content:space-between;gap:12px}.review-photo-copy{display:flex;align-items:center;gap:6px;color:var(--ink);font-size:12.5px;font-weight:750}.review-photo-copy .ok{color:#5F8B53;font-size:13px}.review-photo-thumbs{display:flex;flex:0 0 auto;gap:5px}.review-photo-thumbs img{width:38px;height:38px;display:block;object-fit:cover;border:1px solid #C9D8C0;border-radius:8px;background:var(--bg);box-shadow:0 2px 6px rgba(50,60,53,.08)}
   .review-note{display:grid!important;grid-template-columns:26px minmax(0,1fr);align-items:start;gap:10px;background:#FFF5DC!important;border:1.5px solid #D3AE58!important;color:#473616!important;font-weight:500;line-height:1.55;padding:13px 14px!important}
   .review-note-icon{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid #8A6416;border-radius:50%;color:#704E0B;font-size:14px;font-weight:800;line-height:1}
   .rtotal .v{font-family:'Playfair Display',Georgia,serif;font-size:22px}
@@ -297,6 +299,7 @@
     font-weight:600;font-size:16.5px;padding:16px;cursor:pointer;box-shadow:0 8px 22px rgba(115,8,44,.28);transition:transform .15s,opacity .15s}
   #next:active{transform:scale(.98)}
   #next:disabled{opacity:.4;box-shadow:none}
+  #next.sending{display:flex;align-items:center;justify-content:center;gap:9px;opacity:1}.send-spinner{width:16px;height:16px;flex:0 0 auto;border:2px solid rgba(255,255,255,.42);border-top-color:#fff;border-radius:50%;animation:sendSpin .7s linear infinite}@keyframes sendSpin{to{transform:rotate(360deg)}}
   #next.off{opacity:.42;box-shadow:none}
   #next.pist{background:var(--pistachio);box-shadow:0 8px 22px rgba(143,166,124,.32)}
   #next.shake{animation:shk .4s}
@@ -1157,6 +1160,9 @@ R.review=()=>{
   /* nice human lines instead of yes/no rows */
   const extras=[];
   if(S.candles==='yes')extras.push(lang==='en'?'🕯️ Comes with candles':'🕯️ Vem com velas');
+  const photoCount=S.photoFiles.length;
+  const photoThumbs=S.photoPreviews.slice(0,3).map((url,i)=>`<img src="${url}" alt="${lang==='en'?'Uploaded inspiration photo':'Foto de inspiração carregada'} ${i+1}">`).join('');
+  const photoProof=`<div class="rsec review-photo-proof"><div class="review-photo-copy"><span>${photoCount}/3 ${lang==='en'?(photoCount===1?'photo uploaded':'photos uploaded'):(photoCount===1?'fotografia carregada':'fotografias carregadas')}</span><span class="ok" aria-label="Confirmed">✓</span></div><div class="review-photo-thumbs">${photoThumbs}</div></div>`;
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
@@ -1188,6 +1194,7 @@ R.review=()=>{
         ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'')}
         ${extras.length?`<div class="rsec"><div class="rlab">${lang==='en'?'Also included':'Também incluído'}</div>
           <div class="rlines">${extras.map(e=>`<span class="rline">${e}</span>`).join('')}</div></div>`:''}
+        ${photoProof}
         ${sec(lang==='en'?'Pick-up':'Levantamento',
           `<div class="rpick"><span class="rp-d">${S.pdate?fmtPickedShort(S.pdate):''}</span><span class="rp-t">${S.ptime||''}</span></div>`
           +(S.courier?`<div class="rcour">
@@ -1395,7 +1402,8 @@ function buildPayload(photo_urls){
 
 async function submit(){
   const btn=document.getElementById('next');
-  btn.disabled=true; btn.textContent=lang==='en'?'Sending…':'A enviar…';
+  const sendingStarted=Date.now();
+  btn.disabled=true;btn.classList.add('sending');btn.innerHTML=`<span>${lang==='en'?'Sending':'A enviar'}</span><span class="send-spinner" aria-hidden="true"></span>`;
   try{
     if(!sb) throw new Error("Connection not ready. Please refresh and try again.");
     let photo_urls=[];
@@ -1419,9 +1427,11 @@ async function submit(){
     if(error)throw error;
     formAnalyticsSubmitted=true;
     trackFormEvent('form_submitted',{step_number:STEPS.length,step_name:'review',duration_seconds:formDuration()},true);
+    const remaining=Math.max(0,1000-(Date.now()-sendingStarted));
+    if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
     showDone();
   }catch(e){
-    btn.disabled=false; btn.textContent=t('send');
+    btn.disabled=false;btn.classList.remove('sending');btn.textContent=t('send');
     alert((lang==='en'
       ?"Sorry — something went wrong sending your order. Please try again.\n\n"
       :"Ocorreu um erro ao enviar o pedido. Tente novamente.\n\n")+(e.message||e));
