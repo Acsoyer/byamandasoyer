@@ -142,20 +142,23 @@
   .sw-grid.is-disabled{opacity:.4;pointer-events:none;filter:grayscale(.35)}
   .disabled-note{background:var(--accent-soft);color:var(--brand);border-radius:14px;padding:14px;text-align:center;font-weight:600;font-size:13.5px;margin-bottom:16px}
   .sw{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:0}
-  .sw .chip{width:100%;aspect-ratio:1.5;border-radius:7px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
-  .sw.high-pigment .chip{border:3px double var(--brand)}
+  .sw .chip{width:100%;aspect-ratio:1.2;border-radius:7px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
+  .sw.high-pigment .chip{border:3px double var(--brand);box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+  .sw.high-pigment .chip::before{content:"!";position:absolute;z-index:2;top:-6px;right:-5px;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--brand);color:#fff;border:2px solid var(--bg);font-size:9px;font-weight:800;line-height:1;box-shadow:0 1px 3px rgba(20,20,20,.2)}
   .sw:active .chip{transform:scale(.92)}
   .sw.sel .chip{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
   .sw.sel .chip::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.4)}
   .sw.light.sel .chip::after{color:var(--ink);text-shadow:none}
   .sw .nm{font-size:7.5px;color:var(--ink-soft);text-align:center;line-height:1.02;overflow-wrap:anywhere}
   .sw.sel .nm{color:var(--ink);font-weight:600}
+  .sw.high-pigment .nm{color:var(--brand);font-weight:700}
   .pigment-card{border:1.5px solid #E7CBD5;border-radius:18px;padding:13px 13px 4px;margin-top:22px;background:var(--card);box-shadow:0 0 16px rgba(115,8,44,.12)}
   .pig-head{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:6px}
   .pig-desc{font-size:11.5px;color:var(--ink-soft);line-height:1.45;margin:0 0 11px}
   .pickcount{font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;text-align:center}
 
   /* colour step: compact sticky piping-bag preview */
+  .colour-head .sub{margin-bottom:4px}
   .colour-preview{position:sticky;top:-6px;z-index:12;background:rgba(247,246,243,.97);padding:3px 0 6px;margin:0 0 6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   .pipe-board{display:grid;grid-template-columns:2fr 1fr;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:3px;box-shadow:var(--shadow-sm)}
   .pipe-zone{min-width:0;border-right:1px dashed var(--line);padding:0 1px;display:flex;flex-direction:column;align-items:center}
@@ -852,11 +855,12 @@ R.color=()=>{
   const extras=S.colors.slice(2).map(h=>pipeSelection(h)).filter(Boolean);
   const pigments=S.pigment.map(id=>pipeSelection(id,true)).filter(Boolean);
   const showExtras=extras.length>0;
-  const boardColumns=showExtras?`2fr 3fr ${Math.max(1,pigments.length)}fr`:`2fr ${Math.max(1,pigments.length)}fr`;
+  const showPigments=pigments.length>0;
+  const boardColumns=[`${Math.max(1,included.length)}fr`,showExtras?`${extras.length}fr`:null,showPigments?`${pigments.length}fr`:null].filter(Boolean).join(' ');
   const zone=(title,price,items)=>`<div class="pipe-zone"><div class="pipe-zone-title">${title}</div><div class="pipe-zone-price">${price}</div><div class="pipe-row ${items.length>2?'many':''}">${items.length?items.map(pipeItem).join(''):'<span class="pipe-empty">·</span>'}</div></div>`;
-  B().innerHTML=head(lg("Cake colours","Cor do bolo"),lg("Up to two colours included in price. Additional colours +€5 each.","Até duas cores incluídas no preço. Cores adicionais +€5 cada."))+
-    `<div class="colour-preview"><div class="pipe-board" style="grid-template-columns:${boardColumns}">${zone(lang==='en'?'Included':'Incluídas','',included)}${showExtras?zone(lang==='en'?'Extra':'Extra','+€5',extras):''}${zone(lang==='en'?'High pigment':'Pigmento',`+€${pigPrice}`,pigments)}</div>`+
-    `${pigments.length?`<p class="pipe-warning">${lang==='en'?'High-pigment colours may cost extra when covering the entire cake.':'Cores de alta pigmentação podem ter um custo extra quando cobrem todo o bolo.'}</p>`:''}`+
+  B().innerHTML=`<div class="colour-head">${head(lg("Cake colours","Cor do bolo"),lg("Up to two colours included in price. Additional colours +€5 each.","Até duas cores incluídas no preço. Cores adicionais +€5 cada."))}</div>`+
+    `<div class="colour-preview"><div class="pipe-board" style="grid-template-columns:${boardColumns}">${zone(lang==='en'?'Colors':'Cores','',included)}${showExtras?zone(lang==='en'?'Extra':'Extra','+€5',extras):''}${showPigments?zone(lang==='en'?'High pigment':'Pigmento',`+€${pigPrice}`,pigments):''}</div>`+
+    `${showPigments?`<p class="pipe-warning">${lang==='en'?'High-pigment colours may cost extra when covering the entire cake.':'Cores de alta pigmentação podem ter um custo extra quando cobrem todo o bolo.'}</p>`:''}`+
     `<p class="colour-count" id="pc">${T.pickMax[lang](selectedCakeColourCount())}</p></div>`+
     `<div class="sw-grid">${swatches}</div>`;
   paintPipePreviews();
