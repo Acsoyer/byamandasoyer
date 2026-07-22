@@ -138,17 +138,17 @@
   .divlabel .ln{flex:1;height:1px;background:var(--line)}
 
   /* swatches named */
-  .sw-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px 5px}
+  .sw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
   .sw-grid.is-disabled{opacity:.4;pointer-events:none;filter:grayscale(.35)}
   .disabled-note{background:var(--accent-soft);color:var(--brand);border-radius:14px;padding:14px;text-align:center;font-weight:600;font-size:13.5px;margin-bottom:16px}
   .sw{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:0}
-  .sw .chip{width:100%;aspect-ratio:1.35;border-radius:8px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
+  .sw .chip{width:100%;aspect-ratio:1.5;border-radius:7px;border:2px solid rgba(0,0,0,.07);position:relative;transition:transform .12s}
   .sw.high-pigment .chip{border:3px double var(--brand)}
   .sw:active .chip{transform:scale(.92)}
   .sw.sel .chip{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
   .sw.sel .chip::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.4)}
   .sw.light.sel .chip::after{color:var(--ink);text-shadow:none}
-  .sw .nm{font-size:8.5px;color:var(--ink-soft);text-align:center;line-height:1.05;overflow-wrap:anywhere}
+  .sw .nm{font-size:7.5px;color:var(--ink-soft);text-align:center;line-height:1.02;overflow-wrap:anywhere}
   .sw.sel .nm{color:var(--ink);font-weight:600}
   .pigment-card{border:1.5px solid #E7CBD5;border-radius:18px;padding:13px 13px 4px;margin-top:22px;background:var(--card);box-shadow:0 0 16px rgba(115,8,44,.12)}
   .pig-head{font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:6px}
@@ -156,23 +156,23 @@
   .pickcount{font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;text-align:center}
 
   /* colour step: compact sticky piping-bag preview */
-  .colour-preview{position:sticky;top:-6px;z-index:12;background:rgba(247,246,243,.97);padding:5px 0 9px;margin:0 0 9px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-  .pipe-board{display:grid;grid-template-columns:2fr 3fr 1fr;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:7px;box-shadow:var(--shadow-sm)}
-  .pipe-zone{min-width:0;border-right:1px dashed var(--line);padding:0 4px;display:flex;flex-direction:column;align-items:center}
+  .colour-preview{position:sticky;top:-6px;z-index:12;background:rgba(247,246,243,.97);padding:3px 0 6px;margin:0 0 6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .pipe-board{display:grid;grid-template-columns:2fr 1fr;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:3px;box-shadow:var(--shadow-sm)}
+  .pipe-zone{min-width:0;border-right:1px dashed var(--line);padding:0 1px;display:flex;flex-direction:column;align-items:center}
   .pipe-zone:last-child{border-right:none}
   .pipe-zone-title{font-size:7.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);text-align:center;line-height:1.05}
-  .pipe-zone-price{font-size:8px;font-weight:700;color:var(--brand);min-height:10px;margin-top:1px}
-  .pipe-row{width:100%;height:64px;display:flex;align-items:center;justify-content:center;gap:1px}
+  .pipe-zone-price{font-size:8px;font-weight:700;color:var(--brand);min-height:9px;margin-top:0}
+  .pipe-row{width:100%;height:142px;display:flex;align-items:center;justify-content:center;gap:0;padding:0 1px}
   .pipe-empty{font-size:17px;color:#D7D1CC;font-weight:300}
-  .pipe-item{min-width:0;flex:0 1 42px;height:62px;display:flex;align-items:center;justify-content:center}
-  .pipe-row.many .pipe-item{flex-basis:30px}
-  .pipe-canvas{display:block;max-width:100%;max-height:62px;width:auto;height:auto}
+  .pipe-item{min-width:0;flex:0 1 52px;height:138px;display:flex;align-items:center;justify-content:center;transform:rotate(var(--pipe-angle,0deg));transform-origin:50% 78%;margin:0 -2px}
+  .pipe-row.many .pipe-item{flex-basis:45px;margin:0 -3px}
+  .pipe-canvas{display:block;max-width:100%;max-height:138px;width:auto;height:auto}
   .pipe-item.image-missing{border:1px dashed #DED7D1;border-radius:7px;background:linear-gradient(145deg,#fff,#F1EEEA)}
-  .pipe-warning{margin:6px 0 0;padding:6px 8px;border:1px solid #E7CBD5;border-radius:9px;background:#F7ECEF;color:var(--brand);font-size:9px;line-height:1.3;text-align:center}
-  .colour-count{font-size:10px;color:var(--ink-soft);margin:7px 0 0;text-align:center}
+  .pipe-warning{margin:4px 0 0;padding:5px 7px;border:1px solid #E7CBD5;border-radius:8px;background:#F7ECEF;color:var(--brand);font-size:8.5px;line-height:1.25;text-align:center}
+  .colour-count{font-size:9px;color:var(--ink-soft);margin:4px 0 0;text-align:center}
   @media (max-height:720px){
-    .colour-preview{padding-bottom:6px}.pipe-row{height:53px}.pipe-item{height:51px}.pipe-canvas{max-height:51px}
-    .sw-grid{gap:4px}.sw .nm{font-size:8px}
+    .colour-preview{padding-bottom:4px}.pipe-row{height:108px}.pipe-item{height:104px}.pipe-canvas{max-height:104px}
+    .sw-grid{gap:3px}.sw .nm{font-size:7px}
   }
 
   /* fields */
@@ -794,8 +794,9 @@ function pipeSelection(value,high){
   const o=high?cakeColourOptions().find(x=>x.high&&x.pid===value):cakeColourOptions().find(x=>!x.high&&x.h===value);
   return o?{c:o.c,name:o.t[lang]}:null;
 }
-function pipeItem(o){
-  return `<div class="pipe-item" title="${o.name}"><canvas class="pipe-canvas" data-colour="${o.c}" role="img" aria-label="${o.name} piping bag"></canvas></div>`;
+function pipeItem(o,index,items){
+  const angle=items.length>1?(-16+(32*index/(items.length-1))):0;
+  return `<div class="pipe-item" style="--pipe-angle:${angle}deg" title="${o.name}"><canvas class="pipe-canvas" data-colour="${o.c}" role="img" aria-label="${o.name} piping bag"></canvas></div>`;
 }
 
 let pipeAssetPromise=null,preparedPipe=null;
@@ -806,7 +807,7 @@ function preparePipeAssets(){
   if(preparedPipe)return Promise.resolve(preparedPipe);
   if(!pipeAssetPromise)pipeAssetPromise=Promise.all([
     loadPipeImage('https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/PipingBag_Pipe.png'),
-    loadPipeImage('https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/PipingBag_Mask.png')
+    loadPipeImage('https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/PipingBag_Mask.png?v=20260722-2')
   ]).then(([pipe,mask])=>{
     const w=pipe.naturalWidth,h=pipe.naturalHeight;
     const baseCanvas=document.createElement('canvas'),maskCanvas=document.createElement('canvas');
@@ -850,11 +851,12 @@ R.color=()=>{
   const included=S.colors.slice(0,2).map(h=>pipeSelection(h)).filter(Boolean);
   const extras=S.colors.slice(2).map(h=>pipeSelection(h)).filter(Boolean);
   const pigments=S.pigment.map(id=>pipeSelection(id,true)).filter(Boolean);
-  const boardColumns=`2fr 3fr ${Math.max(1,pigments.length)}fr`;
+  const showExtras=extras.length>0;
+  const boardColumns=showExtras?`2fr 3fr ${Math.max(1,pigments.length)}fr`:`2fr ${Math.max(1,pigments.length)}fr`;
   const zone=(title,price,items)=>`<div class="pipe-zone"><div class="pipe-zone-title">${title}</div><div class="pipe-zone-price">${price}</div><div class="pipe-row ${items.length>2?'many':''}">${items.length?items.map(pipeItem).join(''):'<span class="pipe-empty">·</span>'}</div></div>`;
   B().innerHTML=head(lg("Cake colours","Cor do bolo"),lg("Up to two colours included in price. Additional colours +€5 each.","Até duas cores incluídas no preço. Cores adicionais +€5 cada."))+
-    `<div class="colour-preview"><div class="pipe-board" style="grid-template-columns:${boardColumns}">${zone(lang==='en'?'Included':'Incluídas','',included)}${zone(lang==='en'?'Extra':'Extra','+€5',extras)}${zone(lang==='en'?'High pigment':'Pigmento',`+€${pigPrice}`,pigments)}</div>`+
-    `${pigments.length?`<p class="pipe-warning">${lang==='en'?'High-pigment colours may cost extra when used to cover the entire cake.':'Cores de alta pigmentação podem ter um custo extra quando cobrem todo o bolo.'}</p>`:''}`+
+    `<div class="colour-preview"><div class="pipe-board" style="grid-template-columns:${boardColumns}">${zone(lang==='en'?'Included':'Incluídas','',included)}${showExtras?zone(lang==='en'?'Extra':'Extra','+€5',extras):''}${zone(lang==='en'?'High pigment':'Pigmento',`+€${pigPrice}`,pigments)}</div>`+
+    `${pigments.length?`<p class="pipe-warning">${lang==='en'?'High-pigment colours may cost extra when covering the entire cake.':'Cores de alta pigmentação podem ter um custo extra quando cobrem todo o bolo.'}</p>`:''}`+
     `<p class="colour-count" id="pc">${T.pickMax[lang](selectedCakeColourCount())}</p></div>`+
     `<div class="sw-grid">${swatches}</div>`;
   paintPipePreviews();
