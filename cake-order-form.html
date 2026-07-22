@@ -1169,7 +1169,7 @@ R.review=()=>{
   const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
   const reviewNotice=c.custom
     ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
-    : (lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
+    : (lang==='en'?`Thanks ${first}! This total price is an estimate - some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
   B().innerHTML=head(lg("Review your order","Rever o seu pedido"),lg("I'll confirm availability and send your final quote via WhatsApp within 24 to 48 hours.","Vou confirmar a disponibilidade e enviar o orçamento final por WhatsApp dentro de 24 a 48 horas."))+
     `<div class="rcard">
       <div class="rc-for">
