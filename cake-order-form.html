@@ -101,19 +101,6 @@
   @keyframes accIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
   .flavour-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:600;color:var(--brand);line-height:1.2;border-bottom:1px solid var(--line);padding:14px 2px 9px;margin:0 0 10px}
   .flavour-group{margin-bottom:18px}
-  .opt.flavour-option{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:17px;min-height:108px;height:auto;padding:7px 10px 7px 12px}
-  .opt.flavour-option.sel{border-width:2px;border-color:var(--accent);background:#fff!important;box-shadow:0 0 0 1px rgba(115,8,44,.08),var(--shadow-sm)}
-  .flavour-copy{min-width:0;transform:translateY(-4px)}
-  .flavour-option .flavour-name{display:flex;align-items:center;min-height:31px;padding-right:46px;font-size:15px;font-weight:650;line-height:1.2;margin-bottom:4px;color:var(--ink)}
-  .flavour-specs{display:grid;grid-template-columns:66px minmax(0,1fr);gap:12px}
-  .flavour-spec{display:block;min-width:0}
-  .flavour-spec small{display:block;margin-bottom:2px;color:var(--ink-faint);font-size:9px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
-  .flavour-spec b{display:block;color:var(--ink-soft);font-size:11.5px;font-weight:550;line-height:1.26;overflow-wrap:anywhere}
-  .filling-list{display:grid;gap:2px}
-  .filling-item{display:grid;grid-template-columns:5px minmax(0,1fr);align-items:start;gap:3px;min-width:0}
-  .filling-item::before{content:"";width:3px;height:3px;margin-top:5.5px;border-radius:50%;background:var(--ink-faint)}
-  .flavour-price-slot{position:absolute;top:10px;right:12px;display:flex;align-items:center;justify-content:flex-end}
-  .flavour-price-slot .atag{font-size:13px;line-height:1;white-space:nowrap}
   .shape-row .shape-card{flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:11px 4px 10px;text-align:center;min-height:0}
   .shape-row .shape-card .ic{width:34px;height:34px;flex:0 0 auto;background:transparent}
   .shape-row .shape-card .ic svg{width:30px;height:30px}
@@ -489,14 +476,14 @@ const D={
   shapeCustom:[{id:"round",price:0,t:lg("Round","Redondo")},{id:"heart",price:5,t:lg("Heart","Coração")},
     {id:"square",price:5,t:lg("Square","Quadrado")},{id:"rect",price:8,t:lg("Rectangle","Retangular")}],
   flavBento:[
-    {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white chocolate + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
+    {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
     {id:"cvd",price:0,t:lg("Chocolate Vanilla Duo","Chocolate Vanilla Duo"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk + white chocolate (fillings)","Chocolate de Leite + Chocolate Branco"),c:"#6B4A38"},
     {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
   ],
   flavCustom:[
     {tier:lg("Classics","Clássicos"),items:[
       {id:"vb",price:0,t:lg("Vanilla Berry","Vanilla Berry"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mixed berry compote · white chocolate (fillings)","Compota de Frutos Vermelhos + Chocolate Branco"),c:"#D98BA6"},
-      {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white chocolate + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
+      {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
       {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
       {id:"lr",price:0,t:lg("Lemon Raspberry","Lemon Raspberry"),ck:lg("Lemon (cake)","Massa de Limão"),fi:lg("lemon cream · raspberry compote (fillings)","Creme de Limão + Compota de Framboesa"),c:"#EDD97A"},
     ]},
@@ -761,11 +748,9 @@ R.size=()=>{
 };
 R.flavor=()=>{
   let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
-  const cleanCake=v=>String(v||'').replace(/\s*\(cake\)\s*/i,'').replace(/^Massa de\s+/i,'');
-  const fillingList=v=>String(v||'').replace(/\s*\(fillings?\)\s*/i,'').split(/\s*(?:·|\+|•|\s-\s)\s*/).filter(Boolean).map(item=>`<span class="filling-item"><span>${esc(item)}</span></span>`).join('');
-  const card=o=>`<button class="opt flavour-option ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
+  const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic" style="background:${o.c}22"><span style="width:24px;height:24px;border-radius:50%;background:${o.c};display:block;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.15)"></span></span>
-      <span class="flavour-copy"><span class="flavour-name">${o.t[lang]}</span><span class="flavour-specs"><span class="flavour-spec"><small>${lang==='en'?'Cake':'Massa'}</small><b>${cleanCake(o.ck[lang])}</b></span><span class="flavour-spec"><small>${lang==='en'?'Fillings':'Recheios'}</small><b class="filling-list">${fillingList(o.fi[lang])}</b></span></span></span><span class="flavour-price-slot">${addTag(flavPrice(o))}</span></button>`;
+      <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.ck[lang]}</span><span class="ds">${o.fi[lang]}</span></span>${addTag(flavPrice(o))}</button>`;
   if(isBento()){h+=`<div class="opts">`+D.flavBento.map(card).join('')+`</div>`;}
   else{
     h+=`<p class="pig-desc" style="margin:-2px 0 8px">${lang==='en'?'Scroll to explore all flavours.':'Deslize para explorar todos os sabores.'}</p>`;
