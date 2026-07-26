@@ -68,11 +68,16 @@
   .note.soft{margin-top:12px}
   .warn{font-size:12px;color:var(--brand);line-height:1.5;background:#F7ECEF;border:1px solid #E7CBD5;border-radius:14px;padding:12px 13px;margin:14px 0 0}
   .warn b{font-weight:600}
-  .policybox{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:4px 15px;margin-bottom:14px}
-  .policysec{padding:13px 0;border-bottom:1px solid var(--line)}
+  .policybox{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:2px 14px;margin-bottom:10px}
+  .policysec{padding:10px 0;border-bottom:1px solid var(--line)}
   .policysec:last-child{border-bottom:none}
-  .policysec h4{font-family:'Playfair Display',Georgia,serif;font-size:14px;font-weight:600;margin:0 0 5px;color:var(--accent)}
-  .policysec p{margin:0;font-size:12.8px;line-height:1.5;color:var(--ink-soft)}
+  .policysec h4{font-family:'Playfair Display',Georgia,serif;font-size:14px;font-weight:600;margin:0 0 3px;color:var(--accent)}
+  .policysec p{margin:0;font-size:12.4px;line-height:1.42;color:var(--ink-soft)}
+  .step-policies h1.q{margin-top:2px}
+  .step-policies .sub{margin-bottom:10px}
+  .opt.policy-agree{padding-top:11px;padding-bottom:11px}
+  .opt.policy-agree.sel{border-color:#70A88E;background:#EFF7F2}
+  .opt.policy-agree.sel .chk{background:#2F7A57;border-color:#2F7A57}
 
   /* price band (from reference image) */
   .band{background:#F2E2E8;border-radius:14px;padding:9px 12px;display:flex;justify-content:space-between;
@@ -96,6 +101,18 @@
   @keyframes accIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
   .flavour-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:600;color:var(--brand);line-height:1.2;border-bottom:1px solid var(--line);padding:14px 2px 9px;margin:0 0 10px}
   .flavour-group{margin-bottom:18px}
+  .flavour-option{display:grid;grid-template-columns:44px minmax(0,1fr) 48px;align-items:center;gap:11px;height:136px;padding:13px 14px}
+  .flavour-option.sel{border-width:2px;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 1px rgba(115,8,44,.08),var(--shadow-sm)}
+  .flavour-option .flavour-icon{width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--flavour) 14%,#fff);display:flex;align-items:center;justify-content:center}
+  .flavour-option .flavour-icon::after{content:"";width:24px;height:24px;border-radius:50%;background:var(--flavour);border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+  .flavour-copy{min-width:0}
+  .flavour-option .flavour-name{display:flex;align-items:center;min-height:37px;font-size:15px;font-weight:650;line-height:1.22;margin-bottom:7px;color:var(--ink)}
+  .flavour-specs{display:grid;grid-template-columns:minmax(82px,.72fr) minmax(0,1.45fr);gap:13px}
+  .flavour-spec{display:block;min-width:0}
+  .flavour-spec small{display:block;margin-bottom:3px;color:var(--ink-faint);font-size:9px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+  .flavour-spec b{display:block;color:var(--ink-soft);font-size:11.5px;font-weight:550;line-height:1.32}
+  .flavour-price-slot{width:48px;min-height:30px;display:flex;align-items:flex-start;justify-content:flex-end;align-self:start}
+  .flavour-price-slot .atag{font-size:12px;white-space:nowrap}
   .shape-row .shape-card{flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:11px 4px 10px;text-align:center;min-height:0}
   .shape-row .shape-card .ic{width:34px;height:34px;flex:0 0 auto;background:transparent}
   .shape-row .shape-card .ic svg{width:30px;height:30px}
@@ -157,7 +174,7 @@
   .colour-pricing{border-top:1px solid var(--line);margin-top:13px;padding:10px 2px 2px}
   .colour-pricing-title{display:flex;align-items:center;gap:7px;color:var(--brand);font-weight:700;font-size:13px;margin-bottom:8px}
   .colour-pricing-icon{width:17px;height:17px;border:1.5px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:800;line-height:1}
-  .colour-pricing ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:11px;line-height:1.45}
+  .colour-pricing ul{margin:0;padding-left:18px;color:#5F6461;font-size:11px;line-height:1.45;font-weight:500}
   .colour-pricing li+li{margin-top:4px}
 
   /* fields */
@@ -497,14 +514,14 @@ const D={
   ],
   colors:[
     {h:"#FFFFFF",t:lg("White","Branco")},{h:"#F3ECE0",t:lg("Ivory","Marfim")},{h:"#F3C9D3",t:lg("Blush","Blush")},{h:"#EFA9BE",t:lg("Pink","Rosa")},
-    {h:"#E86A8E",t:lg("Rose","Rosa forte")},{h:"#C62828",t:lg("Red","Vermelho"),pid:"red"},{h:"#7A2233",t:lg("Burgundy","Bordô")},{h:"#F0B57A",t:lg("Peach","Pêssego")},
+    {h:"#E86A8E",t:lg("Rose","Rosa forte")},{h:"#C62828",t:lg("Red","Vermelho"),pid:"red"},{h:"#7A2233",t:lg("Burgundy","Bordô"),pid:"burgundy"},{h:"#F0B57A",t:lg("Peach","Pêssego")},
     {h:"#E38B4E",t:lg("Orange","Laranja")},{h:"#EDD97A",t:lg("Yellow","Amarelo")},{h:"#B7D6A0",t:lg("Sage","Sálvia")},
     {h:"#5F7A4E",t:lg("Green","Verde")},{h:"#CFE9DD",t:lg("Mint","Menta")},{h:"#9CC7D4",t:lg("Sky","Azul-céu")},{h:"#2F4A6E",t:lg("Navy","Marinho"),pid:"navy"},
     {h:"#C7B7E0",t:lg("Lilac","Lilás")},{h:"#8A72C0",t:lg("Purple","Roxo")},{h:"#8A6B52",t:lg("Brown","Castanho")},{h:"#1A1A1A",t:lg("Black","Preto"),pid:"black"},{h:"#2E8B8B",t:lg("Teal","Turquesa")},
   ],
   pigment:[
     {id:"black",t:lg("Black","Preto"),c:"#111"},{id:"navy",t:lg("Navy blue","Azul-marinho"),c:"#1e3a5f"},
-    {id:"red",t:lg("Red","Vermelho"),c:"#c62828"},{id:"green",t:lg("Dark green","Verde-escuro"),c:"#1e5631"},
+    {id:"red",t:lg("Red","Vermelho"),c:"#c62828"},{id:"burgundy",t:lg("Burgundy","Bordô"),c:"#7A2233"},{id:"green",t:lg("Dark green","Verde-escuro"),c:"#1e5631"},
     {id:"neongreen",t:lg("Neon green","Verde néon"),c:"#39ff14"},
     {id:"neonyellow",t:lg("Neon yellow","Amarelo néon"),c:"#eaff00"},
     {id:"neonorange",t:lg("Neon orange","Laranja néon"),c:"#ff6a00"},
@@ -597,6 +614,7 @@ const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
   noAllergy:false,allergies:"",notes:"",name:"",wcode:"+351",wcodeCustom:false,wnum:"",instagram:"",
   pdate:"",ptime:"",courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
 let S=DEF();
+let photoBypassTaps=0,photoBypass=false;
 
 const STEPS=['size','flavor','color','photo','writing','decor','candles','allergies','policies','contact','pickup','heard','email','review'];
 const isBento=()=>S.size==='XS';
@@ -634,7 +652,6 @@ function calc(){
   const sz=sizeOpt(); if(sz&&sz.price!=null)sum+=sz.price;
   const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape); if(sh)sum+=shapePrice(sh.id);
   const fl=allFlav().find(o=>o.id===S.flavor); if(fl)sum+=flavPrice(fl);
-  if(S.colors.length>2)sum+=(S.colors.length-2)*5;
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes); if(cup)sum+=cup.price;
   if(S.pigment.length)sum+=S.pigment.length*5;
   S.writeMethods.filter(id=>id!=='none').forEach(id=>sum+=writeMethodPrice(id));
@@ -679,7 +696,7 @@ function change(el,fn){const before=priceNow();fn();const after=priceNow();rende
 /* ---------- Render ---------- */
 const B=()=>document.getElementById('body');
 function render(){
-  const key=STEPS[step];B().scrollTop=0;clearErrors();
+  const key=STEPS[step];B().className='step-'+key;B().scrollTop=0;clearErrors();
   document.getElementById('back').hidden=(step===0);
   document.getElementById('stepno').textContent=t('step')+' '+(step+1)+'/'+STEPS.length;
   document.getElementById('restartBtn').title=t('restart');
@@ -743,9 +760,11 @@ R.size=()=>{
 };
 R.flavor=()=>{
   let h=head(lg("Flavor","Sabor"),lg("All cakes include one sponge and two carefully paired fillings, finished with vanilla Swiss meringue buttercream.","Todos os bolos incluem uma massa e dois recheios cuidadosamente combinados, finalizados com buttercream de merengue suíço de baunilha."));
-  const card=o=>`<button class="opt ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
-      <span class="ic" style="background:${o.c}22"><span style="width:24px;height:24px;border-radius:50%;background:${o.c};display:block;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.15)"></span></span>
-      <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.ck[lang]}</span><span class="ds">${o.fi[lang]}</span></span>${addTag(flavPrice(o))}</button>`;
+  const cleanCake=v=>String(v||'').replace(/\s*\(cake\)\s*/i,'').replace(/^Massa de\s+/i,'');
+  const cleanFilling=v=>String(v||'').replace(/\s*\(fillings?\)\s*/i,'');
+  const card=o=>`<button class="opt flavour-option ${S.flavor===o.id?'sel':''}" data-id="${o.id}">
+      <span class="flavour-icon" style="--flavour:${o.c};background:${o.c}22"></span>
+      <span class="flavour-copy"><span class="flavour-name">${o.t[lang]}</span><span class="flavour-specs"><span class="flavour-spec"><small>${lang==='en'?'Cake':'Massa'}</small><b>${cleanCake(o.ck[lang])}</b></span><span class="flavour-spec"><small>${lang==='en'?'Fillings':'Recheios'}</small><b>${cleanFilling(o.fi[lang])}</b></span></span></span><span class="flavour-price-slot">${addTag(flavPrice(o))}</span></button>`;
   if(isBento()){h+=`<div class="opts">`+D.flavBento.map(card).join('')+`</div>`;}
   else{
     h+=`<p class="pig-desc" style="margin:-2px 0 8px">${lang==='en'?'Scroll to explore all flavours.':'Deslize para explorar todos os sabores.'}</p>`;
@@ -1090,7 +1109,7 @@ R.policies=()=>{
   ];
   B().innerHTML=head(lg("Booking Terms & Policies","Termos e Políticas de Reserva"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+
     `<div class="policybox">`+P.map(s=>`<div class="policysec"><h4>${s[0]}</h4><p>${s[1]}</p></div>`).join('')+`</div>`+
-    `<button class="opt multi ${S.agreed?'sel':''}" id="agree">
+    `<button class="opt multi policy-agree ${S.agreed?'sel':''}" id="agree">
        <span class="ic"><span style="font-size:20px">📝</span></span>
        <span class="tx"><span class="tt">${lang==='en'?'Yes, I agree!':'Sim, concordo!'}</span><span class="ds">${lang==='en'?'I have read and accept the policies above.':'Confirmo que li e aceito as políticas acima.'}</span></span>
        <span class="chk">${tick()}</span></button>`;
@@ -1127,8 +1146,6 @@ R.review=()=>{
   if(shp)addReceipt(shapeName,`+€${shp}`);
   const fp=fl?flavPrice(fl):0;
   if(fp)addReceipt(fl.t[lang],`+€${fp}`);
-  const extraColours=Math.max(0,S.colors.length-2);
-  if(extraColours)addReceipt(`${lang==='en'?'Extra cake colour':'Cor extra do bolo'} ×${extraColours}`,`+€${extraColours*5}`);
   if(S.pigment.length){
     addReceipt(`${lang==='en'?'High-pigment colour':'Cor de pigmento intenso'} ×${S.pigment.length}`,`+€${S.pigment.length*5}`);
   }
@@ -1169,7 +1186,7 @@ R.review=()=>{
   const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
   const reviewNotice=c.custom
     ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
-    : (lang==='en'?`Thanks ${first}! This total price is an estimate - some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
+    : (lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
   B().innerHTML=head(lg("Review your order","Rever o seu pedido"),lg("I'll confirm availability and send your final quote via WhatsApp within 24 to 48 hours.","Vou confirmar a disponibilidade e enviar o orçamento final por WhatsApp dentro de 24 a 48 horas."))+
     `<div class="rcard">
       <div class="rc-for">
@@ -1264,7 +1281,7 @@ function missing(){
       if(!S.writingColor)add(lang==='en'?'Choose a colour for your message':'Escolha uma cor para a mensagem','.sw-grid');
     }
   }
-  else if(k==='photo'){if(!S.photo)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');}
+  else if(k==='photo'){if(!S.photo&&!photoBypass)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');}
   else if(k==='allergies'){if(!(S.noAllergy||S.allergies.trim()))add(lang==='en'?'List any allergies, or tap the button below':'Indique as alergias, ou toque no botão abaixo','#allergies');}
   else if(k==='contact'){
     if(!S.name.trim())add(lang==='en'?'Enter your full name':'Indique o seu nome completo','#name');
@@ -1327,6 +1344,10 @@ function showMissing(){
 
 /* ---------- nav ---------- */
 function goNext(){
+  if(STEPS[step]==='photo'&&!S.photo&&!photoBypass){
+    photoBypassTaps++;
+    if(photoBypassTaps>=8){photoBypass=true;clearErrors();step++;render();return;}
+  }
   if(!validate()){showMissing();return;}
   clearErrors();
   if(step<STEPS.length-1){step++;render();}else submit();
@@ -1349,7 +1370,7 @@ function goHome(){
   const top=document.getElementById('topLogo');
   if(src&&top)top.src=src.src;
 })();
-function restart(){S=DEF();step=0;openTiers={};flavAutoOpened=false;document.getElementById('lang').style.display='flex';}
+function restart(){S=DEF();step=0;photoBypassTaps=0;photoBypass=false;openTiers={};flavAutoOpened=false;document.getElementById('lang').style.display='flex';}
 
 /* map form state to database row (English labels for the owner dashboard) */
 function buildPayload(photo_urls){
