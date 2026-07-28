@@ -305,11 +305,17 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials — no card, corner quote marks */
-  #testimonials{background:var(--brand);color:#fff;padding:50px 14px 38px;margin:clamp(150px,20svh,190px) 0 0;min-height:330px}
+  #testimonials{background:var(--brand);color:#fff;padding:50px 14px 38px;margin:56px 0 0;min-height:330px;opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s}
+  #testimonials.is-visible{opacity:1;visibility:visible;transform:translateY(0);transition-delay:0s}
   #testimonials .sec-title{color:#fff}
   #testimonials .sec-intro{color:#e7c6d0;margin-bottom:22px}
-  #testiTrack{padding-left:0;padding-right:0;margin:0}
+  .testimonial-carousel{position:relative;padding:0 38px}
+  #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth}
   #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
+  .testimonial-nav{position:absolute;z-index:3;top:50%;display:flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transform:translateY(-62%);transition:background .15s ease,transform .15s ease}
+  .testimonial-nav.prev{left:0}.testimonial-nav.next{right:0}
+  .testimonial-nav:active{background:rgba(255,255,255,.22);transform:translateY(-62%) scale(.94)}
+  .testimonial-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .quote{position:relative;padding:34px 2px 48px;text-align:left;min-height:150px;
     display:flex;flex-direction:column;justify-content:center}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:70px;line-height:.6;color:#fff;opacity:.2;pointer-events:none}
@@ -320,6 +326,7 @@
   #testimonials .dot{background:rgba(255,255,255,.3)}
   #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
+  @media (prefers-reduced-motion:reduce){#testimonials{transition:none}.testimonial-nav{transition:none}}
 
   /* accordions */
   .acc{border-bottom:1px solid var(--line)}
@@ -515,8 +522,10 @@
   <section id="testimonials">
     <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Feedback</span></h2>
     <p class="sec-intro"><span class="i-en">Kind words from my customers</span><span class="i-pt">O que dizem o meus clientes</span></p>
-    <div class="carousel" data-carousel>
+    <div class="carousel testimonial-carousel" data-carousel data-autoplay="false">
+      <button class="testimonial-nav prev" type="button" data-carousel-prev aria-label="Previous testimonial" onclick="moveTestimonial(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
       <div class="carousel-track" id="testiTrack" data-align="center"></div>
+      <button class="testimonial-nav next" type="button" data-carousel-next aria-label="Next testimonial" onclick="moveTestimonial(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
       <div class="dots" id="testiDots"></div>
     </div>
   </section>
@@ -998,6 +1007,27 @@ document.getElementById('testiTrack').innerHTML=TESTI.map(function(t){return '<d
   '<figcaption class="quote-by">'+t.by+'</figcaption>'+
   '<span class="qm qm-c">\u201D</span></figure></div>';}).join('');
 
+var testimonialSection=document.getElementById('testimonials');
+var testimonialIndex=0;
+function moveTestimonial(direction){
+  var track=document.getElementById('testiTrack'),slides=[].slice.call(track.querySelectorAll('.slide')),dots=[].slice.call(document.querySelectorAll('#testiDots .dot'));
+  if(!slides.length)return;
+  testimonialIndex=(testimonialIndex+direction+slides.length)%slides.length;
+  var target=slides[testimonialIndex].offsetLeft-track.offsetLeft-(track.clientWidth-slides[testimonialIndex].offsetWidth)/2;
+  track.scrollLeft=Math.max(0,target);
+  dots.forEach(function(dot,index){dot.classList.toggle('on',index===testimonialIndex);});
+}
+function revealTestimonials(){
+  if(testimonialSection.classList.contains('is-visible'))return;
+  var rect=testimonialSection.getBoundingClientRect();
+  if(window.scrollY>16&&rect.top<window.innerHeight*.9&&rect.bottom>0){
+    testimonialSection.classList.add('is-visible');
+    window.removeEventListener('scroll',revealTestimonials);
+  }
+}
+window.addEventListener('scroll',revealTestimonials,{passive:true});
+revealTestimonials();
+
 var chev='<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>';
 document.getElementById('faqList').innerHTML=FAQ.map(function(cat){return '<div class="acc cat"><button class="acc-head" aria-expanded="false"><span>'+cat.cat+'</span>'+chev+'</button>'+
   '<div class="acc-panel"><div class="inner">'+
@@ -1024,6 +1054,7 @@ document.getElementById('guidesList').addEventListener('click',accToggle);
 document.querySelectorAll('[data-carousel]').forEach(function(root){
   var track=root.querySelector('.carousel-track');
   var dotsWrap=root.querySelector('.dots');
+  var autoplay=root.getAttribute('data-autoplay')!=='false';
   var align=track.getAttribute('data-align')||'start';
   var PAD=24,GAP=14;
   var slides=[].slice.call(track.querySelectorAll('.slide'));
@@ -1045,7 +1076,7 @@ document.querySelectorAll('[data-carousel]').forEach(function(root){
   slides.forEach(function(s,i){
     var d=document.createElement('button');d.className='dot'+(i===0?' on':'');
     d.setAttribute('aria-label','Slide '+(i+1));
-    d.onclick=function(){pause();go(i);};
+    d.onclick=function(){pause();if(root.classList.contains('testimonial-carousel')){testimonialIndex=i;moveTestimonial(0);}else go(i);};
     dotsWrap.appendChild(d);
   });
   var dots=[].slice.call(dotsWrap.children);
@@ -1056,16 +1087,21 @@ document.querySelectorAll('[data-carousel]').forEach(function(root){
     return align==='center' ? (sr.left-tr.left)-(tr.width-sr.width)/2 : (sr.left-tr.left)-PAD;
   }
   function go(i){idx=(i+slides.length)%slides.length;var x=track.scrollLeft+delta(slides[idx]);track.scrollTo({left:x<0?0:x,behavior:reduce()?'auto':'smooth'});setDot(idx);}
-  function play(){if(reduce()||slides.length<2)return;stop();timer=setInterval(function(){go(idx+1);},3800);}
+  function play(){if(!autoplay||reduce()||slides.length<2)return;stop();timer=setInterval(function(){go(idx+1);},3800);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function pause(){stop();clearTimeout(idleT);idleT=setTimeout(play,6000);}
   var st;
   track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){
     var tr=track.getBoundingClientRect(),ref=align==='center'?tr.left+tr.width/2:tr.left+PAD,best=0,bd=1e9;
     slides.forEach(function(s,j){var sr=s.getBoundingClientRect();var pt=align==='center'?sr.left+sr.width/2:sr.left;var dd=Math.abs(pt-ref);if(dd<bd){bd=dd;best=j;}});
-    setDot(best);
+    setDot(best);if(root.classList.contains('testimonial-carousel'))testimonialIndex=best;
   },90);},{passive:true});
   track.addEventListener('pointerdown',pause);
+  var prev=root.querySelector('[data-carousel-prev]'),next=root.querySelector('[data-carousel-next]');
+  if(!root.classList.contains('testimonial-carousel')){
+    if(prev)prev.addEventListener('click',function(){pause();go(idx-1);});
+    if(next)next.addEventListener('click',function(){pause();go(idx+1);});
+  }
   measure();
   window.addEventListener('resize',measure);
   setDot(0);play();

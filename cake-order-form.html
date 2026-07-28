@@ -188,6 +188,7 @@
   .fdp-selected{background:var(--accent-soft);color:var(--accent);font-weight:600;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:11px;font-size:14px}
   .fdp-selected .selected-rush{display:inline-block;margin-left:6px;font-size:10px;font-weight:600;letter-spacing:.01em;vertical-align:1px}
   .fdp-selected .selected-rush-price{font-size:12px;font-weight:800;margin-left:3px}
+  .rush-note{margin:8px 2px 0;padding:10px 12px;border:1px solid #E5D4A8;border-radius:11px;background:#FFF9EA;color:#68522A;font-size:11.5px;font-weight:520;line-height:1.45}
   .fdp-selected.empty{background:var(--card);border:1px dashed var(--line);color:var(--ink-faint);font-weight:500}
   .fdp{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:10px}
   .fdp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -476,20 +477,20 @@ const D={
   shapeCustom:[{id:"round",price:0,t:lg("Round","Redondo")},{id:"heart",price:5,t:lg("Heart","Coração")},
     {id:"square",price:5,t:lg("Square","Quadrado")},{id:"rect",price:8,t:lg("Rectangle","Retangular")}],
   flavBento:[
-    {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
-    {id:"cvd",price:0,t:lg("Chocolate Vanilla Duo","Chocolate Vanilla Duo"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk + white chocolate (fillings)","Chocolate de Leite + Chocolate Branco"),c:"#6B4A38"},
+    {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white chocolate cream + milk chocolate cream (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
+    {id:"cvd",price:0,t:lg("Chocolate Vanilla Duo","Chocolate Vanilla Duo"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate cream + white chocolate cream (fillings)","Chocolate de Leite + Chocolate Branco"),c:"#6B4A38"},
     {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
   ],
   flavCustom:[
     {tier:lg("Classics","Clássicos"),items:[
-      {id:"vb",price:0,t:lg("Vanilla Berry","Vanilla Berry"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mixed berry compote · white chocolate (fillings)","Compota de Frutos Vermelhos + Chocolate Branco"),c:"#D98BA6"},
-      {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white + milk chocolate (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
+      {id:"vb",price:0,t:lg("Vanilla Berry","Vanilla Berry"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("mixed berry compote · white chocolate cream (fillings)","Compota de Frutos Vermelhos + Chocolate Branco"),c:"#D98BA6"},
+      {id:"vcd",price:0,t:lg("Vanilla Chocolate Duo","Vanilla Chocolate Duo"),ck:lg("Vanilla (cake)","Massa de Baunilha"),fi:lg("white chocolate cream + milk chocolate cream (fillings)","Chocolate Branco + Chocolate de Leite"),c:"#EAD8A0"},
       {id:"rv",price:0,t:lg("Red Velvet Classic","Red Velvet Classic"),ck:lg("Red velvet (cake)","Massa de Red Velvet"),fi:lg("cream cheese · berry compote (fillings)","Queijo Creme + Compota de Frutos Vermelhos"),c:"#B23A48"},
       {id:"lr",price:0,t:lg("Lemon Raspberry","Lemon Raspberry"),ck:lg("Lemon (cake)","Massa de Limão"),fi:lg("lemon cream · raspberry compote (fillings)","Creme de Limão + Compota de Framboesa"),c:"#EDD97A"},
     ]},
     {tier:lg("Chocolate Lovers","Chocolate Lovers"),items:[
-      {id:"cbb",price:0,t:lg("Chocolate Berry Bliss","Chocolate Berry Bliss"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate · berry compote (fillings)","Chocolate de Leite + Compota de Frutos Vermelhos"),c:"#7A4A55"},
-      {id:"csc",price:0,t:lg("Chocolate Salted Caramel","Chocolate Salted Caramel"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate · salted caramel (fillings)","Chocolate de Leite + Caramelo Salgado"),c:"#8A5A3C"},
+      {id:"cbb",price:0,t:lg("Chocolate Berry Bliss","Chocolate Berry Bliss"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate cream · berry compote (fillings)","Chocolate de Leite + Compota de Frutos Vermelhos"),c:"#7A4A55"},
+      {id:"csc",price:0,t:lg("Chocolate Salted Caramel","Chocolate Salted Caramel"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("milk chocolate cream · salted caramel (fillings)","Chocolate de Leite + Caramelo Salgado"),c:"#8A5A3C"},
       {id:"cc",price:0,t:lg("Cookies and Cream","Cookies and Cream"),ck:lg("Chocolate (cake)","Massa de Chocolate"),fi:lg("cream cheese · crushed Oreo (fillings)","Queijo Creme + Oreo Trituradas"),c:"#4B3B3B"},
     ]},
     {tier:lg("Signature","Signature"),items:[
@@ -497,7 +498,7 @@ const D={
       {id:"ps",sig:true,t:lg("Pistachio Strawberry","Pistachio Strawberry"),ck:lg("Pistachio (cake)","Massa de Pistáchios"),fi:lg("pistachio cream · strawberry (fillings)","Creme de Pistáchio + Morango"),c:"#9DB07E"},
       {id:"scp",sig:true,t:lg("Salted Caramel Peanut","Salted Caramel Peanut"),ck:lg("Caramel (cake)","Massa de Caramelo"),fi:lg("salted caramel · peanut butter cream · crushed peanuts (fillings)","Caramelo Salgado + Creme de Manteiga de Amendoim + Amendoins Triturados"),c:"#B07A3C"},
       {id:"biscoff",sig:true,t:lg("Biscoff","Biscoff"),ck:lg("Caramel (cake)","Massa de Caramelo"),fi:lg("lotus biscoff cream · crushed biscoff cookies (fillings)","Creme de Biscoff Lotus + Bolachas Biscoff Trituradas"),c:"#C8853F"},
-      {id:"coconut",sig:true,t:lg("Coconut Passion","Coconut Passion"),ck:lg("Coconut (cake)","Massa de Coco"),fi:lg("milk chocolate · passion fruit curd (fillings)","Chocolate de Leite + Curd de Maracujá"),c:"#E7DCC4"},
+      {id:"coconut",sig:true,t:lg("Coconut Passion","Coconut Passion"),ck:lg("Coconut (cake)","Massa de Coco"),fi:lg("milk chocolate cream · passion fruit curd (fillings)","Chocolate de Leite + Curd de Maracujá"),c:"#E7DCC4"},
     ]},
   ],
   colors:[
@@ -1001,6 +1002,7 @@ R.pickup=()=>{
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
   const selectedRush=rushSurcharge();
+  const rushNote=selectedRush?`<div class="rush-note">${lang==='en'?'Orders requested within 2 days of collection require changes to my production schedule. A rush order fee helps cover the additional time and planning required.':'Encomendas solicitadas com pouca antecedência exigem alterações ao meu planeamento de produção. A taxa de urgência ajuda a cobrir o tempo e o planeamento adicionais necessários.'}</div>`:'';
   const disp=S.pdate
     ? `<span>${fmtPicked(S.pdate)}</span>${selectedRush?`<span class="selected-rush">${lang==='en'?'Rush order':'Pedido urgente'}</span><span class="selected-rush-price">+€${selectedRush}</span>`:''}`
     : (lang==='en'?'Choose a date':'Escolha uma data');
@@ -1016,7 +1018,7 @@ R.pickup=()=>{
        </div>
        <div class="fdp-grid">${WDs.map(w=>`<span class="fdp-dow">${w}</span>`).join('')}${cells}</div>
      </div>
-     <div class="fdp-selected ${S.pdate?'':'empty'}" id="pickupSelected" style="margin-top:11px;margin-bottom:0">${disp}</div>
+     <div class="fdp-selected ${S.pdate?'':'empty'}" id="pickupSelected" style="margin-top:11px;margin-bottom:0">${disp}</div>${rushNote}
      <div class="field" id="pickupTimes" style="margin-top:12px;margin-bottom:10px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
      ${!S.courier?`<p class="note" id="pickNote">${pickNote()}</p>`:''}
      ${courierOK?`<button class="opt multi ${S.courier?'sel':''}" id="courierBtn" style="margin-top:9px;padding-top:11px;padding-bottom:11px">
