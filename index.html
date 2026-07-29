@@ -305,35 +305,35 @@
   .story-sign{font-family:var(--script);font-size:38px;color:var(--brand);line-height:1.1;margin-top:6px}
 
   /* testimonials */
-  #testimonials{background:var(--brand);color:#fff;padding:48px 12px 38px;margin:56px 0 0;min-height:470px;opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s}
+  #testimonials{background:var(--brand);color:#fff;padding:42px 24px 34px;margin:56px 0 0;min-height:430px;opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s}
   #testimonials.is-visible{opacity:1;visibility:visible;transform:translateY(0);transition-delay:0s}
-  #testimonials .sec-title{color:#fff;font-size:clamp(38px,9vw,48px);line-height:1.04;margin-bottom:15px;letter-spacing:-.025em}
-  #testimonials .sec-intro{display:flex;align-items:center;gap:14px;color:#f0dce2;margin:0 2px 38px;font-size:14px;white-space:nowrap}
-  #testimonials .sec-intro em{font-family:var(--serif);font-size:1.08em;font-style:italic}
+  #testimonials .sec-title{color:#fff;font-size:27px;line-height:1.12;margin-bottom:11px;letter-spacing:-.01em}
+  #testimonials .sec-intro{display:flex;align-items:center;gap:12px;color:#f0dce2;margin:0 0 32px;font-size:14px;white-space:nowrap}
+  #testimonials .sec-intro em{font-family:inherit;font-size:inherit;font-weight:inherit;font-style:italic}
   .testimonial-intro-line{flex:1;min-width:28px;height:1px;background:rgba(255,255,255,.38)}
-  .testimonial-carousel{position:relative;padding:0 12px}
+  .testimonial-carousel{position:relative;padding:0 8px}
   #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth}
   #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
   .testimonial-nav{position:absolute;z-index:3;top:49%;display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(91,0,29,.7);color:#fff;cursor:pointer;transform:translateY(-50%);transition:background .15s ease,transform .15s ease}
   .testimonial-nav.prev{left:-5px}.testimonial-nav.next{right:-5px}
   .testimonial-nav:active{background:rgba(255,255,255,.16);transform:translateY(-50%) scale(.94)}
   .testimonial-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .quote{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:292px;margin:12px 0 2px;padding:58px 22px 62px;border:1px solid rgba(255,255,255,.17);border-radius:16px;text-align:left;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035))}
+  .quote{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:260px;margin:12px 0 2px;padding:52px 20px 56px;border:1px solid rgba(255,255,255,.17);border-radius:16px;text-align:left;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035))}
   .quote-stars{position:absolute;z-index:2;top:-13px;left:14px;display:flex;gap:3px;padding:1px 8px 2px;background:var(--brand);color:#F2C46C;font-size:17px;line-height:1.2;letter-spacing:.01em}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:76px;line-height:.6;color:#fff;opacity:.17;pointer-events:none}
   .quote .qm-o{top:41px;left:19px}
   .quote .qm-c{right:20px;bottom:42px}
-  .quote-text{position:relative;z-index:1;max-width:none;margin:0 7px;font-family:var(--serif);font-style:normal;font-size:clamp(20px,5.4vw,26px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.018em}
+  .quote-text{position:relative;z-index:1;max-width:none;margin:0 6px;font-family:var(--serif);font-style:normal;font-size:clamp(18px,4.6vw,22px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.012em}
   .quote-by{position:absolute;right:24px;bottom:22px;margin:0;font-size:12px;font-weight:600;letter-spacing:.07em;color:#efd6dd;text-align:right}
   #testimonials .dot{background:rgba(255,255,255,.3)}
   #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
   #testimonials .dots{margin-top:19px}
   @media(max-width:390px){
-    #testimonials{padding-left:9px;padding-right:9px}
+    #testimonials{padding-left:18px;padding-right:18px}
     #testimonials .sec-intro{gap:9px;font-size:13px}
-    .testimonial-carousel{padding:0 9px}
-    .quote{min-height:280px;padding-left:18px;padding-right:18px}
+    .testimonial-carousel{padding:0 8px}
+    .quote{min-height:252px;padding-left:17px;padding-right:17px}
     .quote-text{margin-left:5px;margin-right:5px}
     .testimonial-nav.prev{left:-3px}.testimonial-nav.next{right:-3px}
   }
