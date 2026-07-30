@@ -146,9 +146,10 @@
   .opt.sel{border-color:var(--accent);background:linear-gradient(0deg,var(--accent-soft),#fff)}
   .opt .ic{flex:0 0 auto;width:48px;height:48px;border-radius:13px;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
   .opt .ic .method-img{width:100%;height:100%;object-fit:cover;display:block}
-  .method-preview-trigger{position:relative;cursor:zoom-in}
-  .method-preview-trigger .zoom-glyph{position:absolute;right:3px;bottom:3px;width:18px;height:18px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.9);border-radius:6px;background:rgba(255,255,255,.9);color:var(--brand);box-shadow:0 2px 7px rgba(70,29,44,.18)}
-  .method-preview-trigger .zoom-glyph svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .method-preview-trigger{position:relative;cursor:zoom-in;overflow:visible!important}
+  .method-preview-trigger .method-img{border-radius:13px}
+  .method-preview-trigger .zoom-glyph{position:absolute;right:-4px;bottom:-4px;width:13px;height:13px;display:grid;place-items:center;border:1px solid rgba(115,8,44,.22);border-radius:4px;background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(70,29,44,.14)}
+  .method-preview-trigger .zoom-glyph svg{width:8px;height:8px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
   .opt .ic .brand-logo{width:25px;height:25px;object-fit:contain;display:block}
   .opt .ic .simple-icon{font-size:19px;font-weight:700;color:var(--brand)}
   .opt .tx{flex:1;min-width:0}
@@ -274,8 +275,6 @@
   .photo-add .t2{font-size:10.5px;color:var(--ink-soft)}
   .photo-add.need{border-color:var(--brand);background:var(--accent-soft)}
   .photo-add.need .t2{color:var(--brand);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:9.5px}
-  .upload-success{display:flex;align-items:center;gap:9px;margin:10px 1px 2px;padding:9px 11px;border:1px solid #BFD8C9;border-radius:11px;background:#F1F8F4;color:#35684E;font-size:12px;font-weight:650;line-height:1.3}
-  .upload-success .success-check{flex:0 0 auto;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#4D8565;color:#fff;font-size:12px;font-weight:800}
   .mini-upload{border:1.5px dashed #DFCBD0;border-radius:13px;background:var(--card);padding:11px;text-align:center;cursor:pointer;font-size:13px;color:var(--ink-soft);font-weight:600;margin-top:12px}
   .mini-upload.has{border-style:solid;border-color:var(--pistachio);color:var(--pistachio)}
 
@@ -368,7 +367,7 @@
     font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .err{position:relative}
   .field.err input,.field.err textarea,.err>.ig-wrap input{border-color:#D66A6A !important;background:#FEF7F7}
-  .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err,.flavour-group.err{
+  .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err,.flavour-group.err,.combined-section.err{
     outline:2px solid #E9A9A9;outline-offset:5px;border-radius:14px}
   .opt.err{border-color:#D66A6A !important}
 
@@ -659,10 +658,10 @@ const D={
     {id:"custom",t:lg("Custom","Personalizado"),ic:"✨",quote:true},
   ],
   heard:[
-    {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),logo:"brand-icons/instagram.svg"},
-    {id:"tiktok",t:lg("TikTok","TikTok"),logo:"brand-icons/tiktok.svg"},
-    {id:"igad",t:lg("Meta ad","Anúncio no Meta"),logo:"brand-icons/meta.svg"},
-    {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),logo:"brand-icons/facebook.svg"},
+    {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),brand:"instagram"},
+    {id:"tiktok",t:lg("TikTok","TikTok"),brand:"tiktok"},
+    {id:"igad",t:lg("Meta ad","Anúncio no Meta"),brand:"meta"},
+    {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),brand:"facebook"},
     {id:"returning",t:lg("Returning customer","Cliente anterior"),ic:"💝"},
     {id:"referral",t:lg("Referred by a friend","Indicado por um amigo"),ic:"🗣️"},
   ],
@@ -709,13 +708,22 @@ function shapeIcon(id){
   };
   return `<svg width="48" height="48" viewBox="0 0 48 48">${M[id]}</svg>`;
 }
+function brandIcon(id){
+  const icons={
+    instagram:`<svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#E4405F" stroke-width="2.15"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/></g><circle cx="17.5" cy="6.6" r="1.25" fill="#E4405F"/></svg>`,
+    tiktok:`<svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="#111" d="M15.3 2.5c.4 2.3 1.7 3.7 4.2 4.1v3.1c-1.5 0-2.8-.4-4.1-1.2v6.3a6.2 6.2 0 1 1-5.4-6.1v3.2a3 3 0 1 0 2.1 2.9V2.5h3.2z"/></svg>`,
+    meta:`<svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#0866FF" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round" d="M2.4 15.8C4.1 8.7 6.4 5.1 9 5.1c2.5 0 4.4 3.5 6.2 6.3 1.7 2.8 2.7 4.4 4.2 4.4 1.3 0 2.2-1.2 2.2-3.2 0-4-2-7.5-5-7.5-3.2 0-5.8 4.7-7.7 7.6-1.8 2.8-2.7 4.2-4.2 4.2-1.3 0-2.3-.5-2.3-1.1z"/></svg>`,
+    facebook:`<svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#fff" d="M13.8 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5H17V3.9c-.7-.1-1.5-.2-2.3-.2-2.3 0-3.9 1.4-3.9 4V10H8.2v3h2.6v8h3z"/></svg>`
+  };
+  return icons[id]||'';
+}
 
 /* ---------- State ---------- */
 let lang="en", step=0;
 let reviewReachedBottom=false;
 const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
   writeMethods:[],writing:"",writingColor:null,writingRef:false,
-  cupcakes:"none",decor:["none"],candles:"yes",photo:false,photoFiles:[],photoPreviews:[],photoNote:"",
+  cupcakes:"none",decor:["none"],candles:null,photo:false,photoFiles:[],photoPreviews:[],photoNote:"",
   noAllergy:false,allergies:"",notes:"",name:"",wcode:"+351",wcodeCustom:false,wnum:"",instagram:"",
   pdate:"",ptime:"",courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
 let S=DEF();
@@ -1057,7 +1065,6 @@ R.photo=()=>{
   B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("Add 1–3 photos — up to 10 MB each and 15 MB in total.","Adicione 1–3 fotos — até 10 MB cada e 15 MB no total."))+
     `<input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" id="photoInput" multiple style="display:none">
      <div class="photo-grid">${thumbs}${adder}</div>
-     ${n?`<div class="upload-success" id="photoSuccess"><span class="success-check">✓</span><span>${lang==='en'?(n===1?'Photo uploaded successfully — your reference is ready.':'Photos uploaded successfully — your references are ready.'):(n===1?'Fotografia carregada com sucesso — a sua referência está pronta.':'Fotografias carregadas com sucesso — as suas referências estão prontas.')}</span></div>`:''}
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
      <div class="tier"><span>${lang==='en'?'Anything else?':'Mais alguma coisa?'}</span><span class="ln"></span></div>
      <div class="field"><label>${lang==='en'?'Tell me anything you think I should know about your vision for the cake.':'Diga-me tudo o que acha que devo saber sobre a sua visão para o bolo.'} <span class="opt-note">(${t('optional')})</span></label>
@@ -1091,7 +1098,13 @@ R.photo=()=>{
     S.photo=S.photoFiles.length>0;
     R.photo();validate();
     if(S.photoFiles.length>beforeCount){
-      requestAnimationFrame(()=>document.getElementById('photoSuccess')?.scrollIntoView({behavior:'smooth',block:'start'}));
+      showToastMessage(lang==='en'?'Photo uploaded successfully':'Fotografia carregada com sucesso');
+      requestAnimationFrame(()=>{
+        const candle=document.getElementById('candleSection'),body=B();
+        if(!candle)return;
+        const top=candle.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop;
+        body.scrollTo({top:Math.max(0,top-body.clientHeight*.2),behavior:'smooth'});
+      });
     }
   };
   B().querySelectorAll('.photo-rm').forEach(b=>b.onclick=()=>{
@@ -1205,7 +1218,7 @@ R.pickup=()=>{
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
   const selectedRush=rushSurcharge();
-  const rushNote=selectedRush?`<div class="rush-note">${lang==='en'?'Rush orders within 2 days require production rescheduling. The fee covers the additional planning and preparation.':'Encomendas urgentes com menos de 2 dias exigem reorganização da produção. A taxa cobre o planeamento e a preparação adicionais.'}</div>`:'';
+  const rushNote=selectedRush?`<div class="rush-note">${lang==='en'?'A rush fee applies to orders requested within 2 days of collection, to cover the additional time and planning required to adjust my production schedule.':'É aplicada uma taxa de urgência a pedidos feitos até 2 dias antes da recolha, para cobrir o tempo e planeamento extras necessários para ajustar o meu calendário de produção.'}</div>`:'';
   const disp=S.pdate
     ? `<span>${fmtPicked(S.pdate)}</span>${selectedRush?`<span class="selected-rush">${lang==='en'?'Rush order':'Pedido urgente'}</span><span class="selected-rush-price">+€${selectedRush}</span>`:''}`
     : (lang==='en'?'Choose a date':'Escolha uma data');
@@ -1258,7 +1271,7 @@ R.heard=()=>{
   B().innerHTML=head(lg("How did you find me?","Como me encontrou?"))+
     `<div class="opts">`+D.heard.map(o=>`
     <button class="opt ${S.heard===o.id?'sel':''}" data-id="${o.id}">
-      <span class="ic">${o.logo?`<img class="brand-logo" src="${o.logo}" alt="" loading="lazy">`:`<span style="font-size:20px">${o.ic}</span>`}</span>
+      <span class="ic">${o.brand?brandIcon(o.brand):`<span style="font-size:20px">${o.ic}</span>`}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')+`</div>
      <div id="refwrap" style="${S.heard==='referral'?'':'display:none'};margin-top:14px">
        <div class="field"><label>${lang==='en'?'Who can I thank?':'A quem posso agradecer?'}</label>
@@ -1316,7 +1329,7 @@ R.review=()=>{
       sz.price==null?(lang==='en'?'To quote':'A orçamentar'):`€${sz.price}`,sz.price==null?'quote':'');
   }
   const shp=sh?shapePrice(sh.id):0;
-  if(shp)addReceipt(shapeName,`+€${shp}`);
+  if(shp)addReceipt(lang==='en'?`${shapeName} Shape`:`Forma ${shapeName}`,`+€${shp}`);
   const fp=fl?flavPrice(fl):0;
   if(fp)addReceipt(fl.t[lang],`+€${fp}`);
   if(S.pigment.length){
@@ -1404,7 +1417,7 @@ R.review=()=>{
     const body=B();
     const updateReviewScroll=()=>{
       const reached=body.scrollTop+body.clientHeight>=body.scrollHeight-14;
-      if(reached!==reviewReachedBottom){reviewReachedBottom=reached;validate();}
+      if(reached&&!reviewReachedBottom){reviewReachedBottom=true;validate();}
     };
     body.onscroll=updateReviewScroll;
     updateReviewScroll();
@@ -1463,7 +1476,10 @@ function missing(){
       if(!S.writingColor)add(lang==='en'?'Choose a colour for your message':'Escolha uma cor para a mensagem','.sw-grid');
     }
   }
-  else if(k==='photo'){if(!S.photo&&!photoBypass)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');}
+  else if(k==='photo'){
+    if(!S.photo&&!photoBypass)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');
+    if(!S.candles)add(lang==='en'?'Choose whether you would like complimentary candles':'Escolha se pretende velas de oferta','#candleSection');
+  }
   else if(k==='allergies'){if(!(S.noAllergy||S.allergies.trim()))add(lang==='en'?'List any allergies, or tap the button below':'Indique as alergias, ou toque no botão abaixo','#allergies');}
   else if(k==='contact'){
     if(!S.name.trim())add(lang==='en'?'Enter your full name':'Indique o seu nome completo','#name');
@@ -1641,15 +1657,16 @@ async function submit(){
     if(!response.ok)throw new Error(result.error||(lang==='en'?'The order could not be sent. Please try again.':'Não foi possível enviar a encomenda. Tente novamente.'));
     formAnalyticsSubmitted=true;
     trackFormEvent('form_submitted',{step_number:STEPS.length,step_name:'review',duration_seconds:formDuration()},true);
-    const remaining=Math.max(0,1000-(Date.now()-sendingStarted));
+    const remaining=Math.max(0,250-(Date.now()-sendingStarted));
     if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
     showDone();
   }catch(e){
     resetTurnstile();
     btn.disabled=false;btn.classList.remove('sending');btn.textContent=t('send');
-    alert((lang==='en'
-      ?"Sorry — something went wrong sending your order. Please try again.\n\n"
-      :"Ocorreu um erro ao enviar o pedido. Tente novamente.\n\n")+(e.message||e));
+    console.error('Order submission failed',e);
+    alert(e.message||(lang==='en'
+      ?"The order could not be sent. Please try again."
+      :"Não foi possível enviar a encomenda. Tente novamente."));
   }
 }
 
