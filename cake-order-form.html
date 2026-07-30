@@ -3,7 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>byamandasoyer — Order</title>
+<title>Order Your Custom Cake | Encomende o Seu Bolo | ByAmandaSoyer</title>
+<meta name="description" content="Order your custom birthday or celebration cake in Lisbon. Encomende o seu bolo personalizado em Lisboa com ByAmandaSoyer.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://byamandasoyer.pt/cake-order-form.html">
+<link rel="icon" href="/by_as_pt_icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/by_as_pt_icons/android-chrome-192x192.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="byAmandaSoyer">
+<meta property="og:title" content="Order Your Custom Cake | ByAmandaSoyer">
+<meta property="og:description" content="Create your custom birthday or celebration cake order in Lisbon.">
+<meta property="og:url" content="https://byamandasoyer.pt/cake-order-form.html">
+<meta property="og:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_15.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Order Your Custom Cake | ByAmandaSoyer">
+<meta name="twitter:description" content="Create your custom birthday or celebration cake order in Lisbon.">
+<meta name="twitter:image" content="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_15.jpg">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebPage",
+  "@id":"https://byamandasoyer.pt/cake-order-form.html#webpage",
+  "url":"https://byamandasoyer.pt/cake-order-form.html",
+  "name":"Order Your Custom Cake | Encomende o Seu Bolo | ByAmandaSoyer",
+  "description":"Bilingual custom cake order form for birthday and celebration cakes in Lisbon.",
+  "isPartOf":{"@id":"https://byamandasoyer.pt/#website"},
+  "about":{"@id":"https://byamandasoyer.pt/#bakery"},
+  "primaryImageOfPage":{
+    "@type":"ImageObject",
+    "url":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_15.jpg",
+    "contentUrl":"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/cakes/Cake_15.jpg",
+    "caption":"Custom celebration cake by Amanda Soyer in Lisbon"
+  },
+  "inLanguage":["en","pt"]
+}
+</script>
 <link rel="stylesheet" href="/security-hardening.css">
 <script src="/security-hardening.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,6 +145,9 @@
   .opt:active{transform:scale(.985)}
   .opt.sel{border-color:var(--accent);background:linear-gradient(0deg,var(--accent-soft),#fff)}
   .opt .ic{flex:0 0 auto;width:48px;height:48px;border-radius:13px;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .opt .ic .method-img{width:100%;height:100%;object-fit:cover;display:block}
+  .opt .ic .brand-logo{width:25px;height:25px;object-fit:contain;display:block}
+  .opt .ic .simple-icon{font-size:19px;font-weight:700;color:var(--brand)}
   .opt .tx{flex:1;min-width:0}
   /* keep every multi-select label clear of the checkbox in the top-right */
   .opt.multi .tx{padding-right:26px}
@@ -217,6 +254,9 @@
   .drop .t1{font-weight:600;font-size:15px;margin-top:8px}
   .drop .t2{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4}
   .photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .combined-section{margin-top:18px;padding-top:1px;border-top:1px solid var(--line)}
+  .step-heard .opt{padding-top:10px;padding-bottom:10px}
+  .step-heard .opt .ic{width:42px;height:42px;border-radius:11px}
   .photo-thumb{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;border:1.5px solid var(--pistachio);box-shadow:var(--shadow-sm)}
   .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
   .photo-rm{position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(20,20,20,.6);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
@@ -359,6 +399,8 @@
   #survey.sent{background:var(--accent-soft);border-radius:16px;padding:14px 16px;margin-top:26px;animation:accIn .3s ease}
   #survey.sent .fb-thanks{margin:0;display:flex;align-items:center;justify-content:center;gap:8px}
   #survey .fb-em{font-size:19px}
+  .hp-trap{position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:.01!important}
+  #turnstileMount{position:absolute;left:50%;bottom:86px;z-index:80;transform:translateX(-50%);min-width:1px;min-height:1px}
 </style>
 </head>
 <body>
@@ -396,6 +438,12 @@
     <div id="foot"><div id="errToast"></div><button id="next" onclick="goNext()">Continue</button></div>
   </div>
 
+  <div class="hp-trap" aria-hidden="true">
+    <label for="companyWebsite" aria-hidden="true">Leave this field empty</label>
+    <input id="companyWebsite" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+  </div>
+  <div id="turnstileMount" aria-live="polite"></div>
+
   <div id="done">
     <div class="big">🎉</div>
     <h1 id="doneH"></h1>
@@ -420,12 +468,58 @@
   </div>
 </div>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ---------- Supabase ---------- */
 const SB_URL="https://ivnybivjjydihltknlmo.supabase.co";
 const SB_KEY="sb_publishable_JgB-ewQdFNoFS25-tOxp4g_G-I0s1E2";
+const TURNSTILE_SITE_KEY="REPLACE_WITH_CLOUDFLARE_TURNSTILE_SITE_KEY";
+const TURNSTILE_TEST_SITE_KEY="1x00000000000000000000AA";
+const MAX_PHOTO_BYTES=10*1024*1024;
+const MAX_PHOTO_TOTAL_BYTES=15*1024*1024;
+const ALLOWED_PHOTO_TYPES=new Set(["image/jpeg","image/png","image/webp"]);
 let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.error("Supabase init failed",e); }
+let turnstileWidgetId=null,turnstileToken="",turnstileWaiters=[];
+function localTurnstilePreview(){return location.protocol==="file:"||["localhost","127.0.0.1"].includes(location.hostname);}
+function activeTurnstileSiteKey(){return localTurnstilePreview()?TURNSTILE_TEST_SITE_KEY:TURNSTILE_SITE_KEY;}
+function settleTurnstileWaiters(value){
+  const waiters=turnstileWaiters.splice(0);
+  waiters.forEach(resolve=>resolve(value));
+}
+function ensureTurnstileWidget(){
+  const key=activeTurnstileSiteKey();
+  if(!window.turnstile||turnstileWidgetId!==null||!key||key.startsWith("REPLACE_"))return false;
+  turnstileWidgetId=window.turnstile.render("#turnstileMount",{
+    sitekey:key,
+    action:"order_submit",
+    theme:"light",
+    appearance:"interaction-only",
+    callback:token=>{turnstileToken=token;settleTurnstileWaiters(token);},
+    "expired-callback":()=>{turnstileToken="";},
+    "error-callback":()=>{turnstileToken="";settleTurnstileWaiters("");}
+  });
+  return true;
+}
+async function getTurnstileToken(){
+  const key=activeTurnstileSiteKey();
+  if(!key||key.startsWith("REPLACE_"))throw new Error(lang==="en"?"Secure verification is not configured yet.":"A verificação de segurança ainda não está configurada.");
+  for(let i=0;i<50&&!window.turnstile;i++)await new Promise(resolve=>setTimeout(resolve,100));
+  if(!window.turnstile)throw new Error(lang==="en"?"Security verification could not load. Please check your connection.":"Não foi possível carregar a verificação de segurança. Verifique a sua ligação.");
+  ensureTurnstileWidget();
+  const current=turnstileToken||(turnstileWidgetId!==null?window.turnstile.getResponse(turnstileWidgetId):"");
+  if(current)return current;
+  return await new Promise((resolve,reject)=>{
+    const timer=setTimeout(()=>{const i=turnstileWaiters.indexOf(done);if(i>=0)turnstileWaiters.splice(i,1);reject(new Error(lang==="en"?"Security verification timed out. Please try again.":"A verificação de segurança expirou. Tente novamente."));},20000);
+    const done=value=>{clearTimeout(timer);value?resolve(value):reject(new Error(lang==="en"?"Security verification failed. Please try again.":"A verificação de segurança falhou. Tente novamente."));};
+    turnstileWaiters.push(done);
+    try{if(turnstileWidgetId!==null)window.turnstile.execute(turnstileWidgetId);}catch(_){}
+  });
+}
+function resetTurnstile(){
+  turnstileToken="";
+  if(window.turnstile&&turnstileWidgetId!==null)try{window.turnstile.reset(turnstileWidgetId);}catch(_){}
+}
 
 /* ---------- anonymous funnel analytics (never sends form answers) ---------- */
 const formAnalyticsQuery=new URLSearchParams(location.search);
@@ -516,10 +610,10 @@ const D={
     {id:"neonorange",t:lg("Neon orange","Laranja néon"),c:"#ff6a00"},
   ],
   writeMethods:[
-    {id:"piping",t:lg("Handwritten Cursive Text","Texto Cursivo à Mão"),ic:"✍️"},
-    {id:"fondant",t:lg("Fondant Letters","Letras de Fondant"),ic:"🔤"},
-    {id:"cutout",t:lg("Cutout Letters","Letras Recortadas"),ic:"🖼️"},
-    {id:"none",t:lg("None","Nenhuma"),ic:"⬜"},
+    {id:"piping",t:lg("Handwritten Cursive Text","Texto Cursivo à Mão"),img:"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/1-piping.jpg"},
+    {id:"fondant",t:lg("Fondant Letters","Letras de Fondant"),img:"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/2-fondant.jpg"},
+    {id:"cutout",t:lg("Cutout Letters","Letras Recortadas"),img:"https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/3-cutout.jpg"},
+    {id:"none",t:lg("None","Nenhuma")},
   ],
   cupcakes:[
     {id:"none",price:0,t:lg("No cupcakes","Sem cupcakes"),d:lg("","")},
@@ -544,10 +638,10 @@ const D={
     {id:"custom",t:lg("Custom","Personalizado"),ic:"✨",quote:true},
   ],
   heard:[
-    {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),ic:"🔍"},
-    {id:"tiktok",t:lg("TikTok","TikTok"),ic:"🎵"},
-    {id:"igad",t:lg("Meta ad","Anúncio no Meta"),ic:"📣"},
-    {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),ic:"👥"},
+    {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),logo:"https://cdn.simpleicons.org/instagram/E4405F"},
+    {id:"tiktok",t:lg("TikTok","TikTok"),logo:"https://cdn.simpleicons.org/tiktok/111111"},
+    {id:"igad",t:lg("Meta ad","Anúncio no Meta"),logo:"https://cdn.simpleicons.org/meta/0866FF"},
+    {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),logo:"https://cdn.simpleicons.org/facebook/1877F2"},
     {id:"returning",t:lg("Returning customer","Cliente anterior"),ic:"💝"},
     {id:"referral",t:lg("Referred by a friend","Indicado por um amigo"),ic:"🗣️"},
   ],
@@ -605,7 +699,7 @@ const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
 let S=DEF();
 let photoBypassTaps=0,photoBypass=false;
 
-const STEPS=['size','flavor','color','photo','writing','decor','candles','allergies','policies','contact','pickup','heard','email','review'];
+const STEPS=['size','flavor','allergies','color','photo','writing','decor','pickup','contact','heard','policies','review'];
 const isBento=()=>S.size==='XS';
 const sizeOpt=()=>D.size.opts.find(o=>o.id===S.size);
 const isCustomQuote=()=>{const o=sizeOpt();return !!o&&o.price==null;};
@@ -805,7 +899,7 @@ R.writing=()=>{
   const msgNone=S.writeMethods.length>0&&!S.writeMethods.some(m=>m!=='none');
   const needs=S.writeMethods.some(m=>m!=='none');   /* a real style is chosen */
   const cards=D.writeMethods.map(o=>`<button class="opt multi ${o.id==='none'?'excl':''} ${S.writeMethods.includes(o.id)?'sel':''}" data-id="${o.id}">
-      <span class="ic"><span style="font-size:22px">${o.ic}</span></span>
+      <span class="ic">${o.img?`<img class="method-img" src="${o.img}" alt="" loading="lazy">`:`<span class="simple-icon">—</span>`}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span>
       ${addTag(writeMethodPrice(o.id))}
       ${o.id==='none'?'':`<span class="chk">${tick()}</span>`}</button>`).join('');
@@ -890,6 +984,17 @@ R.decor=()=>{
     R.decor();
   });
 };
+function candlesSectionHTML(){
+  return `<div class="combined-section"><div class="tier"><span>${lang==='en'?'Complimentary candles':'Velas de oferta'}</span><span class="ln"></span></div>
+    <p class="pig-desc" style="margin:-5px 0 9px">${lang==='en'?'1–3 candles are free.':'1–3 velas são gratuitas.'}</p>
+    <div class="opts">`+[{id:"yes",t:lg("Yes please","Sim, por favor"),ic:"🕯️"},{id:"no",t:lg("No, not needed","Não, obrigado(a)"),ic:"🚫"}]
+      .map(o=>`<button class="opt ${S.candles===o.id?'sel':''}" data-candle="${o.id}">
+        <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
+        <span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')+`</div></div>`;
+}
+function bindCandles(){
+  B().querySelectorAll('[data-candle]').forEach(el=>el.onclick=()=>{S.candles=el.dataset.candle;B().querySelectorAll('[data-candle]').forEach(x=>x.classList.toggle('sel',x===el));validate();});
+}
 R.candles=()=>{
   B().innerHTML=head(lg("Complimentary Candles","Velas de oferta"),lg("1–3 candles are free.","1–3 velas são gratuitas."))+
     `<div class="opts">`+[{id:"yes",t:lg("Yes please","Sim, por favor"),ic:"🕯️"},{id:"no",t:lg("No, not needed","Não, obrigado(a)"),ic:"🚫"}]
@@ -911,19 +1016,38 @@ R.photo=()=>{
       <span class="t1">${lang==='en'?'Add a photo':'Adicionar foto'}</span>
       <span class="t2">${n===0?(lang==='en'?'required':'obrigatória'):(lang==='en'?`${n}/3 added`:`${n}/3 adicionadas`)}</span>
     </button>`:'';
-  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("At least 1 photo is required, up to 3 — this helps me understand your vision.","É necessária pelo menos 1 foto, até um máximo de 3 — isto ajuda-me a perceber a sua visão."))+
-    `<input type="file" accept="image/*" id="photoInput" multiple style="display:none">
+  B().innerHTML=head(lg("Inspiration photo","Foto de inspiração"),lg("Add 1–3 photos — up to 10 MB each and 15 MB in total.","Adicione 1–3 fotos — até 10 MB cada e 15 MB no total."))+
+    `<input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" id="photoInput" multiple style="display:none">
      <div class="photo-grid">${thumbs}${adder}</div>
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
      <div class="tier"><span>${lang==='en'?'Anything else?':'Mais alguma coisa?'}</span><span class="ln"></span></div>
      <div class="field"><label>${lang==='en'?'Tell me anything you think I should know about your vision for the cake.':'Diga-me tudo o que acha que devo saber sobre a sua visão para o bolo.'} <span class="opt-note">(${t('optional')})</span></label>
-       <textarea id="notes" placeholder="${lang==='en'?'e.g., the theme party is Little Mermaid':'ex.: o tema da festa é A Pequena Sereia'}">${esc(S.notes)}</textarea></div>`;
+       <textarea id="notes" placeholder="${lang==='en'?'e.g., the theme party is Little Mermaid':'ex.: o tema da festa é A Pequena Sereia'}">${esc(S.notes)}</textarea></div>
+     ${candlesSectionHTML()}`;
   const inp=document.getElementById('photoInput');
   const drop=document.getElementById('drop');
   if(drop)drop.onclick=()=>inp.click();
   inp.onchange=e=>{
     const files=Array.from(e.target.files||[]);
-    for(const f of files){ if(S.photoFiles.length>=3)break; S.photoFiles.push(f); S.photoPreviews.push(URL.createObjectURL(f)); }
+    let rejected='';
+    for(const f of files){
+      if(S.photoFiles.length>=3){rejected=lang==='en'?'You can upload up to 3 photos.':'Pode carregar até 3 fotos.';break;}
+      if(!ALLOWED_PHOTO_TYPES.has(String(f.type||'').toLowerCase())){
+        rejected=lang==='en'?'Please choose a JPEG, PNG, or WebP photo.':'Escolha uma foto JPEG, PNG ou WebP.';
+        continue;
+      }
+      if(f.size>MAX_PHOTO_BYTES){
+        rejected=lang==='en'?'Each photo must be 10 MB or less.':'Cada foto deve ter no máximo 10 MB.';
+        continue;
+      }
+      const total=S.photoFiles.reduce((sum,file)=>sum+file.size,0)+f.size;
+      if(total>MAX_PHOTO_TOTAL_BYTES){
+        rejected=lang==='en'?'All photos together must be 15 MB or less.':'Todas as fotos juntas devem ter no máximo 15 MB.';
+        continue;
+      }
+      S.photoFiles.push(f);S.photoPreviews.push(URL.createObjectURL(f));
+    }
+    if(rejected)showToastMessage(rejected);
     S.photo=S.photoFiles.length>0;
     R.photo();validate();
   };
@@ -934,6 +1058,7 @@ R.photo=()=>{
     S.photo=S.photoFiles.length>0;R.photo();validate();
   });
   const pn=document.getElementById('notes'); if(pn)pn.oninput=e=>S.notes=e.target.value;
+  bindCandles();
 };
 R.allergies=()=>{
   B().innerHTML=head(lg("Dietary restrictions & allergies","Alergias e/ou restrições alimentares"))+
@@ -950,6 +1075,35 @@ R.allergies=()=>{
   document.getElementById('noAll').onclick=()=>{S.noAllergy=!S.noAllergy;if(S.noAllergy)S.allergies='';R.allergies();validate();};
   const a=document.getElementById('allergies'); if(a)a.oninput=e=>{S.allergies=e.target.value;validate();};
 };
+function emailSectionHTML(){
+  return `<div class="combined-section"><div class="tier"><span>${lang==='en'?'Email updates':'Novidades por email'}</span><span class="ln"></span></div>
+     <button class="opt multi email-optin ${S.emailOptIn?'sel':''}" id="optin">
+       <span class="ic"><span style="font-size:20px">✉️</span></span>
+       <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive emails about workshops, new products, and special offers":'Gostaria de receber emails sobre workshops, novos produtos e ofertas especiais'}</span></span>
+       <span class="chk">${tick()}</span>
+     </button>
+     <div id="emailWrap" style="${S.emailOptIn?'':'display:none'}">
+       <div class="field" style="margin-top:14px"><label>${lang==='en'?'Your email':'O seu email'}</label>
+         <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" value="${esc(S.email)}"></div>
+       <p class="note">${lang==='en'?"We only email about these updates, never share your email, and won't contact you often.":'Só enviamos emails sobre estas atualizações, nunca partilhamos o seu email e não o contactamos com frequência.'}</p>
+     </div>
+     <button type="button" class="linklike" id="privBtn">${lang==='en'?'Read our Privacy Policy':'Ler a nossa Política de Privacidade'}</button></div>`;
+}
+function bindEmailSection(){
+  const email=document.getElementById('email');
+  if(email)email.oninput=e=>{S.email=e.target.value;validate();};
+  const optin=document.getElementById('optin');
+  if(optin)optin.onclick=()=>{
+    S.emailOptIn=!S.emailOptIn;
+    optin.classList.toggle('sel',S.emailOptIn);
+    document.getElementById('emailWrap').style.display=S.emailOptIn?'block':'none';
+    if(!S.emailOptIn)S.email='';
+    else setTimeout(()=>{const e=document.getElementById('email');if(e)e.focus();},80);
+    validate();
+  };
+  const privacy=document.getElementById('privBtn');
+  if(privacy)privacy.onclick=openPrivacy;
+}
 R.contact=()=>{
   const cc=D.countries.map(o=>`<option value="${o.c}" ${!S.wcodeCustom&&S.wcode===o.c?'selected':''}>${o.iso} ${o.c}</option>`).join('')
     +`<option value="__custom" ${S.wcodeCustom?'selected':''}>+…</option>`;
@@ -963,7 +1117,8 @@ R.contact=()=>{
        <input id="wnum" type="tel" placeholder="912 345 678" value="${esc(S.wnum)}"></div>
        ${S.wcodeCustom?`<button type="button" class="linklike" id="revertCode">↩ ${lang==='en'?'pick from list':'escolher da lista'}</button>`:''}</div>
      <div class="field"><label>Instagram <span class="opt-note">(${t('optional')})</span></label>
-       <div class="ig-wrap"><span class="at">@</span><input id="insta" type="text" placeholder="username" value="${esc(S.instagram)}"></div></div>`;
+       <div class="ig-wrap"><span class="at">@</span><input id="insta" type="text" placeholder="username" value="${esc(S.instagram)}"></div></div>
+     ${emailSectionHTML()}`;
   document.getElementById('name').oninput=e=>{S.name=e.target.value;validate();};
   const sel=document.getElementById('wcode');
   if(sel)sel.onchange=e=>{if(e.target.value==='__custom'){S.wcodeCustom=true;S.wcode='';R.contact();document.getElementById('wcodeInput').focus();}else S.wcode=e.target.value;};
@@ -972,6 +1127,7 @@ R.contact=()=>{
   document.getElementById('wnum').oninput=e=>{S.wnum=e.target.value;validate();};
   const ig=document.getElementById('insta');
   ig.oninput=e=>{let v=e.target.value.replace(/@/g,'');e.target.value=v;S.instagram=v;validate();};
+  bindEmailSection();
 };
 function pickNote(){
   return S.courier
@@ -1053,7 +1209,7 @@ R.heard=()=>{
   B().innerHTML=head(lg("How did you find me?","Como me encontrou?"))+
     `<div class="opts">`+D.heard.map(o=>`
     <button class="opt ${S.heard===o.id?'sel':''}" data-id="${o.id}">
-      <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
+      <span class="ic">${o.logo?`<img class="brand-logo" src="${o.logo}" alt="" loading="lazy">`:`<span style="font-size:20px">${o.ic}</span>`}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')+`</div>
      <div id="refwrap" style="${S.heard==='referral'?'':'display:none'};margin-top:14px">
        <div class="field"><label>${lang==='en'?'Who can I thank?':'A quem posso agradecer?'}</label>
@@ -1062,37 +1218,17 @@ R.heard=()=>{
   const rb=document.getElementById('refby'); if(rb)rb.oninput=e=>S.referredBy=e.target.value;
 };
 R.email=()=>{
-  B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Choose if you'd like to receive updates about workshops, new products, and special offers.","Escolha se pretende receber atualizações sobre workshops, novos produtos e ofertas especiais."))+
-    `<button class="opt multi email-optin ${S.emailOptIn?'sel':''}" id="optin">
-       <span class="ic"><span style="font-size:20px">💌</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?"I'd like to receive emails about workshops, new products, and special offers":'Gostaria de receber emails sobre workshops, novos produtos e ofertas especiais'}</span></span>
-       <span class="chk">${tick()}</span>
-     </button>
-     <div id="emailWrap" style="${S.emailOptIn?'':'display:none'}">
-       <div class="field" style="margin-top:14px"><label>${lang==='en'?'Your email':'O seu email'}</label>
-         <input id="email" type="email" placeholder="you@email.com" value="${esc(S.email)}"></div>
-       <p class="note">${lang==='en'?"We only email about these updates, never share your email, and won't contact you often.":'Só enviamos emails sobre estas atualizações, nunca partilhamos o seu email e não o contactamos com frequência.'}</p>
-     </div>
-     <button type="button" class="linklike" id="privBtn">${lang==='en'?'Read our Privacy Policy':'Ler a nossa Política de Privacidade'}</button>`;
-  document.getElementById('email').oninput=e=>{S.email=e.target.value;validate();};
-  document.getElementById('optin').onclick=()=>{
-    S.emailOptIn=!S.emailOptIn;
-    document.getElementById('optin').classList.toggle('sel',S.emailOptIn);
-    document.getElementById('emailWrap').style.display=S.emailOptIn?'block':'none';
-    if(!S.emailOptIn)S.email='';
-    else setTimeout(()=>{const e=document.getElementById('email');if(e)e.focus();},80);
-    validate();
-  };
-  document.getElementById('privBtn').onclick=openPrivacy;
+  B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Choose if you'd like to receive updates about workshops, new products, and special offers.","Escolha se pretende receber atualizações sobre workshops, novos produtos e ofertas especiais."))+emailSectionHTML();
+  bindEmailSection();
 };
 R.policies=()=>{
   const P=lang==='en'?[
     ["Quotes","After you submit this form, I'll check availability and send your quote via WhatsApp. Quotes are sent between Sunday and Wednesday until 12:00. Other days are dedicated to production."],
-    ["Reservations","Your order is only secured after the 50% deposit is received and the proof of payment is sent. <span style=\"white-space:nowrap\">(No deposit = no order.)</span> Quotes are valid for 48 hours. After this, availability is not guaranteed."],
+    ["Reservations","Your order is only secured after the 50% deposit is received and the proof of payment is sent. <span style=\"white-space:nowrap\">(No deposit = no order.)</span> Standard quotes are valid for 48 hours; rush-order quotes are valid for 6 hours. After this, availability is not guaranteed."],
     ["Payment & cancellation","Payment via MB Way or bank transfer (details will be provided with your quote). In case of cancellation, the 50% deposit is non-refundable."],
   ]:[
     ["Orçamentos","Após submeter o formulário, irei verificar a disponibilidade e enviarei o seu orçamento por WhatsApp. Orçamentos são enviados entre domingo e quarta-feira, até às 12:00. Os restantes dias são dedicados à produção."],
-    ["Reservas","A sua encomenda só fica confirmada após a receção do sinal não reembolsável de 50% e do respetivo comprovativo de pagamento. <span style=\"white-space:nowrap\">Sem sinal = sem encomenda.</span> Os orçamentos são válidos durante 48 horas. Após esse período, não é possível garantir a disponibilidade da data pretendida."],
+    ["Reservas","A sua encomenda só fica confirmada após a receção do sinal não reembolsável de 50% e do respetivo comprovativo de pagamento. <span style=\"white-space:nowrap\">Sem sinal = sem encomenda.</span> Os orçamentos normais são válidos durante 48 horas; os orçamentos urgentes são válidos durante 6 horas. Após esse período, não é possível garantir a disponibilidade da data pretendida."],
     ["Pagamento e cancelamento","Pagamento por MB Way ou transferência bancária. Os dados serão fornecidos juntamente com o orçamento. Em caso de cancelamento, o sinal de 50% não é reembolsável."],
   ];
   B().innerHTML=head(lg("Booking Terms & Policies","Termos e Políticas de Reserva"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+
@@ -1274,6 +1410,11 @@ function missing(){
   else if(k==='contact'){
     if(!S.name.trim())add(lang==='en'?'Enter your full name':'Indique o seu nome completo','#name');
     if(S.wnum.trim().length<=3)add(lang==='en'?'Enter your WhatsApp number':'Indique o seu número de WhatsApp','#wnum');
+    if(S.emailOptIn){
+      const v=S.email.trim();
+      if(!v)add(lang==='en'?'Enter your email to receive updates':'Indique o seu email para receber atualizações','#email');
+      else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))add(lang==='en'?'That email address doesn\'t look right':'Esse endereço de email não parece correto','#email');
+    }
   }
   else if(k==='pickup'){
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
@@ -1341,7 +1482,7 @@ function goNext(){
   if(step<STEPS.length-1){step++;render();}else submit();
 }
 function goBack(){if(step>0){step--;render();}}
-function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;startFormAnalytics();render();}
+function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;startFormAnalytics();render();setTimeout(ensureTurnstileWidget,0);}
 function isEmbedded(){
   try{return window.parent&&window.parent!==window;}catch(e){return false;}
 }
@@ -1358,7 +1499,7 @@ function goHome(){
   const top=document.getElementById('topLogo');
   if(src&&top)top.src=src.src;
 })();
-function restart(){S=DEF();step=0;photoBypassTaps=0;photoBypass=false;openTiers={};flavAutoOpened=false;document.getElementById('lang').style.display='flex';}
+function restart(){S=DEF();step=0;photoBypassTaps=0;photoBypass=false;openTiers={};flavAutoOpened=false;document.getElementById('companyWebsite').value='';resetTurnstile();document.getElementById('lang').style.display='flex';}
 
 /* map form state to database row (English labels for the owner dashboard) */
 function buildPayload(photo_urls){
@@ -1414,32 +1555,35 @@ async function submit(){
   const sendingStarted=Date.now();
   btn.disabled=true;btn.classList.add('sending');btn.innerHTML=`<span>${lang==='en'?'Sending':'A enviar'}</span><span class="send-spinner" aria-hidden="true"></span>`;
   try{
-    if(!sb) throw new Error("Connection not ready. Please refresh and try again.");
-    let photo_urls=[];
-    for(const f of S.photoFiles.slice(0,3)){
-      const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
-      const path=`orders/${Date.now()}_${Math.random().toString(36).slice(2,8)}.${ext}`;
-      const up=await sb.storage.from('references').upload(path,f,{cacheControl:'3600',upsert:false});
-      if(up.error) throw up.error;
-      photo_urls.push(sb.storage.from('references').getPublicUrl(path).data.publicUrl);
-    }
+    if(!sb)throw new Error(lang==='en'?"Connection not ready. Please refresh and try again.":"A ligação não está pronta. Atualize a página e tente novamente.");
+    const totalPhotoBytes=S.photoFiles.reduce((sum,file)=>sum+file.size,0);
+    if(S.photoFiles.length>3)throw new Error(lang==='en'?"You can upload up to 3 photos.":"Pode carregar até 3 fotos.");
+    if(S.photoFiles.some(file=>file.size>MAX_PHOTO_BYTES))throw new Error(lang==='en'?"Each photo must be 10 MB or less.":"Cada foto deve ter no máximo 10 MB.");
+    if(totalPhotoBytes>MAX_PHOTO_TOTAL_BYTES)throw new Error(lang==='en'?"All photos together must be 15 MB or less.":"Todas as fotos juntas devem ter no máximo 15 MB.");
+    const turnstile=await getTurnstileToken();
     /* A private submission token lets the optional survey attach after submit. */
-    const payload=buildPayload(photo_urls);
+    const payload=buildPayload([]);
     lastSubmissionToken=(window.crypto&&window.crypto.randomUUID)?window.crypto.randomUUID():fallbackUuid();
     payload.submission_token=lastSubmissionToken;
-    let {error}=await sb.from('orders').insert(payload);
-    /* Backward-compatible safety: orders must still submit before the migration is installed. */
-    if(error&&(error.code==='PGRST204'||/submission_token/i.test(error.message||''))){
-      delete payload.submission_token;lastSubmissionToken=null;
-      ({error}=await sb.from('orders').insert(payload));
-    }
-    if(error)throw error;
+    const formData=new FormData();
+    formData.append('payload',JSON.stringify(payload));
+    formData.append('turnstile_token',turnstile);
+    formData.append('website',document.getElementById('companyWebsite').value||'');
+    S.photoFiles.slice(0,3).forEach(file=>formData.append('photos',file,'reference-photo'));
+    const response=await fetch(`${SB_URL}/functions/v1/submit-order`,{
+      method:'POST',
+      headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},
+      body:formData
+    });
+    let result={};try{result=await response.json();}catch(_){}
+    if(!response.ok)throw new Error(result.error||(lang==='en'?'The order could not be sent. Please try again.':'Não foi possível enviar a encomenda. Tente novamente.'));
     formAnalyticsSubmitted=true;
     trackFormEvent('form_submitted',{step_number:STEPS.length,step_name:'review',duration_seconds:formDuration()},true);
     const remaining=Math.max(0,1000-(Date.now()-sendingStarted));
     if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
     showDone();
   }catch(e){
+    resetTurnstile();
     btn.disabled=false;btn.classList.remove('sending');btn.textContent=t('send');
     alert((lang==='en'
       ?"Sorry — something went wrong sending your order. Please try again.\n\n"
