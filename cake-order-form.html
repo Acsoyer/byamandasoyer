@@ -263,6 +263,13 @@
   .drop .t2{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4}
   .photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
   .combined-section{margin-top:18px;padding-top:1px;border-top:1px solid var(--line)}
+  .step-writing #candleSection{margin-top:14px}
+  .step-writing #candleSection .tier{font-size:17px;margin:14px 0 6px}
+  .step-writing #candleSection .pig-desc{font-size:10.5px;margin:0 0 7px!important}
+  .step-writing #candleSection .candle-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .step-writing #candleSection .opt{min-height:46px;padding:7px 9px;gap:8px;border-radius:13px}
+  .step-writing #candleSection .opt .ic{width:31px;height:31px;border-radius:9px}
+  .step-writing #candleSection .opt .tt{font-size:12.5px;line-height:1.16}
   .step-heard .opt{padding-top:10px;padding-bottom:10px}
   .step-heard .opt .ic{width:42px;height:42px;border-radius:11px}
   .photo-thumb{position:relative;aspect-ratio:1;border-radius:16px;overflow:hidden;border:1.5px solid var(--pistachio);box-shadow:var(--shadow-sm)}
@@ -365,6 +372,9 @@
   #errToast span{font-size:12.5px;font-weight:600;color:#9B2C2C;line-height:1.35;display:flex;gap:6px}
   #errToast span:before{content:"!";flex:0 0 auto;width:14px;height:14px;border-radius:50%;background:#9B2C2C;color:#fff;
     font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  #errToast.success{background:#EDF7F0;border-color:#BEDDC7}
+  #errToast.success span{color:#2F704A}
+  #errToast.success span:before{content:"✓";background:#3E8058}
   .err{position:relative}
   .field.err input,.field.err textarea,.err>.ig-wrap input{border-color:#D66A6A !important;background:#FEF7F7}
   .sw-grid.err,.shape-row.err,.photo-grid.err,.time-grid.err,.fdp.err,.opts.err,.acc.err,.flavour-group.err,.combined-section.err{
@@ -926,6 +936,10 @@ function scrollToColour(){
   const sec=document.getElementById('msgColSec');
   if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);
 }
+function scrollToCandle(){
+  const sec=document.getElementById('candleSection');
+  if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'center'}),120);
+}
 function openMethodPreview(src,label){
   const box=document.getElementById('methodLightbox');
   const img=document.getElementById('methodLightboxImage');
@@ -963,10 +977,11 @@ R.writing=()=>{
   const colSec=needs
     ? `<div id="msgColSec" class="tier"><span>${lang==='en'?'Message colour':'Cor da mensagem'}</span><span class="ln"></span></div>
        ${!S.writingColor?`<p class="pig-desc" id="colHint" style="margin:-4px 0 10px">${lang==='en'?'Choose a colour to continue.':'Escolha uma cor para continuar.'}</p>`:''}
-       <div class="sw-grid">${swatches}</div><div class="scroll-space"></div>`
+       <div class="sw-grid">${swatches}</div>`
     : '';
+  const candleSec=S.writeMethods.length?candlesSectionHTML():'';
   B().innerHTML=head(lg("Cake Message & Color","Mensagem e cor do bolo"),lg("Type your message, then choose how you'd like it written and in which colour.","Escreva a sua mensagem e escolha como quer que seja aplicada e em que cor."))+
-    msgField+`<div class="opts" style="margin-top:4px">${cards}</div>`+colSec;
+    msgField+`<div class="opts" style="margin-top:4px">${cards}</div>`+colSec+candleSec;
   B().querySelectorAll('.opt.multi[data-id]').forEach(el=>el.onclick=()=>{
     const id=el.dataset.id;
     const hadColour=needs;
@@ -976,8 +991,9 @@ R.writing=()=>{
         const i=S.writeMethods.indexOf(id);if(i>=0)S.writeMethods.splice(i,1);else S.writeMethods.push(id);}
     });
     R.writing();validate();
+    if(id==='none')scrollToCandle();
     /* only pull them down once they've actually written something AND picked a style */
-    if(S.writeMethods.some(m=>m!=='none')&&S.writing.trim()&&!S.writingColor)scrollToColour();
+    else if(S.writeMethods.some(m=>m!=='none')&&S.writing.trim()&&!S.writingColor)scrollToColour();
   });
   const w=document.getElementById('writing');
   if(w){
@@ -993,7 +1009,9 @@ R.writing=()=>{
     el.classList.add('sel');
     const hint=document.getElementById('colHint'); if(hint)hint.remove();
     validate();
+    if(S.writing.trim())scrollToCandle();
   });
+  bindCandles();
 };
 R.decor=()=>{
   const tagFor=o=>{
@@ -1033,7 +1051,7 @@ R.decor=()=>{
 function candlesSectionHTML(){
   return `<div class="combined-section" id="candleSection"><div class="tier"><span>${lang==='en'?'Complimentary candles':'Velas de oferta'}</span><span class="ln"></span></div>
     <p class="pig-desc" style="margin:-5px 0 9px">${lang==='en'?'1–3 candles are free.':'1–3 velas são gratuitas.'}</p>
-    <div class="opts">`+[{id:"yes",t:lg("Yes please","Sim, por favor"),ic:"🕯️"},{id:"no",t:lg("No, not needed","Não, obrigado(a)"),ic:"🚫"}]
+    <div class="opts candle-options">`+[{id:"yes",t:lg("Yes please","Sim, por favor"),ic:"🕯️"},{id:"no",t:lg("No, not needed","Não, obrigado(a)"),ic:"🚫"}]
       .map(o=>`<button class="opt ${S.candles===o.id?'sel':''}" data-candle="${o.id}">
         <span class="ic"><span style="font-size:20px">${o.ic}</span></span>
         <span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')+`</div></div>`;
@@ -1068,8 +1086,7 @@ R.photo=()=>{
      <div class="warn"><b>${lang==='en'?'Please note:':'Nota importante:'}</b> ${lang==='en'?'The final cake will be similar, not identical.':'O bolo final será semelhante, não idêntico.'}</div>
      <div class="tier"><span>${lang==='en'?'Anything else?':'Mais alguma coisa?'}</span><span class="ln"></span></div>
      <div class="field"><label>${lang==='en'?'Tell me anything you think I should know about your vision for the cake.':'Diga-me tudo o que acha que devo saber sobre a sua visão para o bolo.'} <span class="opt-note">(${t('optional')})</span></label>
-       <textarea id="notes" placeholder="${lang==='en'?'e.g., the theme party is Little Mermaid':'ex.: o tema da festa é A Pequena Sereia'}">${esc(S.notes)}</textarea></div>
-     ${candlesSectionHTML()}`;
+       <textarea id="notes" placeholder="${lang==='en'?'e.g., the theme party is Little Mermaid':'ex.: o tema da festa é A Pequena Sereia'}">${esc(S.notes)}</textarea></div>`;
   const inp=document.getElementById('photoInput');
   const drop=document.getElementById('drop');
   if(drop)drop.onclick=()=>inp.click();
@@ -1098,13 +1115,7 @@ R.photo=()=>{
     S.photo=S.photoFiles.length>0;
     R.photo();validate();
     if(S.photoFiles.length>beforeCount){
-      showToastMessage(lang==='en'?'Photo uploaded successfully':'Fotografia carregada com sucesso');
-      requestAnimationFrame(()=>{
-        const candle=document.getElementById('candleSection'),body=B();
-        if(!candle)return;
-        const top=candle.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop;
-        body.scrollTo({top:Math.max(0,top-body.clientHeight*.2),behavior:'smooth'});
-      });
+      showToastMessage(lang==='en'?'Photo uploaded successfully':'Fotografia carregada com sucesso','success',4500);
     }
   };
   B().querySelectorAll('.photo-rm').forEach(b=>b.onclick=()=>{
@@ -1114,7 +1125,6 @@ R.photo=()=>{
     S.photo=S.photoFiles.length>0;R.photo();validate();
   });
   const pn=document.getElementById('notes'); if(pn)pn.oninput=e=>S.notes=e.target.value;
-  bindCandles();
 };
 R.allergies=()=>{
   B().innerHTML=head(lg("Dietary restrictions & allergies","Alergias e/ou restrições alimentares"))+
@@ -1324,7 +1334,7 @@ R.review=()=>{
   const receipt=[];
   const addReceipt=(name,price,kind='')=>receipt.push({name,price,kind});
   if(sz){
-    const cakeDescription=lang==='en'?`${sizeName} Size${shapeName?`, ${shapeName} Shape`:''}`:`Tamanho ${sizeName}${shapeName?`, Forma ${shapeName}`:''}`;
+    const cakeDescription=lang==='en'?`Base Cake - ${sizeName} Size`:`Bolo base - Tamanho ${sizeName}`;
     addReceipt(cakeDescription,
       sz.price==null?(lang==='en'?'To quote':'A orçamentar'):`€${sz.price}`,sz.price==null?'quote':'');
   }
@@ -1452,13 +1462,13 @@ function bindSwatchMulti(field,max,pcId){
 /* ---------- validation ---------- */
 /* what's still missing on this step — drives both the Continue state and the error hints */
 let errorToastTimer=null;
-function armToastTimer(){
+function armToastTimer(duration=2000){
   if(errorToastTimer)clearTimeout(errorToastTimer);
   errorToastTimer=setTimeout(()=>{
     errorToastTimer=null;
     document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
-    const t=document.getElementById('errToast');if(t)t.classList.remove('show');
-  },2000);
+    const t=document.getElementById('errToast');if(t)t.classList.remove('show','success');
+  },duration);
 }
 function missing(){
   const k=STEPS[step];const M=[];
@@ -1475,10 +1485,10 @@ function missing(){
       if(!S.writing.trim())add(lang==='en'?'Type your message':'Escreva a sua mensagem','#writing');
       if(!S.writingColor)add(lang==='en'?'Choose a colour for your message':'Escolha uma cor para a mensagem','.sw-grid');
     }
+    if(!S.candles)add(lang==='en'?'Choose whether you would like complimentary candles':'Escolha se pretende velas de oferta','#candleSection');
   }
   else if(k==='photo'){
     if(!S.photo&&!photoBypass)add(lang==='en'?'Add at least 1 inspiration photo':'Adicione pelo menos 1 foto de inspiração','.photo-grid');
-    if(!S.candles)add(lang==='en'?'Choose whether you would like complimentary candles':'Escolha se pretende velas de oferta','#candleSection');
   }
   else if(k==='allergies'){if(!(S.noAllergy||S.allergies.trim()))add(lang==='en'?'List any allergies, or tap the button below':'Indique as alergias, ou toque no botão abaixo','#allergies');}
   else if(k==='contact'){
@@ -1519,20 +1529,22 @@ function paintErrors(M){
   document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
   M.forEach(m=>{const el=B().querySelector(m.sel);if(!el)return;(el.closest('.field')||el).classList.add('err');});
   const t=document.getElementById('errToast');
+  t.classList.remove('success');
   t.innerHTML=M.map(m=>`<span>${m.msg}</span>`).join('');
   t.classList.add('show');
   armToastTimer();
 }
-function showToastMessage(msg){
+function showToastMessage(msg,kind='error',duration=2000){
   document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
   const t=document.getElementById('errToast');if(!t)return;
   t.innerHTML=`<span>${msg}</span>`;
+  t.classList.toggle('success',kind==='success');
   t.classList.add('show');
-  armToastTimer();
+  armToastTimer(duration);
 }
 function clearErrors(){
   document.querySelectorAll('.err').forEach(e=>e.classList.remove('err'));
-  const t=document.getElementById('errToast'); if(t)t.classList.remove('show');
+  const t=document.getElementById('errToast'); if(t)t.classList.remove('show','success');
   if(errorToastTimer){clearTimeout(errorToastTimer);errorToastTimer=null;}
 }
 function showMissing(){
@@ -1630,7 +1642,6 @@ function buildPayload(photo_urls){
 
 async function submit(){
   const btn=document.getElementById('next');
-  const sendingStarted=Date.now();
   btn.disabled=true;btn.classList.add('sending');btn.innerHTML=`<span>${lang==='en'?'Sending':'A enviar'}</span><span class="send-spinner" aria-hidden="true"></span>`;
   try{
     if(!sb)throw new Error(lang==='en'?"Connection not ready. Please refresh and try again.":"A ligação não está pronta. Atualize a página e tente novamente.");
@@ -1657,8 +1668,6 @@ async function submit(){
     if(!response.ok)throw new Error(result.error||(lang==='en'?'The order could not be sent. Please try again.':'Não foi possível enviar a encomenda. Tente novamente.'));
     formAnalyticsSubmitted=true;
     trackFormEvent('form_submitted',{step_number:STEPS.length,step_name:'review',duration_seconds:formDuration()},true);
-    const remaining=Math.max(0,250-(Date.now()-sendingStarted));
-    if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
     showDone();
   }catch(e){
     resetTurnstile();
