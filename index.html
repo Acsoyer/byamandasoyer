@@ -342,7 +342,7 @@
   .quote .qm{position:absolute;font-family:var(--serif);font-size:76px;line-height:.6;color:#fff;opacity:.17;pointer-events:none}
   .quote .qm-o{top:41px;left:19px}
   .quote .qm-c{right:20px;bottom:42px}
-  .quote-text{position:relative;z-index:1;max-width:none;margin:0 6px;font-family:var(--serif);font-style:normal;font-size:clamp(18px,4.6vw,22px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.012em}
+  .quote-text{position:relative;z-index:1;max-width:none;margin:0 6px;font-family:var(--serif);font-style:normal;font-size:clamp(15px,3.8vw,18px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.012em}
   .quote-by{position:absolute;right:24px;bottom:22px;margin:0;font-size:12px;font-weight:600;letter-spacing:.07em;color:#efd6dd;text-align:right}
   #testimonials .dot{background:rgba(255,255,255,.3)}
   #testimonials .dot.on{background:#fff}
@@ -934,15 +934,45 @@ var INSPO=[
    price:'€55'}
 ];
 
-/* PLACEHOLDER testimonials — swap for real customer reviews before launch */
-var TESTI=[
-  {q:bi("The most beautiful cake I've ever had — and it tasted even better than it looked.",
-        'O bolo mais bonito que já tive — e sabia ainda melhor do que parecia.'), by:'Marta R.'},
-  {q:bi('Amanda understood exactly what I wanted. Everyone at the party asked where it was from.',
-        'A Amanda percebeu exatamente o que eu queria. Todos na festa perguntaram de onde era.'), by:'João P.'},
-  {q:bi('Ordering was easy and the cake was perfect. Already planning my next one.',
-        'Encomendar foi fácil e o bolo estava perfeito. Já estou a planear o próximo.'), by:'Sofia M.'}
+/* ================================================================
+   TESTIMONIALS — anasayfadaki kayan yorum kutucukları (carousel)
+   ================================================================
+   Bu listeye yeni bir yorum EKLEMEK için:
+     1) Aşağıdaki { ... } bloklarından birini (açılış "{" ile
+        kapanış "}," dahil) kopyalayıp listenin içine yapıştırın
+        (sıra önemli değil, istediğiniz yere ekleyebilirsiniz).
+     2) İçindeki 3 alanı kendi metninizle değiştirin:
+          name -> yorumu yapan kişinin adı (ör: 'Marta R.')
+          en   -> yorumun İNGİLİZCE metni
+          pt   -> yorumun PORTEKİZCE metni
+     3) Dosyayı kaydedin.
+   Bir yorumu SİLMEK için ilgili { ... } bloğunu tamamen silin.
+
+   Başka HİÇBİR YERİ (CSS, carousel/slider kodu, nokta göstergeleri
+   vb.) değiştirmenize gerek YOK — kayan yorum alanı, altındaki
+   nokta göstergeleri ve ok tuşları buradaki listede kaç yorum
+   olduğuna göre KENDİLİĞİNDEN uyum sağlar. Listeye 3'ten fazla
+   veya daha az yorum eklemek/çıkarmak tamamen güvenlidir.
+   ================================================================ */
+var TESTI_DATA=[
+  {
+    name:'Marta R.',
+    en:"The most beautiful cake I've ever had — and it tasted even better than it looked.",
+    pt:'O bolo mais bonito que já tive — e sabia ainda melhor do que parecia.'
+  },
+  {
+    name:'João P.',
+    en:'Amanda understood exactly what I wanted. Everyone at the party asked where it was from.',
+    pt:'A Amanda percebeu exatamente o que eu queria. Todos na festa perguntaram de onde era.'
+  },
+  {
+    name:'Sofia M.',
+    en:'Ordering was easy and the cake was perfect. Already planning my next one.',
+    pt:'Encomendar foi fácil e o bolo estava perfeito. Já estou a planear o próximo.'
+  }
 ];
+/* yukarıdaki sade listeyi sayfanın kullandığı iki-dilli formata çevirir — bu satırı değiştirmenize gerek yok */
+var TESTI=TESTI_DATA.map(function(t){return {q:bi(t.en,t.pt), by:t.name};});
 
 var FAQ=[
   {cat:bi('Ordering','Encomendas'), items:[
