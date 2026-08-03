@@ -621,7 +621,9 @@ function trackFormEvent(eventName,extra,keepalive){
 function startFormAnalytics(){if(formAnalyticsStarted)return;formAnalyticsStarted=true;formAnalyticsStartedAt=Date.now();trackFormEvent('form_started');}
 function trackFormStep(){if(!formAnalyticsStarted)return;const number=step+1;if(formAnalyticsSteps.has(number))return;formAnalyticsSteps.add(number);trackFormEvent('form_step_view',{step_number:number,step_name:STEPS[step]});}
 function formDuration(){return Math.min(86400,Math.max(0,Math.round((Date.now()-(formAnalyticsStartedAt||Date.now()))/1000)));}
-function trackFormAbandon(){if(!formAnalyticsStarted||formAnalyticsSubmitted||Date.now()-formAnalyticsLastAbandon<4000)return;formAnalyticsLastAbandon=Date.now();trackFormEvent('form_abandoned',{step_number:step+1,step_name:STEPS[step],duration_seconds:formDuration()},true);}
+/* abandoned-form events intentionally skip duration_seconds — we only want to know which step someone
+   stopped on (useful for spotting a confusing step), not how long their browser tab happened to sit open */
+function trackFormAbandon(){if(!formAnalyticsStarted||formAnalyticsSubmitted||Date.now()-formAnalyticsLastAbandon<4000)return;formAnalyticsLastAbandon=Date.now();trackFormEvent('form_abandoned',{step_number:step+1,step_name:STEPS[step]},true);}
 
 /* ---------- i18n ---------- */
 const lg=(en,pt)=>({en,pt});
@@ -718,7 +720,7 @@ const D={
     {id:"custom",t:lg("Custom","Personalizado"),ic:"✨",quote:true},
   ],
   heard:[
-    {id:"igsearch",t:lg("Instagram search","Pesquisa no Instagram"),brand:"instagram"},
+    {id:"igsearch",t:lg("Instagram","Instagram"),brand:"instagram"},
     {id:"tiktok",t:lg("TikTok","TikTok"),brand:"tiktok"},
     {id:"igad",t:lg("Meta ad","Anúncio no Meta"),brand:"meta"},
     {id:"fb",t:lg("Facebook groups","Grupos de Facebook"),brand:"facebook"},
