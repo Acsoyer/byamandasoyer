@@ -196,6 +196,9 @@
   .cake-lightbox-save{position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:52px;height:52px;border-radius:50%;border:1px solid rgba(115,8,44,.13);background:#fff;color:var(--brand);display:grid;place-items:center;cursor:pointer;box-shadow:0 7px 20px rgba(75,45,53,.16)}
   .cake-lightbox-save svg{width:25px;height:25px}.cake-lightbox-save:active{transform:translateX(-50%) scale(.92)}.cake-lightbox-save:disabled{opacity:.55}
   .cake-lightbox-status{min-height:12px;margin:5px 0 0;font-size:9.5px;line-height:1.2;color:#81787B}
+  /* testimonial photos open in "no-caption" mode: no "Like this design?" text and no save/share button — just the photo */
+  .cake-lightbox.no-caption .cake-lightbox-caption{display:none}
+  .cake-lightbox.no-caption img{max-height:92svh;border-radius:20px}
   html.cake-lightbox-open,html.cake-lightbox-open body{overflow:hidden}
 
   .cta-row{display:flex;flex-direction:column;gap:7px;width:100%;max-width:380px;margin-top:auto;margin-bottom:clamp(60px,9svh,80px);padding-top:6px}
@@ -700,9 +703,11 @@ function showCakeLightboxItem(index){
   cakeShareFilePromise=prepareCakeShareFile(item.url).catch(function(){return null;});
   [cakeLightboxItems[(cakeLightboxIndex-1+cakeLightboxItems.length)%cakeLightboxItems.length],cakeLightboxItems[(cakeLightboxIndex+1)%cakeLightboxItems.length]].forEach(function(next){var preload=new Image();preload.src=next.url;});
 }
-function openCakeLightbox(url,alt,opener){
+function openCakeLightbox(url,alt,opener,hideCaption){
   var box=document.getElementById('cakeLightbox'),found=cakeLightboxItems.findIndex(function(item){return item.url===url;});
   cakeLightboxOpener=opener||null;if(found<0){cakeLightboxItems=[{url:url,alt:alt||'Cake by Amanda Soyer'}];found=0;}showCakeLightboxItem(found);
+  /* testimonial photos open without the "Like this design? / Save" caption — cake gallery photos keep it */
+  box.classList.toggle('no-caption',!!hideCaption);
   box.classList.add('show');box.setAttribute('aria-hidden','false');document.documentElement.classList.add('cake-lightbox-open');
   document.getElementById('cakeLightboxClose').focus({preventScroll:true});
 }
@@ -1146,7 +1151,7 @@ document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s,i){
 
 function openTestiPhoto(url){
   cakeLightboxItems=TESTI_PHOTOS.map(function(u){return {url:u,alt:'Testimonial photo'};});
-  openCakeLightbox(url,'Testimonial photo');
+  openCakeLightbox(url,'Testimonial photo',null,true);
 }
 
 var testimonialSection=document.getElementById('testimonials');
