@@ -330,29 +330,41 @@
   #testimonials .sec-intro{display:flex;align-items:center;gap:12px;color:#f0dce2;margin:0 0 32px;font-size:14px;white-space:nowrap}
   #testimonials .sec-intro em{font-family:inherit;font-size:inherit;font-weight:inherit;font-style:italic}
   .testimonial-intro-line{flex:1;min-width:28px;height:1px;background:rgba(255,255,255,.38)}
-  .testimonial-carousel{position:relative;padding:0 8px}
-  #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth}
-  #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
-  .testimonial-nav{position:absolute;z-index:3;top:49%;display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(91,0,29,.7);color:#fff;cursor:pointer;transform:translateY(-50%);transition:background .15s ease,transform .15s ease}
+  .testimonial-carousel{position:relative;padding:0 8px;--testi-card-h:260px}
+  #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth;align-items:flex-start}
+  #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center;max-height:0;overflow:hidden;transition:max-height .32s ease}
+  #testiTrack .slide.testi-active{max-height:999px}
+  /* nav arrows use a FIXED pixel position (not a % of the carousel height) so they never move even when a
+     long testimonial makes its own card taller than the others — see --testi-card-h above */
+  .testimonial-nav{position:absolute;z-index:3;top:calc(12px + var(--testi-card-h)/2);display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(91,0,29,.7);color:#fff;cursor:pointer;transform:translateY(-50%);transition:background .15s ease,transform .15s ease}
   .testimonial-nav.prev{left:-5px}.testimonial-nav.next{right:-5px}
   .testimonial-nav:active{background:rgba(255,255,255,.16);transform:translateY(-50%) scale(.94)}
   .testimonial-nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .quote{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:260px;margin:12px 0 2px;padding:52px 20px 56px;border:1px solid rgba(255,255,255,.17);border-radius:16px;text-align:left;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035))}
+  .quote{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:var(--testi-card-h);margin:12px 0 2px;padding:52px 20px 56px;border:1px solid rgba(255,255,255,.17);border-radius:16px;text-align:left;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035))}
   .quote-stars{position:absolute;z-index:2;top:-13px;left:14px;display:flex;gap:3px;padding:1px 8px 2px;background:var(--brand);color:#F2C46C;font-size:17px;line-height:1.2;letter-spacing:.01em}
   .quote .qm{position:absolute;font-family:var(--serif);font-size:76px;line-height:.6;color:#fff;opacity:.17;pointer-events:none}
   .quote .qm-o{top:41px;left:19px}
   .quote .qm-c{right:20px;bottom:42px}
   .quote-text{position:relative;z-index:1;max-width:none;margin:0 6px;font-family:var(--serif);font-style:normal;font-size:clamp(15px,3.8vw,18px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.012em}
+  /* long testimonials get a slightly smaller size so more text fits before the card needs to grow (class added automatically, see TESTI render code) */
+  .quote-text.quote-text-long{font-size:clamp(13px,3.3vw,15px)}
   .quote-by{position:absolute;right:24px;bottom:22px;margin:0;font-size:12px;font-weight:600;letter-spacing:.07em;color:#efd6dd;text-align:right}
   #testimonials .dot{background:rgba(255,255,255,.3)}
   #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
   #testimonials .dots{margin-top:19px}
+  /* testimonial PHOTO slide — same footprint as a text card (.quote) so nav position math stays valid;
+     shows only the part of the photo that fits this box (object-fit:cover), tap/click to open it larger */
+  .testi-photo{position:relative;height:var(--testi-card-h);margin:12px 0 2px;overflow:hidden;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:rgba(0,0,0,.12);cursor:zoom-in}
+  .testi-photo img{display:block;width:100%;height:100%;object-fit:cover}
+  .testi-photo::after{content:'';position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:50%;background:rgba(20,4,11,.55);backdrop-filter:blur(2px)}
+  .testi-photo-zoom{position:absolute;z-index:1;right:12px;bottom:12px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;pointer-events:none}
+  .testi-photo-zoom svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   @media(max-width:390px){
     #testimonials{padding-left:18px;padding-right:18px}
     #testimonials .sec-intro{gap:9px;font-size:13px}
-    .testimonial-carousel{padding:0 8px}
-    .quote{min-height:252px;padding-left:17px;padding-right:17px}
+    .testimonial-carousel{padding:0 8px;--testi-card-h:252px}
+    .quote{padding-left:17px;padding-right:17px}
     .quote-text{margin-left:5px;margin-right:5px}
     .testimonial-nav.prev{left:-3px}.testimonial-nav.next{right:-3px}
   }
@@ -551,7 +563,7 @@
   <!-- testimonials (PLACEHOLDER — replace with real reviews) -->
   <section id="testimonials">
     <h2 class="sec-title"><span class="i-en">Testimonials</span><span class="i-pt">Feedback</span></h2>
-    <p class="sec-intro"><span class="i-en">Kind words from <em>happy</em> customers</span><span class="i-pt">Palavras de clientes <em>felizes</em></span><span class="testimonial-intro-line" aria-hidden="true"></span></p>
+    <p class="sec-intro"><span class="i-en">Kind words &amp; moments from <em>happy</em> customers</span><span class="i-pt">Palavras e momentos de clientes <em>felizes</em></span><span class="testimonial-intro-line" aria-hidden="true"></span></p>
     <div class="carousel testimonial-carousel" data-carousel data-autoplay="false">
       <button class="testimonial-nav prev" type="button" data-carousel-prev aria-label="Previous testimonial" onclick="moveTestimonial(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
       <div class="carousel-track" id="testiTrack" data-align="center"></div>
@@ -937,42 +949,89 @@ var INSPO=[
 /* ================================================================
    TESTIMONIALS — anasayfadaki kayan yorum kutucukları (carousel)
    ================================================================
-   Bu listeye yeni bir yorum EKLEMEK için:
+   1) YAZILI YORUM eklemek/değiştirmek için: TESTI_DATA listesi.
+   2) FOTOĞRAF eklemek/değiştirmek için: TESTI_PHOTOS listesi.
+   Yorum ve fotoğraf kartları carousel'de OTOMATİK olarak sırayla
+   karışık gösterilir (1 yazı, 1 fotoğraf, 1 yazı, 1 fotoğraf ...).
+   Fotoğraf sayısı yazı sayısından fazlaysa, kalan fotoğraflar
+   listenin sonuna eklenir. Sıra/nokta göstergeleri/ok tuşları bu
+   listelerin uzunluğuna göre KENDİLİĞİNDEN uyum sağlar — CSS veya
+   carousel kodunu değiştirmenize gerek YOK.
+
+   ---- YAZILI YORUM eklemek için ----
      1) Aşağıdaki { ... } bloklarından birini (açılış "{" ile
-        kapanış "}," dahil) kopyalayıp listenin içine yapıştırın
-        (sıra önemli değil, istediğiniz yere ekleyebilirsiniz).
+        kapanış "}," dahil) kopyalayıp listenin içine yapıştırın.
      2) İçindeki 3 alanı kendi metninizle değiştirin:
           name -> yorumu yapan kişinin adı (ör: 'Marta R.')
           en   -> yorumun İNGİLİZCE metni
           pt   -> yorumun PORTEKİZCE metni
-     3) Dosyayı kaydedin.
-   Bir yorumu SİLMEK için ilgili { ... } bloğunu tamamen silin.
+     Not: Müşteri yorumu sadece TEK bir dilde geldiyse, diğer dile
+     çevirip metnin SONUNA "(translated)" (İngilizce çeviriyse) veya
+     "(traduzido)" (Portekizce çeviriyse) ekleyin — aşağıdaki
+     örneklerde bu zaten uygulanmıştır. Ziyaretçi hangi dili
+     seçtiyse SADECE o dildeki metni görür (diğeri gizli kalır).
+     Uzun yorumlarda paragraf arası boşluk için metnin içine
+     "<br><br>" yazabilirsiniz (örnek: Raquel A. yorumuna bakın).
+     3) Dosyayı kaydedin. Bir yorumu SİLMEK için { ... } bloğunu
+        tamamen silin.
 
-   Başka HİÇBİR YERİ (CSS, carousel/slider kodu, nokta göstergeleri
-   vb.) değiştirmenize gerek YOK — kayan yorum alanı, altındaki
-   nokta göstergeleri ve ok tuşları buradaki listede kaç yorum
-   olduğuna göre KENDİLİĞİNDEN uyum sağlar. Listeye 3'ten fazla
-   veya daha az yorum eklemek/çıkarmak tamamen güvenlidir.
+   ---- FOTOĞRAF eklemek için ----
+     TESTI_PHOTOS listesine yeni bir URL ekleyin/çıkarın. Fotoğrafa
+     tıklanınca büyüyüp diğer fotoğraflar arasında sağ/sol oklarla
+     gezinilebilen bir görünüm otomatik olarak çalışır.
    ================================================================ */
 var TESTI_DATA=[
   {
-    name:'Marta R.',
-    en:"The most beautiful cake I've ever had — and it tasted even better than it looked.",
-    pt:'O bolo mais bonito que já tive — e sabia ainda melhor do que parecia.'
+    name:'Imge T.',
+    en:"Everyone LOVED the cake🎂 and asked your info. It was delicious not one bit of it left at the end of our tour😋 Thank you!💕",
+    pt:'Todos AMARAM o bolo🎂 e pediram o seu contacto. Estava delicioso, não sobrou nada no final do nosso passeio😋 Obrigada!💕 (traduzido)'
   },
   {
-    name:'João P.',
-    en:'Amanda understood exactly what I wanted. Everyone at the party asked where it was from.',
-    pt:'A Amanda percebeu exatamente o que eu queria. Todos na festa perguntaram de onde era.'
+    name:'Emma C.',
+    en:'Thank YOU for the care and attention 🥰 The cake was absolutely delicious, I truly loved it! It looked beautiful and tasted amazing, it was a huge hit ❤️ (translated)',
+    pt:'Obrigada eu pelo carinho e pela atenção 🥰 O bolo estava absolutamente delicioso, adorei mesmo! Estava lindo e super saboroso, fez todo o sucesso ❤️'
   },
   {
-    name:'Sofia M.',
-    en:'Ordering was easy and the cake was perfect. Already planning my next one.',
-    pt:'Encomendar foi fácil e o bolo estava perfeito. Já estou a planear o próximo.'
+    name:'Raquel A.',
+    en:'Hi Amanda! I honestly loved the cake 😍 It looked so good that I barely even had time to take proper pictures before everyone got stuck in 😆<br><br>It wasn’t just me either, everyone kept saying how nice it looked and how good it tasted. It was such a hit! You absolutely nailed it, thank you so much 🤗💕',
+    pt:'Olá Amanda! Sinceramente adorei o bolo 😍 Estava tão bonito que quase não tive tempo de tirar fotografias como deve ser antes de todos começarem a comer 😆<br><br>E não fui só eu, toda a gente dizia como estava bonito e como sabia bem. Fez um sucesso enorme! Acertaste em cheio, muito obrigada 🤗💕 (traduzido)'
+  },
+  {
+    name:'Sara V.',
+    en:'Hi Amanda! I just want to tell you that all people were amazed by the cake - the girls how it look the cake and the taste! Thank you very much ❣️ we will for sure contact you again if we will celebrate something 🙏🏻',
+    pt:'Olá Amanda! Só quero dizer-te que todas as pessoas ficaram maravilhadas com o bolo - as meninas adoraram o aspeto e o sabor! Muito obrigada ❣️ havemos de te contactar novamente sempre que tivermos algo para celebrar 🙏🏻 (traduzido)'
+  },
+  {
+    name:'Marcia F.',
+    en:'Hi, good afternoon<br>The cake was great, I loved it (translated)',
+    pt:'Ola boa tarde<br>O bolo estava ótimoo adorei'
+  },
+  {
+    name:'Luma R.',
+    en:'Hi Amanda!!! I can say clearly that in four years in Portugal (with six birthdays a year) I had not found a baker who could make our cakes exactly as we imagined! The experience was extremely positive from the moment of ordering the cake to pick-up! It had been years since I’d tasted a cake with that childhood flavour, from the decoration to the filling everything was flawless!!! I’ve already sent your order link to the friends who were there. I’m looking forward to the next birthday to order again!!! Thank you for your perfect work, lots of kisses. (translated)',
+    pt:'Olá Amanda!!! Falo com clareza que em quatro anos em portugal (com seis aniversários ao ano) não havia encontrado uma confeiteira que fizesse os nossos bolos como realmente imaginamos! A experiência foi extremamente positiva do momento de encomendar o bolo ao levantamento! Fazia anos que não tinha provado um bolo com gosto de infância, da decoração ao recheio estava tudo impecável!!! Já enviei o seu link de pedidos aos amigos que estavam presentes. Estou ansiosa para o próximo aniversário para encomendarmos novamente!!! Obrigada por seu trabalho perfeito, muitos beijinhos.'
+  },
+  {
+    name:'Neila C.',
+    en:'My brother was so happy with the cake, and everyone really loved it. It was absolutely delicious and very appreciated, so thank you so much! 🫶🏾',
+    pt:'O meu irmão ficou tão feliz com o bolo, e todos adoraram mesmo. Estava absolutamente delicioso e foi muito apreciado, por isso muito obrigada! 🫶🏾 (traduzido)'
+  },
+  {
+    name:'Maria F.',
+    en:'Good morning! The cake was delicious 😋 really well made! The only thing is I was expecting the colours to be a little lighter! But that detail is almost insignificant given the quality of everything else! 😍 (translated)',
+    pt:'Bom dia! O bolo estava delicioso 😋 muito bem feito! Só as cores é que estava à espera de serem mais claras! Mas esse detalhe é quase insignificante tendo em conta a qualidade dos outros aspetos! 😍'
+  },
+  {
+    name:'Anne D.',
+    en:'Hi Amanda! Just wanted to let you know the cake was delicious, it wasn’t too sweet which I loved 😘 will be ordering another one soon for my sons birthday. Have a lovely evening!',
+    pt:'Olá Amanda! Só queria dizer-te que o bolo estava delicioso, não era demasiado doce, o que adorei 😘 vou encomendar outro em breve para o aniversário do meu filho. Boa noite! (traduzido)'
   }
 ];
 /* yukarıdaki sade listeyi sayfanın kullandığı iki-dilli formata çevirir — bu satırı değiştirmenize gerek yok */
-var TESTI=TESTI_DATA.map(function(t){return {q:bi(t.en,t.pt), by:t.name};});
+var TESTI=TESTI_DATA.map(function(t){return {q:bi(t.en,t.pt), by:t.name,long:Math.max(t.en.replace(/<[^>]+>/g,'').length,t.pt.replace(/<[^>]+>/g,'').length)>200};});
+/* fotoğraflar — Supabase'e yüklenen 01.jpg .. 11.jpg testimonial fotoğrafları */
+function testiPhotoUrl(n){return 'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/Testimonials/'+String(n).padStart(2,'0')+'.jpg';}
+var TESTI_PHOTOS=[1,2,3,4,5,6,7,8,9,10,11].map(testiPhotoUrl);
 
 var FAQ=[
   {cat:bi('Ordering','Encomendas'), items:[
@@ -980,8 +1039,8 @@ var FAQ=[
      a:bi('Visit my website using the link in my bio to submit your order request. I’ll send your quote via WhatsApp.',
           'Visite o meu site através do link na minha biografia para enviar o seu pedido. Enviar-lhe-ei o seu orçamento por WhatsApp.')},
     {q:bi('Can I order through Instagram DM?','Posso encomendar por mensagem privada no Instagram?'),
-     a:bi('No. I do not accept orders through Instagram DMs, and response times are not guaranteed there.',
-          'Não. Não aceito encomendas através de mensagens privadas no Instagram e os tempos de resposta não são garantidos por essa via.')},
+     a:bi('No. To ensure your order is processed accurately and as quickly as possible, all orders must be submitted through the order form on byamandasoyer.pt. Response times on Instagram DMs are not guaranteed.',
+          'Não. Para garantir que a sua encomenda é processada com precisão e o mais rapidamente possível, todas as encomendas devem ser submetidas através do formulário de encomenda em byamandasoyer.pt. Os tempos de resposta nas mensagens privadas do Instagram não são garantidos.')},
     {q:bi('How far in advance should I order?','Com quanta antecedência devo encomendar?'),
      a:bi('Order 5–8 days in advance to ensure availability.',
           'Entre 5 e 8 dias de antecedência para garantir disponibilidade.')},
@@ -1062,17 +1121,49 @@ if(!inspirationSection.hidden){
     '<span class="inspo-price">'+c.price+'</span></div></div></div>';}).join('');
 }
 
-document.getElementById('testiTrack').innerHTML=TESTI.map(function(t){return '<div class="slide"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><span class="qm qm-o">\u201C</span>'+
-  '<blockquote class="quote-text">'+t.q+'</blockquote>'+
-  '<figcaption class="quote-by">'+t.by+'</figcaption>'+
-  '<span class="qm qm-c">\u201D</span></figure></div>';}).join('');
+/* builds the mixed text/photo slide list: 1 review, 1 photo, 1 review, 1 photo ... any leftover
+   photos (there are more photos than reviews) are appended at the end as photo-only slides */
+function buildTestimonialSlides(){
+  var slides=[],max=Math.max(TESTI.length,TESTI_PHOTOS.length);
+  for(var i=0;i<max;i++){
+    if(TESTI[i])slides.push({type:'text',data:TESTI[i]});
+    if(TESTI_PHOTOS[i])slides.push({type:'photo',data:TESTI_PHOTOS[i]});
+  }
+  return slides;
+}
+var TESTI_SLIDES=buildTestimonialSlides();
+var testiStarsHtml='<span></span><span></span><span></span><span></span><span></span>'.replace(/<span><\/span>/g,'<span>STAR</span>').replace(/STAR/g,String.fromCharCode(9733));
+var testiOpenQuote=String.fromCharCode(8220),testiCloseQuote=String.fromCharCode(8221);
+var testiZoomIcon='<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>';
+document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s,i){
+  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo" onclick="openTestiPhoto(\''+s.data+'\')"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div>';
+  var t=s.data;
+  return '<div class="slide'+(i===0?' testi-active':'')+'"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars">'+testiStarsHtml+'</div><span class="qm qm-o">'+testiOpenQuote+'</span>'+
+    '<blockquote class="quote-text'+(t.long?' quote-text-long':'')+'">'+t.q+'</blockquote>'+
+    '<figcaption class="quote-by">'+t.by+'</figcaption>'+
+    '<span class="qm qm-c">'+testiCloseQuote+'</span></figure></div>';
+}).join('');
+
+function openTestiPhoto(url){
+  cakeLightboxItems=TESTI_PHOTOS.map(function(u){return {url:u,alt:'Testimonial photo'};});
+  openCakeLightbox(url,'Testimonial photo');
+}
 
 var testimonialSection=document.getElementById('testimonials');
 var testimonialIndex=0;
+/* keeps only the currently-shown slide "tall" (CSS max-height transition, see #testiTrack .slide.testi-active)
+   so short reviews stay short and the card only grows downward for long ones — the nav arrows never move
+   because their position is a fixed pixel value (see --testi-card-h in the CSS), not the carousel's total height */
+function syncTestiActiveSlide(){
+  var track=document.getElementById('testiTrack');
+  if(!track)return;
+  [].slice.call(track.querySelectorAll('.slide')).forEach(function(s,i){s.classList.toggle('testi-active',i===testimonialIndex);});
+}
 function moveTestimonial(direction){
   var track=document.getElementById('testiTrack'),slides=[].slice.call(track.querySelectorAll('.slide')),dots=[].slice.call(document.querySelectorAll('#testiDots .dot'));
   if(!slides.length)return;
   testimonialIndex=(testimonialIndex+direction+slides.length)%slides.length;
+  syncTestiActiveSlide();
   var target=slides[testimonialIndex].offsetLeft-track.offsetLeft-(track.clientWidth-slides[testimonialIndex].offsetWidth)/2;
   track.scrollLeft=Math.max(0,target);
   dots.forEach(function(dot,index){dot.classList.toggle('on',index===testimonialIndex);});
@@ -1154,7 +1245,7 @@ document.querySelectorAll('[data-carousel]').forEach(function(root){
   track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){
     var tr=track.getBoundingClientRect(),ref=align==='center'?tr.left+tr.width/2:tr.left+PAD,best=0,bd=1e9;
     slides.forEach(function(s,j){var sr=s.getBoundingClientRect();var pt=align==='center'?sr.left+sr.width/2:sr.left;var dd=Math.abs(pt-ref);if(dd<bd){bd=dd;best=j;}});
-    setDot(best);if(root.classList.contains('testimonial-carousel'))testimonialIndex=best;
+    setDot(best);if(root.classList.contains('testimonial-carousel')){testimonialIndex=best;syncTestiActiveSlide();}
   },90);},{passive:true});
   track.addEventListener('pointerdown',pause);
   var prev=root.querySelector('[data-carousel-prev]'),next=root.querySelector('[data-carousel-next]');
