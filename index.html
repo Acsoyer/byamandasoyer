@@ -358,14 +358,15 @@
   #testimonials .dot.on{background:#fff}
   .quote-by::before{content:"— "}
   #testimonials .dots{margin-top:19px}
-  /* testimonial PHOTO slide — same footprint as a text card (.quote) so nav position math stays valid;
-     shows only the part of the photo that fits this box (object-fit:cover), tap/click to open it larger */
-  /* photos are cropped 4:5 (width:height) — the frame keeps that exact ratio at any width, and its
-     rendered height becomes the shared --testi-card-h so text cards + nav arrows line up with it */
-  .testi-photo{position:relative;width:100%;aspect-ratio:4/5;margin:12px 0 2px;overflow:hidden;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:rgba(0,0,0,.12);cursor:zoom-in}
-  .testi-photo img{display:block;width:100%;height:100%;object-fit:cover}
-  .testi-photo::after{content:'';position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:50%;background:rgba(20,4,11,.55);backdrop-filter:blur(2px)}
-  .testi-photo-zoom{position:absolute;z-index:1;right:12px;bottom:12px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;pointer-events:none}
+  /* testimonial PHOTO slide — a card with the same border/background as a text card (.quote), but the
+     photo itself stays SMALL (max 200px wide) and centered inside it — it must never fill the card.
+     No stars, no decorative quote marks, no name — just the small framed photo, tap/click to open larger. */
+  .testi-photo{position:relative;width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin:12px 0 2px;padding:20px;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035));cursor:zoom-in}
+  /* photos are cropped 4:5 (width:height) — capped at 200px wide (so ~250px tall), which also sets
+     the shared --testi-card-h so text cards + nav arrows line up with this small photo, not a huge one */
+  .testi-photo-inner{position:relative;width:min(200px,100%);aspect-ratio:4/5;overflow:hidden;border-radius:11px;background:rgba(0,0,0,.12);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .testi-photo-inner img{display:block;width:100%;height:100%;object-fit:cover}
+  .testi-photo-zoom{position:absolute;z-index:1;right:10px;bottom:10px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(20,4,11,.55);border-radius:50%;backdrop-filter:blur(2px)}
   .testi-photo-zoom svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   @media(max-width:390px){
     #testimonials{padding-left:18px;padding-right:18px}
@@ -1145,7 +1146,7 @@ var testiStarsHtml='<span></span><span></span><span></span><span></span><span></
 var testiOpenQuote=String.fromCharCode(8220),testiCloseQuote=String.fromCharCode(8221);
 var testiZoomIcon='<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>';
 document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s,i){
-  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo" onclick="openTestiPhoto(\''+s.data+'\')"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div>';
+  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo" onclick="openTestiPhoto(\''+s.data+'\')"><div class="testi-photo-inner"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div></div>';
   var t=s.data;
   return '<div class="slide'+(i===0?' testi-active':'')+'"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars">'+testiStarsHtml+'</div><span class="qm qm-o">'+testiOpenQuote+'</span>'+
     '<blockquote class="quote-text'+(t.long?' quote-text-long':'')+'">'+t.q+'</blockquote>'+
