@@ -847,19 +847,29 @@ function setLang(l){
 document.querySelectorAll('.langtog button').forEach(function(b){b.onclick=function(){setLang(b.dataset.set);};});
 document.getElementById('yr').textContent=new Date().getFullYear();
 
+/* ---------- smooth scroll ---------- */
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:reduce()?'auto':'smooth',block:'start'});}
+/* deep-linking: https://byamandasoyer.pt/#faq (or any other section id, e.g. #guides) jumps straight
+   there. The language-choice modal covers the page for a moment on every visit, so we don't just rely
+   on the browser's native "#faq in the URL" auto-scroll (which can fire too early, before the modal
+   locks scrolling, and end up overridden) — we explicitly re-scroll once the modal is dismissed, and
+   again on load as a fallback for the rare case the modal doesn't run. */
+function scrollToUrlHashSection(){
+  var id=(location.hash||'').slice(1);
+  if(id&&document.getElementById(id))goTo(id);
+}
+
 /* language modal: appears ~100ms after load; choice dismisses it */
 (function(){
   var m=document.getElementById('langModal');
-  function choose(l){setLang(l);loadDeferredVisuals();m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');schedulePageScrollHint();}
+  function choose(l){setLang(l);loadDeferredVisuals();m.classList.remove('show');document.body.style.overflow='';setTimeout(function(){m.style.display='none';},320);m.setAttribute('aria-hidden','true');schedulePageScrollHint();scrollToUrlHashSection();}
   m.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){choose(b.dataset.set);};});
   setTimeout(function(){
     m.style.display='flex';document.body.style.overflow='hidden';m.setAttribute('aria-hidden','false');
     requestAnimationFrame(function(){m.classList.add('show');});
   },250);
 })();
-
-/* ---------- smooth scroll ---------- */
-function goTo(id){document.getElementById(id).scrollIntoView({behavior:reduce()?'auto':'smooth',block:'start'});}
+window.addEventListener('load',function(){setTimeout(scrollToUrlHashSection,500);});
 
 /* ---------- order overlay ---------- */
 var orderScrollY=0;
