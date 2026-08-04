@@ -307,7 +307,7 @@
   /* inspiration — small cards, LEFT-aligned */
   #inspoTrack{scroll-padding-left:24px}
   #inspoTrack .slide{flex:0 0 58%;scroll-snap-align:start}
-  .inspo-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  .inspo-card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);cursor:zoom-in}
   .inspo-card img{width:100%;aspect-ratio:4/5;object-fit:cover}
   .inspo-body{padding:10px 12px 13px}
   .inspo-spec{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--gray-soft);font-weight:600}
@@ -361,10 +361,10 @@
   /* testimonial PHOTO slide — a card with the same border/background as a text card (.quote), but the
      photo itself stays SMALL (max 200px wide) and centered inside it — it must never fill the card.
      No stars, no decorative quote marks, no name — just the small framed photo, tap/click to open larger. */
-  .testi-photo{position:relative;width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin:12px 0 2px;padding:20px;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035));cursor:zoom-in}
+  .testi-photo{position:relative;width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;margin:12px 0 2px;padding:20px;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.022),rgba(0,0,0,.035))}
   /* photos are cropped 4:5 (width:height) — capped at 200px wide (so ~250px tall), which also sets
      the shared --testi-card-h so text cards + nav arrows line up with this small photo, not a huge one */
-  .testi-photo-inner{position:relative;width:min(200px,100%);aspect-ratio:4/5;overflow:hidden;border-radius:11px;background:rgba(0,0,0,.12);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .testi-photo-inner{position:relative;width:min(200px,100%);aspect-ratio:4/5;overflow:hidden;border-radius:11px;background:rgba(0,0,0,.12);box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:zoom-in}
   .testi-photo-inner img{display:block;width:100%;height:100%;object-fit:cover}
   .testi-photo-zoom{position:absolute;z-index:1;right:10px;bottom:10px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(20,4,11,.55);border-radius:50%;backdrop-filter:blur(2px)}
   .testi-photo-zoom svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -1124,11 +1124,17 @@ var GUIDES=[
 /* ---------- render ---------- */
 var inspirationSection=document.getElementById('inspiration');
 if(!inspirationSection.hidden){
-  document.getElementById('inspoTrack').innerHTML=INSPO.map(function(c){return '<div class="slide"><div class="inspo-card"><img src="'+c.img+'" alt="">'+
+  document.getElementById('inspoTrack').innerHTML=INSPO.map(function(c){return '<div class="slide"><div class="inspo-card" onclick="openInspoPhoto(\''+c.img+'\')"><img src="'+c.img+'" alt="">'+
     '<div class="inspo-body"><div class="inspo-spec">'+c.spec+'</div>'+
     '<div class="inspo-flav">'+c.flav+'</div>'+
     '<div class="inspo-dec">'+c.dec+'</div>'+
     '<span class="inspo-price">'+c.price+'</span></div></div></div>';}).join('');
+}
+/* tapping an Inspiration photo opens the same enlarge-with-arrows lightbox used by the cake strip —
+   set the full Inspiration photo list as the active lightbox items first so prev/next browses all of them */
+function openInspoPhoto(img){
+  cakeLightboxItems=INSPO.map(function(c){return {url:c.img,alt:'Custom cake by Amanda Soyer'};});
+  openCakeLightbox(img,'Custom cake by Amanda Soyer',null,false);
 }
 
 /* builds the mixed text/photo slide list: 1 review, 1 photo, 1 review, 1 photo ... any leftover
@@ -1146,7 +1152,7 @@ var testiStarsHtml='<span></span><span></span><span></span><span></span><span></
 var testiOpenQuote=String.fromCharCode(8220),testiCloseQuote=String.fromCharCode(8221);
 var testiZoomIcon='<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>';
 document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s,i){
-  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo" onclick="openTestiPhoto(\''+s.data+'\')"><div class="testi-photo-inner"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div></div>';
+  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo"><div class="testi-photo-inner" onclick="openTestiPhoto(\''+s.data+'\')"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div></div>';
   var t=s.data;
   return '<div class="slide'+(i===0?' testi-active':'')+'"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars">'+testiStarsHtml+'</div><span class="qm qm-o">'+testiOpenQuote+'</span>'+
     '<blockquote class="quote-text'+(t.long?' quote-text-long':'')+'">'+t.q+'</blockquote>'+
