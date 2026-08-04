@@ -334,9 +334,11 @@
   #testimonials .sec-intro em{font-family:inherit;font-size:inherit;font-weight:inherit;font-style:italic}
   .testimonial-intro-line{flex:1;min-width:28px;height:1px;background:rgba(255,255,255,.38)}
   .testimonial-carousel{position:relative;padding:0 8px;--testi-card-h:260px}
-  #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth;align-items:flex-start}
-  #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center;max-height:0;overflow:hidden;transition:max-height .32s ease}
-  #testiTrack .slide.testi-active{max-height:999px}
+  /* the track's own height is driven by JS to match just the active slide (see syncTestiActiveSlide) —
+     a single "height" transition on the track itself is far cheaper for the browser than animating
+     every slide's own height, which used to fight with native touch-scroll physics and cause stutter */
+  #testiTrack{padding-left:0;padding-right:0;margin:0;scroll-behavior:smooth;align-items:flex-start;overflow-y:hidden;transition:height .28s ease}
+  #testiTrack .slide{flex:0 0 100%;scroll-snap-align:center}
   /* nav arrows use a FIXED pixel position (not a % of the carousel height) so they never move even when a
      long testimonial makes its own card taller than the others — see --testi-card-h above */
   .testimonial-nav{position:absolute;z-index:3;top:calc(12px + var(--testi-card-h)/2);display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(91,0,29,.7);color:#fff;cursor:pointer;transform:translateY(-50%);transition:background .15s ease,transform .15s ease}
@@ -351,6 +353,8 @@
   .quote-text{position:relative;z-index:1;max-width:none;margin:0 6px;font-family:var(--serif);font-style:normal;font-size:clamp(15px,3.8vw,18px);font-weight:400;line-height:1.42;color:#fff;letter-spacing:-.012em}
   /* long testimonials get a slightly smaller size so more text fits before the card needs to grow (class added automatically, see TESTI render code) */
   .quote-text.quote-text-long{font-size:clamp(13px,3.3vw,15px)}
+  /* "(translated)/(traduzido)" note — its own faded, small line under the quote, not stuck on the last line */
+  .quote-translated-note{display:block;margin-top:7px;color:rgba(255,255,255,.5);font-size:11px;font-style:italic;letter-spacing:.01em}
   /* the name flows normally BELOW the text (not absolutely overlaid) so it can never overlap a long
      testimonial's last line — the card simply grows a little taller to fit it, same as the text itself */
   .quote-by{position:relative;z-index:1;margin:14px 6px 0 0;font-size:12px;font-weight:600;letter-spacing:.07em;color:#efd6dd;text-align:right}
@@ -1004,51 +1008,64 @@ var TESTI_DATA=[
   {
     name:'Imge T.',
     en:"Everyone LOVED the cake🎂 and asked your info. It was delicious not one bit of it left at the end of our tour😋 Thank you!💕",
-    pt:'Todos AMARAM o bolo🎂 e pediram o seu contacto. Estava delicioso, não sobrou nada no final do nosso passeio😋 Obrigada!💕 (traduzido)'
+    pt:'Todos AMARAM o bolo🎂 e pediram o seu contacto. Estava delicioso, não sobrou nada no final do nosso passeio😋 Obrigada!💕',
+    translatedLang:'pt'
   },
   {
     name:'Emma C.',
-    en:'Thank YOU for the care and attention 🥰 The cake was absolutely delicious, I truly loved it! It looked beautiful and tasted amazing, it was a huge hit ❤️ (translated)',
-    pt:'Obrigada eu pelo carinho e pela atenção 🥰 O bolo estava absolutamente delicioso, adorei mesmo! Estava lindo e super saboroso, fez todo o sucesso ❤️'
+    en:'Thank YOU for the care and attention 🥰 The cake was absolutely delicious, I truly loved it! It looked beautiful and tasted amazing, it was a huge hit ❤️',
+    pt:'Obrigada eu pelo carinho e pela atenção 🥰 O bolo estava absolutamente delicioso, adorei mesmo! Estava lindo e super saboroso, fez todo o sucesso ❤️',
+    translatedLang:'en'
   },
   {
     name:'Raquel A.',
     en:'Hi Amanda! I honestly loved the cake 😍 It looked so good that I barely even had time to take proper pictures before everyone got stuck in 😆<br><br>It wasn’t just me either, everyone kept saying how nice it looked and how good it tasted. It was such a hit! You absolutely nailed it, thank you so much 🤗💕',
-    pt:'Olá Amanda! Sinceramente adorei o bolo 😍 Estava tão bonito que quase não tive tempo de tirar fotografias como deve ser antes de todos começarem a comer 😆<br><br>E não fui só eu, toda a gente dizia como estava bonito e como sabia bem. Fez um sucesso enorme! Acertaste em cheio, muito obrigada 🤗💕 (traduzido)'
+    pt:'Olá Amanda! Sinceramente adorei o bolo 😍 Estava tão bonito que quase não tive tempo de tirar fotografias como deve ser antes de todos começarem a comer 😆<br><br>E não fui só eu, toda a gente dizia como estava bonito e como sabia bem. Fez um sucesso enorme! Acertaste em cheio, muito obrigada 🤗💕',
+    translatedLang:'pt'
   },
   {
     name:'Sara V.',
     en:'Hi Amanda! I just want to tell you that all people were amazed by the cake - the girls how it look the cake and the taste! Thank you very much ❣️ we will for sure contact you again if we will celebrate something 🙏🏻',
-    pt:'Olá Amanda! Só quero dizer-te que todas as pessoas ficaram maravilhadas com o bolo - as meninas adoraram o aspeto e o sabor! Muito obrigada ❣️ havemos de te contactar novamente sempre que tivermos algo para celebrar 🙏🏻 (traduzido)'
+    pt:'Olá Amanda! Só quero dizer-te que todas as pessoas ficaram maravilhadas com o bolo - as meninas adoraram o aspeto e o sabor! Muito obrigada ❣️ havemos de te contactar novamente sempre que tivermos algo para celebrar 🙏🏻',
+    translatedLang:'pt'
   },
   {
     name:'Marcia F.',
-    en:'Hi, good afternoon<br>The cake was great, I loved it (translated)',
-    pt:'Ola boa tarde<br>O bolo estava ótimoo adorei'
+    en:'Hi, good afternoon<br>The cake was great, I loved it',
+    pt:'Ola boa tarde<br>O bolo estava ótimoo adorei',
+    translatedLang:'en'
   },
   {
     name:'Luma R.',
-    en:'Hi Amanda!!! I can say clearly that in four years in Portugal (with six birthdays a year) I had not found a baker who could make our cakes exactly as we imagined! The experience was extremely positive from the moment of ordering the cake to pick-up! It had been years since I’d tasted a cake with that childhood flavour, from the decoration to the filling everything was flawless!!! I’ve already sent your order link to the friends who were there. I’m looking forward to the next birthday to order again!!! Thank you for your perfect work, lots of kisses. (translated)',
-    pt:'Olá Amanda!!! Falo com clareza que em quatro anos em portugal (com seis aniversários ao ano) não havia encontrado uma confeiteira que fizesse os nossos bolos como realmente imaginamos! A experiência foi extremamente positiva do momento de encomendar o bolo ao levantamento! Fazia anos que não tinha provado um bolo com gosto de infância, da decoração ao recheio estava tudo impecável!!! Já enviei o seu link de pedidos aos amigos que estavam presentes. Estou ansiosa para o próximo aniversário para encomendarmos novamente!!! Obrigada por seu trabalho perfeito, muitos beijinhos.'
+    en:'Hi Amanda!!! I can say clearly that in four years in Portugal (with six birthdays a year) I had not found a baker who could make our cakes exactly as we imagined! The experience was extremely positive from the moment of ordering the cake to pick-up! It had been years since I’d tasted a cake with that childhood flavour, from the decoration to the filling everything was flawless!!! I’ve already sent your order link to the friends who were there. I’m looking forward to the next birthday to order again!!! Thank you for your perfect work, lots of kisses.',
+    pt:'Olá Amanda!!! Falo com clareza que em quatro anos em portugal (com seis aniversários ao ano) não havia encontrado uma confeiteira que fizesse os nossos bolos como realmente imaginamos! A experiência foi extremamente positiva do momento de encomendar o bolo ao levantamento! Fazia anos que não tinha provado um bolo com gosto de infância, da decoração ao recheio estava tudo impecável!!! Já enviei o seu link de pedidos aos amigos que estavam presentes. Estou ansiosa para o próximo aniversário para encomendarmos novamente!!! Obrigada por seu trabalho perfeito, muitos beijinhos.',
+    translatedLang:'en'
   },
   {
     name:'Neila C.',
     en:'My brother was so happy with the cake, and everyone really loved it. It was absolutely delicious and very appreciated, so thank you so much! 🫶🏾',
-    pt:'O meu irmão ficou tão feliz com o bolo, e todos adoraram mesmo. Estava absolutamente delicioso e foi muito apreciado, por isso muito obrigada! 🫶🏾 (traduzido)'
+    pt:'O meu irmão ficou tão feliz com o bolo, e todos adoraram mesmo. Estava absolutamente delicioso e foi muito apreciado, por isso muito obrigada! 🫶🏾',
+    translatedLang:'pt'
   },
   {
     name:'Maria F.',
-    en:'Good morning! The cake was delicious 😋 really well made! The only thing is I was expecting the colours to be a little lighter! But that detail is almost insignificant given the quality of everything else! 😍 (translated)',
-    pt:'Bom dia! O bolo estava delicioso 😋 muito bem feito! Só as cores é que estava à espera de serem mais claras! Mas esse detalhe é quase insignificante tendo em conta a qualidade dos outros aspetos! 😍'
+    en:'Good morning! The cake was delicious 😋 really well made! The only thing is I was expecting the colours to be a little lighter! But that detail is almost insignificant given the quality of everything else! 😍',
+    pt:'Bom dia! O bolo estava delicioso 😋 muito bem feito! Só as cores é que estava à espera de serem mais claras! Mas esse detalhe é quase insignificante tendo em conta a qualidade dos outros aspetos! 😍',
+    translatedLang:'en'
   },
   {
     name:'Anne D.',
     en:'Hi Amanda! Just wanted to let you know the cake was delicious, it wasn’t too sweet which I loved 😘 will be ordering another one soon for my sons birthday. Have a lovely evening!',
-    pt:'Olá Amanda! Só queria dizer-te que o bolo estava delicioso, não era demasiado doce, o que adorei 😘 vou encomendar outro em breve para o aniversário do meu filho. Boa noite! (traduzido)'
+    pt:'Olá Amanda! Só queria dizer-te que o bolo estava delicioso, não era demasiado doce, o que adorei 😘 vou encomendar outro em breve para o aniversário do meu filho. Boa noite!',
+    translatedLang:'pt'
   }
 ];
-/* yukarıdaki sade listeyi sayfanın kullandığı iki-dilli formata çevirir — bu satırı değiştirmenize gerek yok */
-var TESTI=TESTI_DATA.map(function(t){return {q:bi(t.en,t.pt), by:t.name,long:Math.max(t.en.replace(/<[^>]+>/g,'').length,t.pt.replace(/<[^>]+>/g,'').length)>200};});
+/* yukarıdaki sade listeyi sayfanın kullandığı iki-dilli formata çevirir — bu satırı değiştirmenize gerek yok
+   (translatedLang varsa, o dilde yorumun altına küçük soluk bir "(translated)/(traduzido)" notu otomatik eklenir) */
+var TESTI=TESTI_DATA.map(function(t){
+  var note=t.translatedLang==='en'?'<span class="quote-translated-note i-en">(translated)</span>':t.translatedLang==='pt'?'<span class="quote-translated-note i-pt">(traduzido)</span>':'';
+  return {q:bi(t.en,t.pt)+note, by:t.name,long:Math.max(t.en.replace(/<[^>]+>/g,'').length,t.pt.replace(/<[^>]+>/g,'').length)>200};
+});
 /* fotoğraflar — Supabase'e yüklenen 01.jpg .. 11.jpg testimonial fotoğrafları */
 function testiPhotoUrl(n){return 'https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/Testimonials/'+String(n).padStart(2,'0')+'.jpg';}
 var TESTI_PHOTOS=[1,2,3,4,5,6,7,8,9,10,11].map(testiPhotoUrl);
@@ -1161,10 +1178,10 @@ var TESTI_SLIDES=buildTestimonialSlides();
 var testiStarsHtml='<span></span><span></span><span></span><span></span><span></span>'.replace(/<span><\/span>/g,'<span>STAR</span>').replace(/STAR/g,String.fromCharCode(9733));
 var testiOpenQuote=String.fromCharCode(8220),testiCloseQuote=String.fromCharCode(8221);
 var testiZoomIcon='<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>';
-document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s,i){
-  if(s.type==='photo')return '<div class="slide'+(i===0?' testi-active':'')+'"><div class="testi-photo"><div class="testi-photo-inner" onclick="openTestiPhoto(\''+s.data+'\')"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div></div>';
+document.getElementById('testiTrack').innerHTML=TESTI_SLIDES.map(function(s){
+  if(s.type==='photo')return '<div class="slide"><div class="testi-photo"><div class="testi-photo-inner" onclick="openTestiPhoto(\''+s.data+'\')"><img src="'+s.data+'" alt="Testimonial photo" loading="lazy"><span class="testi-photo-zoom">'+testiZoomIcon+'</span></div></div></div>';
   var t=s.data;
-  return '<div class="slide'+(i===0?' testi-active':'')+'"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars">'+testiStarsHtml+'</div><span class="qm qm-o">'+testiOpenQuote+'</span>'+
+  return '<div class="slide"><figure class="quote"><div class="quote-stars" aria-label="5 out of 5 stars">'+testiStarsHtml+'</div><span class="qm qm-o">'+testiOpenQuote+'</span>'+
     '<blockquote class="quote-text'+(t.long?' quote-text-long':'')+'">'+t.q+'</blockquote>'+
     '<figcaption class="quote-by">'+t.by+'</figcaption>'+
     '<span class="qm qm-c">'+testiCloseQuote+'</span></figure></div>';
@@ -1186,11 +1203,9 @@ function openTestiPhoto(url){
   openCakeLightbox(url,'Testimonial photo',null,true);
 }
 
-/* Off-screen testimonial slides are collapsed to zero height (see #testiTrack .slide.testi-active) so
-   short reviews stay short — but that also stops the browser's native loading="lazy" from starting a
-   photo's download until the moment its slide becomes active, which felt like a stall on every swipe.
-   Fix: quietly fetch every testimonial photo in the background (staggered, so it never competes with
-   the page's own load) — by the time someone swipes to it, it's already sitting in the browser cache. */
+/* Quietly fetch every testimonial photo in the background (staggered, so it never competes with the
+   page's own load) — by the time someone swipes to a photo slide, it's already sitting in the browser
+   cache, so there's no visible stall waiting for it to download. */
 var testiPhotosPreloaded=false;
 function preloadTestiPhotos(){
   if(testiPhotosPreloaded)return;
@@ -1202,21 +1217,44 @@ function preloadTestiPhotos(){
 
 var testimonialSection=document.getElementById('testimonials');
 var testimonialIndex=0;
-/* keeps only the currently-shown slide "tall" (CSS max-height transition, see #testiTrack .slide.testi-active)
-   so short reviews stay short and the card only grows downward for long ones — the nav arrows never move
-   because their position is a fixed pixel value (see --testi-card-h in the CSS), not the carousel's total height */
+/* While a nav-button/dot click is animating the scroll, ignore the native-scroll listener's own index
+   detection below — otherwise it fires mid-animation (scroll events keep arriving during the smooth
+   scroll), reads a slide that isn't the final target yet, and overwrites testimonialIndex with a stale
+   value. That mismatch was why the desktop arrows would skip/repeat slides or "go blank". */
+var testiSuppressScrollSync=false,testiSuppressScrollTimer=null;
+function testiSuppressScrollSyncFor(ms){
+  testiSuppressScrollSync=true;
+  clearTimeout(testiSuppressScrollTimer);
+  testiSuppressScrollTimer=setTimeout(function(){testiSuppressScrollSync=false;},ms);
+}
+/* Sets the track's own height to match only the currently-active slide (instead of animating every
+   slide's own height, which used to fight with native touch-scroll physics and stutter on mobile).
+   Short reviews stay short, the card only grows downward for long ones, and the nav arrows never move
+   because their position is a fixed pixel value (see --testi-card-h in the CSS), not the track's height. */
 function syncTestiActiveSlide(){
   var track=document.getElementById('testiTrack');
   if(!track)return;
-  [].slice.call(track.querySelectorAll('.slide')).forEach(function(s,i){s.classList.toggle('testi-active',i===testimonialIndex);});
+  var slides=[].slice.call(track.querySelectorAll('.slide'));
+  var active=slides[testimonialIndex];
+  if(active)track.style.height=active.scrollHeight+'px';
 }
+syncTestiActiveSlide();
+window.addEventListener('resize',syncTestiActiveSlide);
 function moveTestimonial(direction){
   var track=document.getElementById('testiTrack'),slides=[].slice.call(track.querySelectorAll('.slide')),dots=[].slice.call(document.querySelectorAll('#testiDots .dot'));
   if(!slides.length)return;
   testimonialIndex=(testimonialIndex+direction+slides.length)%slides.length;
+  testiSuppressScrollSyncFor(700);
   syncTestiActiveSlide();
-  var target=slides[testimonialIndex].offsetLeft-track.offsetLeft-(track.clientWidth-slides[testimonialIndex].offsetWidth)/2;
-  track.scrollLeft=Math.max(0,target);
+  /* delta from the CURRENT live scroll position (not an absolute offsetLeft guess) — self-corrects
+     regardless of any drift, which is what made this reliable instead of skipping/repeating slides.
+     Uses scrollTo() rather than a direct scrollLeft assignment — with scroll-snap-type active, a raw
+     scrollLeft write can get silently overridden by the browser's own snap correction, which is what
+     made the desktop arrows seem to do nothing (or jump to the wrong slide) before this fix. */
+  var tr=track.getBoundingClientRect(),sr=slides[testimonialIndex].getBoundingClientRect();
+  var delta=(sr.left-tr.left)-(tr.width-sr.width)/2;
+  var target=Math.max(0,track.scrollLeft+delta);
+  track.scrollTo({left:target,behavior:reduce()?'auto':'smooth'});
   dots.forEach(function(dot,index){dot.classList.toggle('on',index===testimonialIndex);});
 }
 function revealTestimonials(){
@@ -1305,7 +1343,7 @@ document.querySelectorAll('[data-carousel]').forEach(function(root){
   track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){
     var tr=track.getBoundingClientRect(),ref=align==='center'?tr.left+tr.width/2:tr.left+PAD,best=0,bd=1e9;
     slides.forEach(function(s,j){var sr=s.getBoundingClientRect();var pt=align==='center'?sr.left+sr.width/2:sr.left;var dd=Math.abs(pt-ref);if(dd<bd){bd=dd;best=j;}});
-    setDot(best);if(root.classList.contains('testimonial-carousel')){testimonialIndex=best;syncTestiActiveSlide();}
+    setDot(best);if(root.classList.contains('testimonial-carousel')&&!testiSuppressScrollSync){testimonialIndex=best;syncTestiActiveSlide();}
   },90);},{passive:true});
   track.addEventListener('pointerdown',pause);
   var prev=root.querySelector('[data-carousel-prev]'),next=root.querySelector('[data-carousel-next]');
