@@ -259,6 +259,7 @@
   .fdp-cell.rush.sel{background:var(--accent);border-color:var(--accent);color:#fff}
   .tslot{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:7px 0;text-align:center;font-size:12.5px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
   .tslot.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .tslot.disabled{background:#F4F2EF;border-color:#E7E3DE;color:#BBB6B0;cursor:not-allowed;opacity:.72}
 
   .drop{border:2px dashed #DFCBD0;border-radius:var(--radius);background:var(--card);padding:26px 18px;text-align:center;cursor:pointer}
   .drop:active{transform:scale(.99)}
@@ -1290,10 +1291,13 @@ R.pickup=()=>{
   const disp=S.pdate
     ? `<span>${fmtPicked(S.pdate)}</span>${selectedRush?`<span class="selected-rush">${lang==='en'?'Rush order':'Pedido urgente'}</span><span class="selected-rush-price">+€${selectedRush}</span>`:''}`
     : (lang==='en'?'Choose a date':'Escolha uma data');
+  const selectedDate=S.pdate?new Date(`${S.pdate}T12:00:00`):null;
+  const weekend=selectedDate&&(selectedDate.getDay()===0||selectedDate.getDay()===6);
   let slots='';
   for(let h=11;h<=18;h++)for(let mm=0;mm<60;mm+=15){if(h===18&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
-    slots+=`<div class="tslot ${S.ptime===s?'sel':''}" data-tm="${s}">${s}</div>`;}
-  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),lg("Wed–Sun · 11:00–18:00 (Mon & Tue closed)","Qua–Dom · 11:00–18:00 (Seg e Ter encerrado)"))+
+    const unavailable=weekend&&(h>13||(h===13&&mm>0));
+    slots+=`<div class="tslot ${unavailable?'disabled':S.ptime===s?'sel':''}" data-tm="${s}" aria-disabled="${unavailable?'true':'false'}">${s}</div>`;}
+  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),lg("Wed–Fri · 11:00–18:00 · Sat–Sun · 11:00–13:00","Qua–Sex · 11:00–18:00 · Sáb–Dom · 11:00–13:00"))+
     `<div class="fdp">
        <div class="fdp-head">
          <button class="fdp-nav" ${prevDisabled?'disabled':''} ${prevDisabled?'':'onclick="shiftMonth(-1)"'}>‹</button>
@@ -1320,7 +1324,7 @@ R.pickup=()=>{
       validate();
     };
   }
-  B().querySelectorAll('.tslot').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
+  B().querySelectorAll('.tslot:not(.disabled)').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
     B().querySelectorAll('.tslot').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');validate();
     requestAnimationFrame(()=>document.getElementById('courierBtn')?.scrollIntoView({behavior:'smooth',block:'center'}));
   });
@@ -1565,6 +1569,7 @@ function missing(){
   else if(k==='pickup'){
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
     if(!S.ptime)add(lang==='en'?'Choose a pick-up time':'Escolha a hora de levantamento','.time-grid');
+    if(S.pdate&&S.ptime){const d=new Date(`${S.pdate}T12:00:00`);if((d.getDay()===0||d.getDay()===6)&&S.ptime>'13:00')add(lang==='en'?'Weekend collection is available from 11:00 to 13:00':'Ao fim de semana, o levantamento está disponível das 11:00 às 13:00','.time-grid');}
   }
   else if(k==='heard'){if(!S.heard)add(lang==='en'?'Let me know how you found me':'Diga-me como me encontrou','.opts');}
   else if(k==='policies'){if(!S.agreed)add(lang==='en'?'Please accept the booking terms to continue':'Aceite os termos para continuar','#agree');}
@@ -1884,7 +1889,12 @@ document.getElementById('privacy').addEventListener('click',function(e){if(e.tar
 /* ---------- utils ---------- */
 let pickMonth=null;
 function pad(n){return String(n).padStart(2,'0');}
-function pickDate(iso){S.pdate=iso;pickupScrollAfterPick=true;R.pickup();renderCart();validate();}
+function pickDate(iso){
+  S.pdate=iso;
+  const d=new Date(`${iso}T12:00:00`),weekend=d.getDay()===0||d.getDay()===6;
+  if(weekend&&S.ptime&&S.ptime>'13:00')S.ptime='';
+  pickupScrollAfterPick=true;R.pickup();renderCart();validate();
+}
 function showDateUnavailable(){
   const messageByLanguage={en:'Off days: next 2 days - Mon-Tue',pt:'Folgas: Seg-Ter - Próximos 2 dias'};
   showToastMessage(messageByLanguage[lang]||messageByLanguage.en);
