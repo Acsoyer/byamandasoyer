@@ -527,6 +527,19 @@ function allowedPhotoFile(file){
     ALLOWED_PHOTO_EXTENSIONS.has(photoExtension(file.name));
 }
 let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.error("Supabase init failed",e); }
+let OFF_DAYS=new Set();
+function loadOffDays(){
+  if(!sb)return;
+  try{
+    const today=new Date();today.setHours(0,0,0,0);
+    const iso=today.toISOString().split('T')[0];
+    sb.from('off_days').select('day').gte('day',iso).then(({data,error})=>{
+      if(error)return;
+      OFF_DAYS=new Set((data||[]).map(r=>String(r.day)));
+      if(typeof R.pickup==='function'&&STEPS[step]==='pickup'){try{R.pickup();}catch(_){}}
+    });
+  }catch(e){}
+}
 let turnstileWidgetId=null,turnstileToken="",turnstileTokenCreatedAt=0,turnstileWaiters=[],turnstileExecutionActive=false;
 function localTurnstilePreview(){return location.protocol==="file:"||["localhost","127.0.0.1"].includes(location.hostname);}
 function activeTurnstileSiteKey(){return localTurnstilePreview()?TURNSTILE_TEST_SITE_KEY:TURNSTILE_SITE_KEY;}
@@ -1280,7 +1293,7 @@ R.pickup=()=>{
     const cy=dd.getFullYear(),cm=dd.getMonth(),d=dd.getDate();
     const iso=`${cy}-${pad(cm+1)}-${pad(d)}`;const ahead=daysUntilPickup(iso);const past=ahead<0;const today=ahead===0;const soon=ahead>=0&&ahead<3;const rush=ahead===3;const sel=iso===S.pdate;
     const adjacent=cm!==m;
-    const off=(dd.getDay()===1||dd.getDay()===2);/* Monday & Tuesday closed */
+    const off=(dd.getDay()===1||dd.getDay()===2)||OFF_DAYS.has(iso);/* Monday & Tuesday closed + off days */
     const disabled=past||soon||off;
     const click=past?'':(disabled?'onclick="showDateUnavailable()"':`onclick="pickDate('${iso}')"`); 
     cells+=`<div class="fdp-cell ${adjacent?'adjacent':''} ${past?'past':''} ${today?'today':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${click}><span>${d}</span>${adjacent?`<small>${MOS[cm]}</small>`:''}</div>`;
@@ -1896,7 +1909,7 @@ function pickDate(iso){
   pickupScrollAfterPick=true;R.pickup();renderCart();validate();
 }
 function showDateUnavailable(){
-  const messageByLanguage={en:'Off days: next 2 days - Mon-Tue',pt:'Folgas: Seg-Ter - Próximos 2 dias'};
+  const messageByLanguage={en:'This date is unavailable. Please choose another day.',pt:'Esta data não está disponível. Por favor escolha outro dia.'};
   showToastMessage(messageByLanguage[lang]||messageByLanguage.en);
 }
 function shiftMonth(n){pickMonth=new Date(pickMonth.getFullYear(),pickMonth.getMonth()+n,1);R.pickup();}
@@ -1931,6 +1944,7 @@ let _lti=1;
   if(q==='en'||q==='pt')start(q);
   if(qp.get('privacy')==='1')setTimeout(openPrivacy,0);
 }catch(e){}})();
+loadOffDays(); /* fetch off-days so those pick-up dates are unselectable */
 window.addEventListener('pagehide',trackFormAbandon);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)trackFormAbandon();});
 window.addEventListener('message',function(e){
