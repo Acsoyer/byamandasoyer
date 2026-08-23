@@ -837,11 +837,13 @@ function dayNumberFromISO(iso){
 function todayDayNumber(){const d=new Date();return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000;}
 function daysUntilPickup(iso){const n=dayNumberFromISO(iso);return Number.isFinite(n)?Math.round(n-todayDayNumber()):null;}
 function rushSurcharge(){return daysUntilPickup(S.pdate)===3?(S.size==='XS'?10:20):0;}
+function courierSurcharge(){return S.courier?2:0;}
 
 /* ---------- Price ---------- */
 function calc(){
   const rush=rushSurcharge();
-  if(isCustomQuote())return{custom:true,rush};
+  const courier=courierSurcharge();
+  if(isCustomQuote())return{custom:true,rush,courier};
   let sum=0,range=false;
   const sz=sizeOpt(); if(sz&&sz.price!=null)sum+=sz.price;
   const sh=(isBento()?D.shapeBento:D.shapeCustom).find(o=>o.id===S.shape); if(sh)sum+=shapePrice(sh.id);
@@ -855,7 +857,8 @@ function calc(){
     if(o.quote){range=true;return;}
     const p=decorPrice(o); if(p)sum+=p;});
   sum+=rush;
-  return{sum,range,rush};
+  sum+=courier;
+  return{sum,range,rush,courier};
 }
 const priceNow=()=>{const c=calc();return c.custom?0:c.sum;};
 function renderCart(){
@@ -1269,8 +1272,8 @@ R.contact=()=>{
 };
 function pickNote(){
   return S.courier
-    ? (lang==='en'?'You book and pay for the courier yourself. Please notify me 8 to 10 minutes before requesting it, and send the tracking link once the ride has been booked.'
-                  :'É você que reserva e paga o estafeta. Por favor, avise-me 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que a viagem estiver marcada.')
+      ? (lang==='en'?'You book and pay for the courier yourself. A €2 courier fee has been added. Please notify me 8 to 10 minutes before requesting it, and send the tracking link once the ride has been booked.'
+                  :'É você que reserva e paga o estafeta. Foi adicionada uma taxa de estafeta de 2€. Por favor, avise-me 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que a viagem estiver marcada.')
     : (lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.'
                   :'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.');
 }
@@ -1433,6 +1436,8 @@ R.review=()=>{
   if(S.candles==='yes')addReceipt(lang==='en'?'Candles':'Velas',lang==='en'?'Free':'Grátis','free');
   const rush=c.rush||0;
   if(rush)addReceipt(lang==='en'?'Rush order':'Pedido urgente',`+€${rush}`);
+  const courier=c.courier||0;
+  if(courier)addReceipt(lang==='en'?'Courier fee':'Taxa de estafeta',`+€${courier}`);
   const receiptHtml=`<div class="receipt"><div class="receipt-head">${lang==='en'?'Price details':'Detalhes do preço'}</div>${receipt.map(r=>
     `<div class="receipt-row"><span class="receipt-name">${r.name}</span><span class="receipt-dots"></span><span class="receipt-price ${r.kind}">${r.price}</span></div>`).join('')}</div>`;
   /* message, written as a sentence */
@@ -1487,7 +1492,7 @@ R.review=()=>{
           `<div class="rpick"><span class="rp-d">${S.pdate?fmtPickedShort(S.pdate):''}</span><span class="rp-t">${S.ptime||''}</span></div>`
           +(S.courier?`<div class="rcour">
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
-              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — please notify me 8–10 minutes before you request it, and send me the tracking link once booked.':'É você que reserva e paga o estafeta — avise-me 8 a 10 minutos antes de o solicitar e envie-me o link de acompanhamento assim que estiver marcado.'}</span>
+              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — a €2 courier fee has been added. Please notify me 8–10 minutes before you request it, and send me the tracking link once booked.':'É você que reserva e paga o estafeta — foi adicionada uma taxa de estafeta de 2€. Avise-me 8 a 10 minutos antes de o solicitar e envie-me o link de acompanhamento assim que estiver marcado.'}</span>
             </div>`:''),'before-receipt')}
         ${receiptHtml}
       </div>
@@ -1739,6 +1744,9 @@ function buildPayload(photo_urls){
   if(c.rush){
     notesOut=(notesOut?notesOut+"\n\n":"")+`RUSH ORDER SURCHARGE: +€${c.rush} for pickup on ${S.pdate}.`;
   }
+  if(c.courier){
+    notesOut=(notesOut?notesOut+"\n\n":"")+"COURIER FEE: +€2 for Bolt/Uber courier collection.";
+  }
   return {
     status:"new", is_read:false, paid:0,
     language:lang.toUpperCase(),
@@ -1752,6 +1760,7 @@ function buildPayload(photo_urls){
     name:S.name, whatsapp:(S.wcode+" "+S.wnum).trim(), instagram:S.instagram,
     pickup_date:S.pdate||null, pickup_time:S.ptime,
     heard:hrd, referred_by:S.referredBy, email:S.email, email_opt_in:S.emailOptIn,
+    courier_fee:c.courier||0,
     price:c.custom?null:c.sum, price_range:c.custom?false:!!c.range, agreed:S.agreed
   };
 }
