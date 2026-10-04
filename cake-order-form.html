@@ -150,6 +150,8 @@
   .opt:active{transform:scale(.985)}
   .opt.sel{border-color:var(--accent);background:linear-gradient(0deg,var(--accent-soft),#fff)}
   .opt .ic{flex:0 0 auto;width:48px;height:48px;border-radius:13px;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .step-size .opt[data-id] .ic{position:relative}
+  .step-size .size-cake-image{position:absolute;left:2px;bottom:2px;width:44px;height:44px;max-width:none;object-fit:contain;transform:translateY(var(--cake-bottom-offset,0px))}
   .opt .ic .method-img{width:100%;height:100%;object-fit:cover;display:block}
   .method-preview-trigger{position:relative;cursor:zoom-in;overflow:visible!important}
   .method-preview-trigger .method-img{border-radius:13px}
@@ -806,11 +808,34 @@ const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
   writeMethods:[],writing:"",writingColor:null,writingRef:false,
   cupcakes:"none",decor:["none"],candles:null,photo:false,photoFiles:[],photoPreviews:[],photoNote:"",
   noAllergy:false,allergies:"",notes:"",name:"",wcode:"+351",wcodeCustom:false,wnum:"",instagram:"",
-  pdate:"",ptime:"",courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
+  pdate:"",ptime:"",collection:null,courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
 let S=DEF();
 let photoBypassTaps=0,photoBypass=false;
 
-const STEPS=['size','flavor','allergies','color','photo','writing','decor','pickup','contact','heard','policies','review'];
+const STEPS=['pickup','size','flavor','allergies','color','photo','writing','decor','contact','heard','policies','review'];
+// Public Storage images: all cake icons share a common scale.
+const IMAGE_ASSETS={
+  "cakeSizes": {
+    "XS": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/XS.svg",
+    "S": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/S.svg",
+    "M": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/M.svg",
+    "L": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/L.svg",
+    "XL": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/XL.svg",
+    "sm": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/sm.svg",
+    "ml": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/ml.svg"
+  },
+  "gold": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/gold.jpg",
+  "silver": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/silver.jpg"
+};
+function writingColours(){return [...D.colors,{h:'#D4AF37',t:lg('Gold','Dourado'),texture:IMAGE_ASSETS.gold},{h:'#C0C0C0',t:lg('Silver','Prateado'),texture:IMAGE_ASSETS.silver}];}
+// Storage SVGs have a shared 650×650 viewBox with vertically centred artwork.
+// Offset the transparent bottom padding, keeping one 44/650 scale for every cake.
+function sizeCakeImage(id){
+  const imageId=id==='30+'?'XL':id;
+  const bottomPadding={XS:192,S:178,M:135,L:80.5,XL:60.5,sm:4,ml:29};
+  return `<img class="size-cake-image" src="${IMAGE_ASSETS.cakeSizes[imageId]}" width="44" height="44" alt="" style="--cake-bottom-offset:${bottomPadding[imageId]*44/650}px">`;
+}
+function collectionIcon(courier){return courier?'<svg viewBox="0 0 48 48" width="38" height="38" aria-hidden="true"><path d="M8 26 13 14h22l5 12v10H8Z" fill="#EAD8DF" stroke="#73082C" stroke-width="2.5" stroke-linejoin="round"/><path d="m14 17-3 9h26l-3-9Z" fill="#73082C"/><circle cx="14" cy="32" r="2.5" fill="#73082C"/><circle cx="34" cy="32" r="2.5" fill="#73082C"/><path d="M12 36v4m24-4v4" stroke="#73082C" stroke-width="4" stroke-linecap="round"/></svg>':'<svg viewBox="0 0 48 48" width="38" height="38" aria-hidden="true"><path d="m8 16 16-7 16 7v23H8Z" fill="#EAD8DF" stroke="#73082C" stroke-width="2.5" stroke-linejoin="round"/><path d="m8 16 16 7 16-7M24 23v16M17 12l16 7v7l-6-3v-7" fill="none" stroke="#73082C" stroke-width="2.5" stroke-linejoin="round"/></svg>';}
 const isBento=()=>S.size==='XS';
 const sizeOpt=()=>D.size.opts.find(o=>o.id===S.size);
 const isCustomQuote=()=>{const o=sizeOpt();return !!o&&o.price==null;};
@@ -836,7 +861,7 @@ function dayNumberFromISO(iso){
 }
 function todayDayNumber(){const d=new Date();return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000;}
 function daysUntilPickup(iso){const n=dayNumberFromISO(iso);return Number.isFinite(n)?Math.round(n-todayDayNumber()):null;}
-function rushSurcharge(){return daysUntilPickup(S.pdate)===3?(S.size==='XS'?10:20):0;}
+function rushSurcharge(){return S.size&&daysUntilPickup(S.pdate)===3?(S.size==='XS'?10:20):0;}
 function courierSurcharge(){return S.courier?2:0;}
 
 /* ---------- Price ---------- */
@@ -919,8 +944,9 @@ R.size=()=>{
     if(o.twoTier&&firstTwoTier){firstTwoTier=false;
       pre=`<div class="tier"><span>${lang==='en'?'Two-tier cakes':'Bolos de dois andares'}</span><span class="ln"></span></div>`;
     }
-    return pre+`<button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}">
-      <span class="ic">${o.twoTier?sizeCakeTwoTier(o.lvl):sizeCake(o.lvl)}</span>
+    const courierBlocked=S.courier&&!['XS','S','M'].includes(o.id);
+    return pre+`<button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}" ${courierBlocked?'disabled style="opacity:.45"':''}>
+      <span class="ic">${sizeCakeImage(o.id)}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.d[lang]}</span></span>
       ${o.price==null?`<span class="ptag">${t('quote')}</span>`:baseTag(o.price)}
     </button>`;
@@ -938,7 +964,7 @@ R.size=()=>{
       </button>`).join('')+`</div><div class="scroll-space"></div>`;
   }
   B().innerHTML=head(D.size.q,lg("Starting prices shown. Final pricing depends on flavors and design complexity.","Preços iniciais indicados. O preço final depende dos sabores e da complexidade do design."))+
-    `<div class="opts">${cards}</div>${shapeSec}`;
+    `${S.courier?`<p class="note">${lang==='en'?'Uber/Bolt courier collection is available for XS, S and M cakes only. For a larger cake, go back and choose self-collection.':'O levantamento por estafeta Uber/Bolt está disponível apenas para bolos XS, S e M. Para um bolo maior, volte atrás e escolha levantar pessoalmente.'}</p>`:''}<div class="opts">${cards}</div>${shapeSec}`;
   /* size selection */
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
     const prev=S.size;
@@ -1037,9 +1063,9 @@ R.writing=()=>{
       <span class="tx"><span class="tt">${o.t[lang]}</span></span>
       ${addTag(writeMethodPrice(o.id))}
       ${o.id==='none'?'':`<span class="chk">${tick()}</span>`}</button>`).join('');
-  const cols=[D.colors.find(o=>o.h==='#1A1A1A'),...D.colors.filter(o=>o.h!=='#1A1A1A')];
+  const cols=[D.colors.find(o=>o.h==='#1A1A1A'),...writingColours().filter(o=>o.h!=='#1A1A1A')];
   const swatches=cols.map(o=>{const sel=S.writingColor===o.h;
-    return `<div class="sw ${sel?'sel':''} ${isLight(o.h)?'light':''}" data-c="${o.h}"><div class="chip" style="background:${o.h}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
+    return `<div class="sw ${sel?'sel':''} ${isLight(o.h)?'light':''}" data-c="${o.h}"><div class="chip" style="background:${o.h}${o.texture?`;background-image:url('${o.texture}');background-size:cover`:''}"></div><div class="nm">${o.t[lang]}</div></div>`;}).join('');
   /* message field: required once a style is picked, hidden when None */
   const msgLabel=needs
     ? `${lang==='en'?'Your message':'A sua mensagem'}`
@@ -1272,15 +1298,15 @@ R.contact=()=>{
 };
 function pickNote(){
   return S.courier
-      ? (lang==='en'?'You book and pay for the courier yourself. A €2 courier fee has been added. Please notify me 8 to 10 minutes before requesting it, and send the tracking link once the ride has been booked.'
-                  :'É você que reserva e paga o estafeta. Foi adicionada uma taxa de estafeta de 2€. Por favor, avise-me 8 a 10 minutos antes de o solicitar e envie o link de acompanhamento assim que a viagem estiver marcada.')
+      ? (lang==='en'?'You book and pay for the courier directly.<br>(<strong>We do not charge the courier cost</strong>). A <strong>€2 service fee</strong> is added for arranging the pickup, waiting for the driver and handing over your cake.<br>Please let me know 8-10 minutes before requesting the ride and send me the tracking link once it\'s booked.'
+                  :'Reserva e paga o estafeta diretamente.<br>(<strong>Não cobramos o custo do estafeta</strong>). É adicionada uma <strong>taxa de serviço de 2€</strong> pela organização do levantamento, espera pelo motorista e entrega do seu bolo.<br>Por favor, avise-me 8-10 minutos antes de pedir a viagem e envie-me o link de acompanhamento assim que estiver reservada.')
     : (lang==='en'?'Please arrive at your selected time. Late arrivals may affect collection availability.'
                   :'Por favor, chegue à hora selecionada. Atrasos podem afetar a disponibilidade do levantamento.');
 }
 let pickupScrollAfterPick=false;
 R.pickup=()=>{
-  const courierOK=(S.size==='XS'||S.size==='S'||S.size==='M');
-  if(!courierOK)S.courier=false;
+  const courierOK=(!S.size||S.size==='XS'||S.size==='S'||S.size==='M');
+  if(!courierOK&&S.courier){S.courier=false;S.collection='self';}
   const t0=new Date();t0.setHours(0,0,0,0);
   if(!pickMonth){const base=S.pdate?new Date(S.pdate+'T00:00:00'):t0;pickMonth=new Date(base.getFullYear(),base.getMonth(),1);}
   const y=pickMonth.getFullYear(),m=pickMonth.getMonth();
@@ -1302,7 +1328,7 @@ R.pickup=()=>{
     cells+=`<div class="fdp-cell ${adjacent?'adjacent':''} ${past?'past':''} ${today?'today':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${click}><span>${d}</span>${adjacent?`<small>${MOS[cm]}</small>`:''}</div>`;
   }
   const prevDisabled=(y<t0.getFullYear())||(y===t0.getFullYear()&&m<=t0.getMonth());
-  const selectedRush=rushSurcharge();
+  const selectedRush=daysUntilPickup(S.pdate)===3?(S.size?rushSurcharge():'10–20'):0;
   const rushNote=selectedRush?`<div class="rush-note">${lang==='en'?'A rush fee applies to orders requested within 2 days of collection, to cover the additional time and planning required to adjust my production schedule.':'É aplicada uma taxa de urgência a pedidos feitos até 2 dias antes da recolha, para cobrir o tempo e planeamento extras necessários para ajustar o meu calendário de produção.'}</div>`:'';
   const disp=S.pdate
     ? `<span>${fmtPicked(S.pdate)}</span>${selectedRush?`<span class="selected-rush">${lang==='en'?'Rush order':'Pedido urgente'}</span><span class="selected-rush-price">+€${selectedRush}</span>`:''}`
@@ -1324,17 +1350,16 @@ R.pickup=()=>{
      </div>
      <div class="fdp-selected ${S.pdate?'':'empty'}" id="pickupSelected" style="margin-top:11px;margin-bottom:0">${disp}</div>${rushNote}
      <div class="field" id="pickupTimes" style="margin-top:12px;margin-bottom:10px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
-     ${!S.courier?`<p class="note" id="pickNote">${pickNote()}</p>`:''}
-     ${courierOK?`<button class="opt multi ${S.courier?'sel':''}" id="courierBtn" style="margin-top:9px;padding-top:11px;padding-bottom:11px">
-       <span class="ic"><span style="font-size:20px">🛵</span></span>
-       <span class="tx"><span class="tt">${lang==='en'?'I would like to arrange a Bolt or Uber courier':'Gostaria de solicitar um estafeta Bolt ou Uber'}</span></span>
-       <span class="chk">${tick()}</span></button>`:''}
-     ${S.courier?`<p class="note" id="pickNote">${pickNote()}</p>`:''}`;
+     <div class="opts" style="margin-top:14px" role="radiogroup" aria-label="${lang==='en'?'Collection method':'Método de levantamento'}">
+       <button type="button" role="radio" aria-checked="${S.collection==='self'}" class="opt ${S.collection==='self'?'sel':''}" id="selfCollectBtn"><span class="ic">${collectionIcon(false)}</span><span class="tx"><span class="tt">${lang==='en'?'I will come and collect it myself':'Vou levantar pessoalmente'}</span></span></button>
+       <button type="button" role="radio" aria-checked="${S.collection==='courier'}" class="opt ${S.collection==='courier'?'sel':''}" id="courierBtn" ${courierOK?'':'disabled style="opacity:.45"'}><span class="ic">${collectionIcon(true)}</span><span class="tx"><span class="tt">${lang==='en'?'I would like to arrange an Uber/Bolt courier':'Gostaria de solicitar um estafeta Uber/Bolt'}</span></span>${addTag(2)}</button>
+     </div>${S.collection?`<p class="note" id="pickNote">${pickNote()}</p>`:''}`;
+  document.getElementById('selfCollectBtn').onclick=()=>{const scroll=B().scrollTop;S.collection='self';S.courier=false;R.pickup();B().scrollTop=scroll;validate();};
   if(courierOK){
     const cb=document.getElementById('courierBtn');
     cb.onclick=()=>{
       const currentScroll=B().scrollTop;
-      S.courier=!S.courier;
+      S.collection='courier';S.courier=true;
       R.pickup();
       B().scrollTop=currentScroll;
       validate();
@@ -1444,7 +1469,7 @@ R.review=()=>{
   let msgLine='';
   if(S.writing){
     const styles=wmSel.map(id=>{const o=D.writeMethods.find(x=>x.id===id);return o?o.t[lang]:'';}).filter(Boolean).join(' + ');
-    const wc=S.writingColor?D.colors.find(x=>x.h===S.writingColor):null;
+    const wc=S.writingColor?writingColours().find(x=>x.h===S.writingColor):null;
     msgLine=`<div class="rquote">
         <span class="rq-text">“${esc(S.writing)}”</span>
         <span class="rq-meta">${styles}${wc?` <span class="rq-col"><i style="background:${wc.h}"></i>${wc.t[lang]}</span>`:''}</span>
@@ -1492,7 +1517,7 @@ R.review=()=>{
           `<div class="rpick"><span class="rp-d">${S.pdate?fmtPickedShort(S.pdate):''}</span><span class="rp-t">${S.ptime||''}</span></div>`
           +(S.courier?`<div class="rcour">
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
-              <span class="rc-cnote">${lang==='en'?'You book and pay for the courier yourself — a €2 courier fee has been added. Please notify me 8–10 minutes before you request it, and send me the tracking link once booked.':'É você que reserva e paga o estafeta — foi adicionada uma taxa de estafeta de 2€. Avise-me 8 a 10 minutos antes de o solicitar e envie-me o link de acompanhamento assim que estiver marcado.'}</span>
+              <span class="rc-cnote">${pickNote()}</span>
             </div>`:''),'before-receipt')}
         ${receiptHtml}
       </div>
@@ -1585,6 +1610,7 @@ function missing(){
     }
   }
   else if(k==='pickup'){
+    if(!S.collection)add(lang==='en'?'Choose how you will collect your cake':'Escolha como vai levantar o seu bolo','#selfCollectBtn');
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
     if(!S.ptime)add(lang==='en'?'Choose a pick-up time':'Escolha a hora de levantamento','.time-grid');
     if(S.pdate&&S.ptime){const d=new Date(`${S.pdate}T12:00:00`);if((d.getDay()===0||d.getDay()===6)&&S.ptime>'13:00')add(lang==='en'?'Weekend collection is available from 11:00 to 13:00':'Ao fim de semana, o levantamento está disponível das 11:00 às 13:00','.time-grid');}
@@ -1732,7 +1758,7 @@ function buildPayload(photo_urls){
   const decorArr=dsel.length?dsel.map(id=>{const o=D.decor.find(x=>x.id===id);return o?o.t.en:id;}):["No decoration"];
   const cup=D.cupcakes.find(o=>o.id===S.cupcakes);
   const wm=S.writeMethods.filter(id=>id!=='none').map(id=>{const o=D.writeMethods.find(x=>x.id===id);return o?o.t.en:id;});
-  const wc=S.writingColor?((D.colors.find(x=>x.h===S.writingColor)||{}).t?.en||S.writingColor):"";
+  const wc=S.writingColor?((writingColours().find(x=>x.h===S.writingColor)||{}).t?.en||S.writingColor):"";
   const hrd=(D.heard.find(o=>o.id===S.heard)||{}).t?.en||S.heard;
   /* Courier request is appended to notes so no DB column is required.
      If a `courier` boolean column is added later, send S.courier directly. */
