@@ -348,6 +348,7 @@
   .rsec.before-receipt{border-bottom:0}
   .review-photo-proof{display:flex;align-items:center;justify-content:space-between;gap:12px}.review-photo-copy{display:flex;align-items:center;gap:6px;color:var(--ink);font-size:12.5px;font-weight:750}.review-photo-copy .ok{color:#5F8B53;font-size:13px}.review-photo-thumbs{display:flex;flex:0 0 auto;gap:5px}.review-photo-item{width:38px;height:38px;position:relative;display:block}.review-photo-thumbs img{width:38px;height:38px;display:block;object-fit:cover;border:1px solid #C9D8C0;border-radius:8px;background:var(--bg);box-shadow:0 2px 6px rgba(50,60,53,.08)}.review-photo-item i{display:none;width:38px;height:38px;place-items:center;border:1px solid #C9D8C0;border-radius:8px;background:#EEF1EA;color:#58704E;font-size:7px;font-style:normal;font-weight:750;letter-spacing:.04em}
   .review-note{display:grid!important;grid-template-columns:26px minmax(0,1fr);align-items:start;gap:10px;background:#FFF5DC!important;border:1.5px solid #D3AE58!important;color:#473616!important;font-weight:500;line-height:1.55;padding:13px 14px!important}
+  .discount-entry{margin:13px 0;padding:13px 14px;border:1px solid #D9C7CE;border-radius:13px;background:#FBF6F8}.discount-entry label{display:block;margin-bottom:7px;color:var(--brand);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.discount-entry-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}.discount-entry input{min-width:0;height:40px;padding:0 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:700 13px 'DM Sans',sans-serif;text-transform:uppercase}.discount-entry button{min-height:40px;padding:0 15px;border:0;border-radius:9px;background:var(--brand);color:#fff;font:750 12px 'DM Sans',sans-serif}.discount-feedback{margin:8px 1px 0;font-size:11px;line-height:1.4}.discount-feedback.ok{color:#28704E}.discount-feedback.error{color:#A5263C}.receipt-price.discount-line{color:#28704E}.rc-old-total{margin-right:8px;color:var(--muted);font-size:14px;text-decoration:line-through}
   .review-note-icon{display:grid;place-items:center;width:24px;height:24px;border:1.5px solid #8A6416;border-radius:50%;color:#704E0B;font-size:14px;font-weight:800;line-height:1}
   .rtotal .v{font-family:'Playfair Display',Georgia,serif;font-size:22px}
 
@@ -530,6 +531,12 @@ function allowedPhotoFile(file){
 }
 let sb=null; try{ sb=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ console.error("Supabase init failed",e); }
 let OFF_DAYS=new Set();
+const DEFAULT_WEEKLY_HOURS={mon:{closed:true,start:'11:00',end:'18:00'},tue:{closed:true,start:'11:00',end:'18:00'},wed:{closed:false,start:'11:00',end:'18:00'},thu:{closed:false,start:'11:00',end:'18:00'},fri:{closed:false,start:'11:00',end:'18:00'},sat:{closed:false,start:'11:00',end:'13:00'},sun:{closed:false,start:'11:00',end:'13:00'}};
+let PUBLIC_CONFIG={weeklyHours:DEFAULT_WEEKLY_HOURS,discountCodes:[]};
+function weekdayKey(iso){const d=new Date(`${iso}T12:00:00`);return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];}
+function hoursForDate(iso){return Object.assign({},DEFAULT_WEEKLY_HOURS[weekdayKey(iso)]||{closed:true,start:'11:00',end:'18:00'},PUBLIC_CONFIG.weeklyHours?.[weekdayKey(iso)]||{});}
+function activeDiscount(code){const needle=String(code||'').trim().toUpperCase(),today=new Date().toISOString().slice(0,10);return (PUBLIC_CONFIG.discountCodes||[]).find(item=>String(item.code||'').toUpperCase()===needle&&item.active!==false&&(!item.startDate||item.startDate<=today)&&(!item.endDate||item.endDate>=today));}
+async function loadPublicConfig(){try{const response=await fetch(`${SB_URL}/functions/v1/submit-order`,{method:'GET',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},cache:'no-store'});if(!response.ok)return;const data=await response.json();PUBLIC_CONFIG={weeklyHours:data.weeklyHours||DEFAULT_WEEKLY_HOURS,discountCodes:Array.isArray(data.discountCodes)?data.discountCodes:[]};if(S.discountCode&&!activeDiscount(S.discountCode)){S.discountCode='';S.discountError='';}if(typeof R.pickup==='function'&&STEPS[step]==='pickup')R.pickup();if(typeof R.review==='function'&&STEPS[step]==='review')R.review();}catch(error){console.error('Public order settings could not be loaded',error);}}
 function loadOffDays(){
   if(!sb)return;
   try{
@@ -808,7 +815,7 @@ const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
   writeMethods:[],writing:"",writingColor:null,writingRef:false,
   cupcakes:"none",decor:["none"],candles:null,photo:false,photoFiles:[],photoPreviews:[],photoNote:"",
   noAllergy:false,allergies:"",notes:"",name:"",wcode:"+351",wcodeCustom:false,wnum:"",instagram:"",
-  pdate:"",ptime:"",collection:null,courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false});
+  pdate:"",ptime:"",collection:null,courier:false,heard:null,referredBy:"",email:"",emailOptIn:false,agreed:false,discountCode:"",discountError:""});
 let S=DEF();
 let photoBypassTaps=0,photoBypass=false;
 
@@ -883,7 +890,10 @@ function calc(){
     const p=decorPrice(o); if(p)sum+=p;});
   sum+=rush;
   sum+=courier;
-  return{sum,range,rush,courier};
+  const subtotal=Math.round(sum*100)/100,code=activeDiscount(S.discountCode);let discount=0;
+  if(code){discount=code.type==='percent'?subtotal*(Number(code.value)||0)/100:Number(code.value)||0;discount=Math.min(subtotal,Math.max(0,Math.round(discount*100)/100));}
+  sum=Math.max(0,Math.round((subtotal-discount)*100)/100);
+  return{sum,subtotal,discount,discountCode:code||null,range,rush,courier};
 }
 const priceNow=()=>{const c=calc();return c.custom?0:c.sum;};
 function renderCart(){
@@ -1322,7 +1332,7 @@ R.pickup=()=>{
     const cy=dd.getFullYear(),cm=dd.getMonth(),d=dd.getDate();
     const iso=`${cy}-${pad(cm+1)}-${pad(d)}`;const ahead=daysUntilPickup(iso);const past=ahead<0;const today=ahead===0;const soon=ahead>=0&&ahead<3;const rush=ahead===3;const sel=iso===S.pdate;
     const adjacent=cm!==m;
-    const off=(dd.getDay()===1||dd.getDay()===2)||OFF_DAYS.has(iso);/* Monday & Tuesday closed + off days */
+    const off=hoursForDate(iso).closed||OFF_DAYS.has(iso);
     const disabled=past||soon||off;
     const click=past?'':(disabled?'onclick="showDateUnavailable()"':`onclick="pickDate('${iso}')"`); 
     cells+=`<div class="fdp-cell ${adjacent?'adjacent':''} ${past?'past':''} ${today?'today':''} ${soon?'soon':''} ${off?'off':''} ${rush&&!off?'rush':''} ${sel?'sel':''}" ${click}><span>${d}</span>${adjacent?`<small>${MOS[cm]}</small>`:''}</div>`;
@@ -1333,13 +1343,13 @@ R.pickup=()=>{
   const disp=S.pdate
     ? `<span>${fmtPicked(S.pdate)}</span>${selectedRush?`<span class="selected-rush">${lang==='en'?'Rush order':'Pedido urgente'}</span><span class="selected-rush-price">+€${selectedRush}</span>`:''}`
     : (lang==='en'?'Choose a date':'Escolha uma data');
-  const selectedDate=S.pdate?new Date(`${S.pdate}T12:00:00`):null;
-  const weekend=selectedDate&&(selectedDate.getDay()===0||selectedDate.getDay()===6);
+  const selectedHours=S.pdate?hoursForDate(S.pdate):{closed:false,start:'10:00',end:'20:00'};
   let slots='';
-  for(let h=11;h<=18;h++)for(let mm=0;mm<60;mm+=15){if(h===18&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
-    const unavailable=weekend&&(h>13||(h===13&&mm>0));
+  for(let h=10;h<=20;h++)for(let mm=0;mm<60;mm+=15){if(h===20&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
+    const unavailable=!S.pdate||selectedHours.closed||s<selectedHours.start||s>selectedHours.end;
     slots+=`<div class="tslot ${unavailable?'disabled':S.ptime===s?'sel':''}" data-tm="${s}" aria-disabled="${unavailable?'true':'false'}">${s}</div>`;}
-  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),lg("Wed–Fri · 11:00–18:00 · Sat–Sun · 11:00–13:00","Qua–Sex · 11:00–18:00 · Sáb–Dom · 11:00–13:00"))+
+  const hoursHint=S.pdate&&!selectedHours.closed?`${fmtPickedShort(S.pdate)} · ${selectedHours.start}–${selectedHours.end}`:(lang==='en'?'Choose an available day to see its hours':'Escolha um dia disponível para ver o horário');
+  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),hoursHint)+
     `<div class="fdp">
        <div class="fdp-head">
          <button class="fdp-nav" ${prevDisabled?'disabled':''} ${prevDisabled?'':'onclick="shiftMonth(-1)"'}>‹</button>
@@ -1414,6 +1424,8 @@ R.policies=()=>{
        <span class="chk">${tick()}</span></button>`;
   document.getElementById('agree').onclick=()=>{S.agreed=!S.agreed;document.getElementById('agree').classList.toggle('sel');validate();};
 };
+function applyDiscountCode(){const input=document.getElementById('discountCodeInput'),code=String(input?.value||'').trim().toUpperCase(),match=activeDiscount(code);if(!match){S.discountCode='';S.discountError=lang==='en'?'This discount code is not valid or is outside its active dates.':'Este código de desconto não é válido ou está fora das datas ativas.';}else{S.discountCode=match.code;S.discountError='';}R.review();}
+function clearDiscountCode(){S.discountCode='';S.discountError='';R.review();}
 R.review=()=>{
   const c=calc();
   const sz=sizeOpt();
@@ -1463,6 +1475,7 @@ R.review=()=>{
   if(rush)addReceipt(lang==='en'?'Rush order':'Pedido urgente',`+€${rush}`);
   const courier=c.courier||0;
   if(courier)addReceipt(lang==='en'?'Courier fee':'Taxa de estafeta',`+€${courier}`);
+  if(c.discount)addReceipt(`${lang==='en'?'Discount':'Desconto'} · ${esc(c.discountCode.code)}`,`−€${Number(c.discount).toFixed(2)}`,'discount-line');
   const receiptHtml=`<div class="receipt"><div class="receipt-head">${lang==='en'?'Price details':'Detalhes do preço'}</div>${receipt.map(r=>
     `<div class="receipt-row"><span class="receipt-name">${r.name}</span><span class="receipt-dots"></span><span class="receipt-price ${r.kind}">${r.price}</span></div>`).join('')}</div>`;
   /* message, written as a sentence */
@@ -1484,6 +1497,9 @@ R.review=()=>{
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
+  const validCode=activeDiscount(S.discountCode),showDiscount=(PUBLIC_CONFIG.discountCodes||[]).length>0;
+  const discountFeedback=S.discountError?`<p class="discount-feedback error">${esc(S.discountError)}</p>`:validCode?`<p class="discount-feedback ok">${c.custom?(lang==='en'?'Code accepted. It will be recorded for your final quote.':'Código aceite. Será registado para o seu orçamento final.'):(lang==='en'?`${esc(validCode.code)} applied: you save €${Number(c.discount).toFixed(2)}.`:`${esc(validCode.code)} aplicado: poupa €${Number(c.discount).toFixed(2)}.`)} <button type="button" onclick="clearDiscountCode()" style="border:0;background:none;color:inherit;text-decoration:underline;padding:0">${lang==='en'?'Remove':'Remover'}</button></p>`:'';
+  const discountEntry=showDiscount?`<div class="discount-entry"><label for="discountCodeInput">${lang==='en'?'Discount code':'Código de desconto'}</label><div class="discount-entry-row"><input id="discountCodeInput" value="${esc(S.discountCode)}" placeholder="${lang==='en'?'Enter your code':'Introduza o código'}"><button type="button" onclick="applyDiscountCode()">${lang==='en'?'Apply':'Aplicar'}</button></div>${discountFeedback}</div>`:'';
   const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
   const reviewNotice=c.custom
     ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
@@ -1519,12 +1535,13 @@ R.review=()=>{
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
               <span class="rc-cnote">${pickNote()}</span>
             </div>`:''),'before-receipt')}
+        ${discountEntry}
         ${receiptHtml}
       </div>
 
       <div class="rc-total">
         <span class="rc-tl">${totalLbl}</span>
-        <span class="rc-tv">${totalTxt}</span>
+        <span class="rc-tv">${c.discount?`<span class="rc-old-total">€${Number(c.subtotal).toFixed(2)}</span>`:''}${totalTxt}</span>
       </div>
     </div>
     <p class="note soft review-note"><span class="review-note-icon" aria-hidden="true">!</span><span>${reviewNotice}</span></p>`;
@@ -1613,7 +1630,7 @@ function missing(){
     if(!S.collection)add(lang==='en'?'Choose how you will collect your cake':'Escolha como vai levantar o seu bolo','#selfCollectBtn');
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
     if(!S.ptime)add(lang==='en'?'Choose a pick-up time':'Escolha a hora de levantamento','.time-grid');
-    if(S.pdate&&S.ptime){const d=new Date(`${S.pdate}T12:00:00`);if((d.getDay()===0||d.getDay()===6)&&S.ptime>'13:00')add(lang==='en'?'Weekend collection is available from 11:00 to 13:00':'Ao fim de semana, o levantamento está disponível das 11:00 às 13:00','.time-grid');}
+    if(S.pdate&&S.ptime){const hours=hoursForDate(S.pdate);if(hours.closed||S.ptime<hours.start||S.ptime>hours.end)add(lang==='en'?`Collection on this day is available from ${hours.start} to ${hours.end}`:`Neste dia, o levantamento está disponível das ${hours.start} às ${hours.end}`,'.time-grid');}
   }
   else if(k==='heard'){if(!S.heard)add(lang==='en'?'Let me know how you found me':'Diga-me como me encontrou','.opts');}
   else if(k==='policies'){if(!S.agreed)add(lang==='en'?'Please accept the booking terms to continue':'Aceite os termos para continuar','#agree');}
@@ -1773,6 +1790,9 @@ function buildPayload(photo_urls){
   if(c.courier){
     notesOut=(notesOut?notesOut+"\n\n":"")+"COURIER FEE: +€2 for Bolt/Uber courier collection.";
   }
+  if(S.discountCode){
+    notesOut=(notesOut?notesOut+"\n\n":"")+`DISCOUNT CODE: ${S.discountCode}${c.custom?' — apply to the final quote':` — discount €${Number(c.discount||0).toFixed(2)} from €${Number(c.subtotal||0).toFixed(2)}`}.`;
+  }
   return {
     status:"new", is_read:false, paid:0,
     language:lang.toUpperCase(),
@@ -1787,7 +1807,7 @@ function buildPayload(photo_urls){
     pickup_date:S.pdate||null, pickup_time:S.ptime,
     heard:hrd, referred_by:S.referredBy, email:S.email, email_opt_in:S.emailOptIn,
     courier_fee:c.courier||0,
-    price:c.custom?null:c.sum, price_range:c.custom?false:!!c.range, agreed:S.agreed
+    price:c.custom?null:c.sum, price_before_discount:c.custom?null:c.subtotal, discount_code:S.discountCode||'',price_range:c.custom?false:!!c.range, agreed:S.agreed
   };
 }
 
@@ -1939,8 +1959,8 @@ let pickMonth=null;
 function pad(n){return String(n).padStart(2,'0');}
 function pickDate(iso){
   S.pdate=iso;
-  const d=new Date(`${iso}T12:00:00`),weekend=d.getDay()===0||d.getDay()===6;
-  if(weekend&&S.ptime&&S.ptime>'13:00')S.ptime='';
+  const hours=hoursForDate(iso);
+  if(S.ptime&&(hours.closed||S.ptime<hours.start||S.ptime>hours.end))S.ptime='';
   pickupScrollAfterPick=true;R.pickup();renderCart();validate();
 }
 function showDateUnavailable(){
@@ -1980,6 +2000,7 @@ let _lti=1;
   if(qp.get('privacy')==='1')setTimeout(openPrivacy,0);
 }catch(e){}})();
 loadOffDays(); /* fetch off-days so those pick-up dates are unselectable */
+loadPublicConfig(); /* fetch dashboard hours and currently published discount codes */
 window.addEventListener('pagehide',trackFormAbandon);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)trackFormAbandon();});
 window.addEventListener('message',function(e){
