@@ -1345,9 +1345,9 @@ R.pickup=()=>{
     : (lang==='en'?'Choose a date':'Escolha uma data');
   const selectedHours=S.pdate?hoursForDate(S.pdate):{closed:false,start:'10:00',end:'20:00'};
   let slots='';
-  for(let h=10;h<=20;h++)for(let mm=0;mm<60;mm+=15){if(h===20&&mm>0)break;const s=`${pad(h)}:${pad(mm)}`;
-    const unavailable=!S.pdate||selectedHours.closed||s<selectedHours.start||s>selectedHours.end;
-    slots+=`<div class="tslot ${unavailable?'disabled':S.ptime===s?'sel':''}" data-tm="${s}" aria-disabled="${unavailable?'true':'false'}">${s}</div>`;}
+  if(S.pdate&&!selectedHours.closed)for(let h=11;h<=18;h++)for(let mm=0;mm<60;mm+=15){if(h===18&&mm>30)break;const s=`${pad(h)}:${pad(mm)}`;
+    if(s<selectedHours.start||s>selectedHours.end)continue;
+    slots+=`<div class="tslot ${S.ptime===s?'sel':''}" data-tm="${s}" aria-disabled="false">${s}</div>`;}
   const hoursHint=S.pdate&&!selectedHours.closed?`${fmtPickedShort(S.pdate)} · ${selectedHours.start}–${selectedHours.end}`:(lang==='en'?'Choose an available day to see its hours':'Escolha um dia disponível para ver o horário');
   B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),hoursHint)+
     `<div class="fdp">

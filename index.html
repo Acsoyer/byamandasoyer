@@ -901,7 +901,7 @@ function openOrder(){
   var l=document.body.dataset.lang||'pt';
   var f=document.getElementById('orderFrame');
   if(f.src.indexOf('cake-order-form')<0){
-    var q=new URLSearchParams({lang:l,embed:'1',sid:analyticsSessionId,src:analyticsSource,med:analyticsMedium,camp:analyticsCampaign,ref:analyticsRef});
+    var q=new URLSearchParams({v:'139',lang:l,embed:'1',sid:analyticsSessionId,src:analyticsSource,med:analyticsMedium,camp:analyticsCampaign,ref:analyticsRef});
     f.src='cake-order-form.html?'+q.toString();
   }
   trackSiteEvent('order_opened');
