@@ -96,6 +96,7 @@
   #cart .pre{font-size:11px;opacity:.7;font-weight:500;margin-right:1px}
   @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-3deg)}100%{transform:scale(1)}}
   #cart.bump{animation:bump .42s cubic-bezier(.34,1.56,.64,1)}
+  #cart.availability-hidden{visibility:hidden}
   .spark{position:absolute;pointer-events:none;font-size:13px;animation:fly .7s ease-out forwards;z-index:70}
   @keyframes fly{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}}
 
@@ -117,6 +118,11 @@
   .opt.policy-agree{padding-top:11px;padding-bottom:11px}
   .opt.policy-agree.sel{border-color:#70A88E;background:#EFF7F2}
   .opt.policy-agree.sel .chk{background:#2F7A57;border-color:#2F7A57}
+  .pickup-confirm-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:14px;margin:8px 0 15px}
+  .pickup-confirm-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.pickup-confirm-copy small{color:var(--ink-soft);font-size:11px;font-weight:650}.pickup-confirm-copy strong{color:var(--brand);font-size:14px;line-height:1.35}
+  .pickup-edit-btn,.review-edit{border:0;background:transparent;color:var(--accent);font:700 12px 'Montserrat',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
+  .review-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.review-label-row .rlab{margin:0}
+  .review-policies{margin-top:14px}.review-policies .policybox{margin-bottom:10px}
 
   /* price band (from reference image) */
   .band{background:#F2E2E8;border-radius:14px;padding:9px 12px;display:flex;justify-content:space-between;
@@ -536,19 +542,20 @@ let PUBLIC_CONFIG={weeklyHours:DEFAULT_WEEKLY_HOURS,discountCodes:[]};
 function weekdayKey(iso){const d=new Date(`${iso}T12:00:00`);return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];}
 function hoursForDate(iso){return Object.assign({},DEFAULT_WEEKLY_HOURS[weekdayKey(iso)]||{closed:true,start:'11:00',end:'18:00'},PUBLIC_CONFIG.weeklyHours?.[weekdayKey(iso)]||{});}
 function activeDiscount(code){const needle=String(code||'').trim().toUpperCase(),today=new Date().toISOString().slice(0,10);return (PUBLIC_CONFIG.discountCodes||[]).find(item=>String(item.code||'').toUpperCase()===needle&&item.active!==false&&(!item.startDate||item.startDate<=today)&&(!item.endDate||item.endDate>=today));}
-async function loadPublicConfig(){try{const response=await fetch(`${SB_URL}/functions/v1/submit-order`,{method:'GET',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},cache:'no-store'});if(!response.ok)return;const data=await response.json();PUBLIC_CONFIG={weeklyHours:data.weeklyHours||DEFAULT_WEEKLY_HOURS,discountCodes:Array.isArray(data.discountCodes)?data.discountCodes:[]};if(S.discountCode&&!activeDiscount(S.discountCode)){S.discountCode='';S.discountError='';}if(typeof R.pickup==='function'&&STEPS[step]==='pickup')R.pickup();if(typeof R.review==='function'&&STEPS[step]==='review')R.review();}catch(error){console.error('Public order settings could not be loaded',error);}}
-function loadOffDays(){
-  if(!sb)return;
+async function loadPublicConfig(){try{const response=await fetch(`${SB_URL}/functions/v1/submit-order`,{method:'GET',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},cache:'no-store'});if(!response.ok)return false;const data=await response.json();PUBLIC_CONFIG={weeklyHours:data.weeklyHours||DEFAULT_WEEKLY_HOURS,discountCodes:Array.isArray(data.discountCodes)?data.discountCodes:[]};if(Array.isArray(data.offDays))OFF_DAYS=new Set(data.offDays.map(String));if(S.discountCode&&!activeDiscount(S.discountCode)){S.discountCode='';S.discountError='';}if(typeof R.pickup==='function'&&(availabilityPhase||STEPS[step]==='pickup'))R.pickup();if(typeof R.review==='function'&&STEPS[step]==='review')R.review();return true;}catch(error){console.error('Public order settings could not be loaded',error);return false;}}
+async function loadOffDays(){
+  if(!sb)return false;
   try{
     const today=new Date();today.setHours(0,0,0,0);
     const iso=today.toISOString().split('T')[0];
-    sb.from('off_days').select('day').gte('day',iso).then(({data,error})=>{
-      if(error)return;
-      OFF_DAYS=new Set((data||[]).map(r=>String(r.day)));
-      if(typeof R.pickup==='function'&&STEPS[step]==='pickup'){try{R.pickup();}catch(_){}}
-    });
-  }catch(e){}
+    const {data,error}=await sb.from('off_days').select('day').gte('day',iso);
+    if(error)return false;
+    OFF_DAYS=new Set((data||[]).map(r=>String(r.day)));
+    if(typeof R.pickup==='function'&&(availabilityPhase||STEPS[step]==='pickup')){try{R.pickup();}catch(_){}}
+    return true;
+  }catch(e){return false;}
 }
+async function refreshAvailabilityRules(){await Promise.all([loadPublicConfig(),loadOffDays()]);return pickupSelectionValid();}
 let turnstileWidgetId=null,turnstileToken="",turnstileTokenCreatedAt=0,turnstileWaiters=[],turnstileExecutionActive=false;
 function localTurnstilePreview(){return location.protocol==="file:"||["localhost","127.0.0.1"].includes(location.hostname);}
 function activeTurnstileSiteKey(){return localTurnstilePreview()?TURNSTILE_TEST_SITE_KEY:TURNSTILE_SITE_KEY;}
@@ -809,7 +816,7 @@ function brandIcon(id){
 }
 
 /* ---------- State ---------- */
-let lang="en", step=0;
+let lang="en", step=0,availabilityPhase=false,pickupEditing=false,returnToReview=false;
 let reviewReachedBottom=false;
 const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
   writeMethods:[],writing:"",writingColor:null,writingRef:false,
@@ -819,7 +826,7 @@ const DEF=()=>({size:null,shape:null,flavor:null,colors:[],pigment:[],
 let S=DEF();
 let photoBypassTaps=0,photoBypass=false;
 
-const STEPS=['pickup','size','flavor','allergies','color','photo','writing','decor','contact','heard','policies','review'];
+const STEPS=['size','flavor','allergies','color','photo','writing','decor','pickup','contact','review'];
 // Public Storage images: all cake icons share a common scale.
 const IMAGE_ASSETS={
   "cakeSizes": {
@@ -868,6 +875,8 @@ function dayNumberFromISO(iso){
 }
 function todayDayNumber(){const d=new Date();return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000;}
 function daysUntilPickup(iso){const n=dayNumberFromISO(iso);return Number.isFinite(n)?Math.round(n-todayDayNumber()):null;}
+function validQuarterHour(time){const match=/^(\d{2}):(\d{2})$/.exec(String(time||''));return !!match&&Number(match[2])%15===0&&time>='11:00'&&time<='18:30';}
+function pickupSelectionValid(){if(!S.pdate||!S.ptime||daysUntilPickup(S.pdate)<3||OFF_DAYS.has(S.pdate))return false;const hours=hoursForDate(S.pdate);return !hours.closed&&validQuarterHour(S.ptime)&&S.ptime>=hours.start&&S.ptime<=hours.end;}
 function rushSurcharge(){return S.size&&daysUntilPickup(S.pdate)===3?(S.size==='XS'?10:20):0;}
 function courierSurcharge(){return S.courier?2:0;}
 
@@ -928,19 +937,29 @@ function change(el,fn){const before=priceNow();fn();const after=priceNow();rende
 /* ---------- Render ---------- */
 const B=()=>document.getElementById('body');
 function render(){
+  if(availabilityPhase){renderAvailability();return;}
   const key=STEPS[step];B().onscroll=null;B().className='step-'+key;B().scrollTop=0;clearErrors();
   if(key==='review')reviewReachedBottom=false;
-  document.getElementById('back').hidden=(step===0);
+  document.getElementById('back').hidden=false;
   document.getElementById('stepno').textContent=t('step')+' '+(step+1)+'/'+STEPS.length;
   document.getElementById('restartBtn').title=t('restart');
   document.getElementById('closeBtn').title=(lang==='en'?'Close':'Fechar');
   document.querySelector('#progress > i').style.width=(step/(STEPS.length-1)*100)+'%';
-  const next=document.getElementById('next');
+  const next=document.getElementById('next');document.getElementById('cart').classList.remove('availability-hidden');
   next.classList.toggle('pist',key==='review');
   next.textContent=key==='review'?t('send'):t('continue');
   renderCart();R[key]();validate();
   trackFormStep();
   try{if(window.parent&&window.parent!==window)window.parent.postMessage({t:'byas-step',s:step+1,n:STEPS.length},'*');}catch(e){}
+}
+function renderAvailability(){
+  B().onscroll=null;B().className='step-pickup availability-step';B().scrollTop=0;clearErrors();pickupEditing=true;
+  document.getElementById('back').hidden=true;
+  document.getElementById('stepno').textContent=lang==='en'?'Availability':'Disponibilidade';
+  document.getElementById('restartBtn').title=t('restart');document.getElementById('closeBtn').title=lang==='en'?'Close':'Fechar';
+  document.querySelector('#progress > i').style.width='0%';document.getElementById('cart').classList.add('availability-hidden');
+  const next=document.getElementById('next');next.classList.remove('pist');next.textContent=lang==='en'?'Start customizing':'Começar a personalizar';
+  R.pickup();validate();
 }
 const head=(q,sub)=>`<h1 class="q">${q[lang]}</h1>${sub?`<p class="sub">${sub[lang]}</p>`:'<div style="height:8px"></div>'}`;
 const baseTag=p=>`<span class="ptag">€${p}</span>`;
@@ -954,8 +973,7 @@ R.size=()=>{
     if(o.twoTier&&firstTwoTier){firstTwoTier=false;
       pre=`<div class="tier"><span>${lang==='en'?'Two-tier cakes':'Bolos de dois andares'}</span><span class="ln"></span></div>`;
     }
-    const courierBlocked=S.courier&&!['XS','S','M'].includes(o.id);
-    return pre+`<button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}" ${courierBlocked?'disabled style="opacity:.45"':''}>
+    return pre+`<button class="opt ${S.size===o.id?'sel':''}" data-id="${o.id}">
       <span class="ic">${sizeCakeImage(o.id)}</span>
       <span class="tx"><span class="tt">${o.t[lang]}</span><span class="ds">${o.d[lang]}</span></span>
       ${o.price==null?`<span class="ptag">${t('quote')}</span>`:baseTag(o.price)}
@@ -974,11 +992,11 @@ R.size=()=>{
       </button>`).join('')+`</div><div class="scroll-space"></div>`;
   }
   B().innerHTML=head(D.size.q,lg("Starting prices shown. Final pricing depends on flavors and design complexity.","Preços iniciais indicados. O preço final depende dos sabores e da complexidade do design."))+
-    `${S.courier?`<p class="note">${lang==='en'?'Uber/Bolt courier collection is available for XS, S and M cakes only. For a larger cake, go back and choose self-collection.':'O levantamento por estafeta Uber/Bolt está disponível apenas para bolos XS, S e M. Para um bolo maior, volte atrás e escolha levantar pessoalmente.'}</p>`:''}<div class="opts">${cards}</div>${shapeSec}`;
+    `<div class="opts">${cards}</div>${shapeSec}`;
   /* size selection */
   B().querySelectorAll('.opt[data-id]').forEach(el=>el.onclick=()=>{
     const prev=S.size;
-    change(el,()=>{S.size=el.dataset.id;if(prev!==S.size){S.shape=null;S.flavor=null;}});
+    change(el,()=>{S.size=el.dataset.id;if(prev!==S.size){S.shape=null;S.flavor=null;}if(!['XS','S','M'].includes(S.size)&&S.courier){S.courier=false;S.collection=null;}});
     R.size();validate();
     const sec=document.getElementById('shapeSec');
     if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),60);
@@ -1295,7 +1313,12 @@ R.contact=()=>{
        ${S.wcodeCustom?`<button type="button" class="linklike" id="revertCode">↩ ${lang==='en'?'pick from list':'escolher da lista'}</button>`:''}</div>
      <div class="field"><label>Instagram <span class="opt-note">(${t('optional')})</span></label>
        <div class="ig-wrap"><span class="at">@</span><input id="insta" type="text" placeholder="username" value="${esc(S.instagram)}"></div></div>
-     ${emailSectionHTML()}`;
+     ${emailSectionHTML()}
+     <div style="height:8px"></div>
+     <h2 style="font:600 20px 'Playfair Display',Georgia,serif;color:var(--brand);margin:12px 0 4px">${lang==='en'?'How did you find me?':'Como me encontrou?'}</h2>
+     <p class="sub" style="margin-bottom:12px">${lang==='en'?'Optional':'Opcional'}</p>
+     <div class="opts heard-options">${D.heard.map(o=>`<button type="button" class="opt ${S.heard===o.id?'sel':''}" data-id="${o.id}"><span class="ic">${o.brand?brandIcon(o.brand):`<span style="font-size:20px">${o.ic}</span>`}</span><span class="tx"><span class="tt">${o.t[lang]}</span></span></button>`).join('')}</div>
+     <div id="refwrap" style="${S.heard==='referral'?'':'display:none'};margin-top:14px"><div class="field"><label>${lang==='en'?'Who can I thank?':'A quem posso agradecer?'}</label><input id="refby" type="text" placeholder="${lang==='en'?'Name of who referred you':'Nome de quem indicou'}" value="${esc(S.referredBy)}"></div></div>`;
   document.getElementById('name').oninput=e=>{S.name=e.target.value;validate();};
   const sel=document.getElementById('wcode');
   if(sel)sel.onchange=e=>{if(e.target.value==='__custom'){S.wcodeCustom=true;S.wcode='';R.contact();document.getElementById('wcodeInput').focus();}else S.wcode=e.target.value;};
@@ -1305,6 +1328,8 @@ R.contact=()=>{
   const ig=document.getElementById('insta');
   ig.oninput=e=>{let v=e.target.value.replace(/@/g,'');e.target.value=v;S.instagram=v;validate();};
   bindEmailSection();
+  bindSingle('heard',()=>{document.getElementById('refwrap').style.display=S.heard==='referral'?'block':'none';});
+  const rb=document.getElementById('refby');if(rb)rb.oninput=e=>S.referredBy=e.target.value;
 };
 function pickNote(){
   return S.courier
@@ -1315,8 +1340,9 @@ function pickNote(){
 }
 let pickupScrollAfterPick=false;
 R.pickup=()=>{
-  const courierOK=(!S.size||S.size==='XS'||S.size==='S'||S.size==='M');
-  if(!courierOK&&S.courier){S.courier=false;S.collection='self';}
+  const courierOK=S.size==='XS'||S.size==='S'||S.size==='M';
+  if(!courierOK&&S.courier){S.courier=false;S.collection=null;}
+  if(S.pdate){const currentHours=hoursForDate(S.pdate);if(currentHours.closed||OFF_DAYS.has(S.pdate)||daysUntilPickup(S.pdate)<3||(S.ptime&&(S.ptime<currentHours.start||S.ptime>currentHours.end||!validQuarterHour(S.ptime)))){S.ptime='';if(!availabilityPhase)pickupEditing=true;}}
   const t0=new Date();t0.setHours(0,0,0,0);
   if(!pickMonth){const base=S.pdate?new Date(S.pdate+'T00:00:00'):t0;pickMonth=new Date(base.getFullYear(),base.getMonth(),1);}
   const y=pickMonth.getFullYear(),m=pickMonth.getMonth();
@@ -1349,8 +1375,7 @@ R.pickup=()=>{
     if(s<selectedHours.start||s>selectedHours.end)continue;
     slots+=`<div class="tslot ${S.ptime===s?'sel':''}" data-tm="${s}" aria-disabled="false">${s}</div>`;}
   const hoursHint=S.pdate&&!selectedHours.closed?`${fmtPickedShort(S.pdate)} · ${selectedHours.start}–${selectedHours.end}`:(lang==='en'?'Choose an available day to see its hours':'Escolha um dia disponível para ver o horário');
-  B().innerHTML=head(lg("Pick-up date & time","Data e hora de levantamento"),hoursHint)+
-    `<div class="fdp">
+  const calendarHtml=`<div class="fdp">
        <div class="fdp-head">
          <button class="fdp-nav" ${prevDisabled?'disabled':''} ${prevDisabled?'':'onclick="shiftMonth(-1)"'}>‹</button>
          <span class="fdp-mo">${MOs[m]} ${y}</span>
@@ -1359,15 +1384,25 @@ R.pickup=()=>{
        <div class="fdp-grid">${WDs.map(w=>`<span class="fdp-dow">${w}</span>`).join('')}${cells}</div>
      </div>
      <div class="fdp-selected ${S.pdate?'':'empty'}" id="pickupSelected" style="margin-top:11px;margin-bottom:0">${disp}</div>${rushNote}
-     <div class="field" id="pickupTimes" style="margin-top:12px;margin-bottom:10px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>
-     <div class="opts" style="margin-top:14px" role="radiogroup" aria-label="${lang==='en'?'Collection method':'Método de levantamento'}">
+     <div class="field" id="pickupTimes" style="margin-top:12px;margin-bottom:10px"><label>${lang==='en'?'Time':'Hora'}</label><div class="time-grid">${slots}</div></div>`;
+  const collectionHtml=`<div class="opts" style="margin-top:14px" role="radiogroup" aria-label="${lang==='en'?'Collection method':'Método de levantamento'}">
        <button type="button" role="radio" aria-checked="${S.collection==='self'}" class="opt ${S.collection==='self'?'sel':''}" id="selfCollectBtn"><span class="ic">${collectionIcon(false)}</span><span class="tx"><span class="tt">${lang==='en'?'I will come and collect it myself':'Vou levantar pessoalmente'}</span></span></button>
-       <button type="button" role="radio" aria-checked="${S.collection==='courier'}" class="opt ${S.collection==='courier'?'sel':''}" id="courierBtn" ${courierOK?'':'disabled style="opacity:.45"'}><span class="ic">${collectionIcon(true)}</span><span class="tx"><span class="tt">${lang==='en'?'I would like to arrange an Uber/Bolt courier':'Gostaria de solicitar um estafeta Uber/Bolt'}</span></span>${addTag(2)}</button>
+       ${courierOK?`<button type="button" role="radio" aria-checked="${S.collection==='courier'}" class="opt ${S.collection==='courier'?'sel':''}" id="courierBtn"><span class="ic">${collectionIcon(true)}</span><span class="tx"><span class="tt">${lang==='en'?'I would like to arrange an Uber/Bolt courier':'Gostaria de solicitar um estafeta Uber/Bolt'}</span></span>${addTag(2)}</button>`:''}
      </div>${S.collection?`<p class="note" id="pickNote">${pickNote()}</p>`:''}`;
-  document.getElementById('selfCollectBtn').onclick=()=>{const scroll=B().scrollTop;S.collection='self';S.courier=false;R.pickup();B().scrollTop=scroll;validate();};
+  if(availabilityPhase){
+    B().innerHTML=head(lg("When do you need the cake?","Quando precisa do bolo?"),lg("Check availability before customizing your cake.","Verifique a disponibilidade antes de personalizar o seu bolo."))+calendarHtml+
+      `<p class="note soft">${lang==='en'?'Your order is subject to final confirmation.':'A sua encomenda está sujeita a confirmação final.'}</p>`;
+  }else if(pickupEditing){
+    B().innerHTML=head(lg("Confirm your collection","Confirme o levantamento"),lg("Change the selected date or time below.","Altere abaixo a data ou hora selecionada."))+calendarHtml+collectionHtml;
+  }else{
+    B().innerHTML=head(lg("Confirm your collection","Confirme o levantamento"))+
+      `<div class="pickup-confirm-card"><div class="pickup-confirm-copy"><small>${lang==='en'?'Your selected date & time':'A data e hora selecionadas'}</small><strong>${S.pdate?fmtPickedShort(S.pdate):'—'} · ${S.ptime||'—'}</strong></div><button type="button" class="pickup-edit-btn" id="pickupEditBtn">✎ ${lang==='en'?'Edit':'Editar'}</button></div>`+
+      `<h2 style="font:600 18px 'Playfair Display',Georgia,serif;color:var(--brand);margin:8px 0 12px">${lang==='en'?'How would you like to collect your cake?':'Como pretende levantar o seu bolo?'}</h2>`+collectionHtml;
+  }
+  const selfCollect=document.getElementById('selfCollectBtn');if(selfCollect)selfCollect.onclick=()=>{const scroll=B().scrollTop;S.collection='self';S.courier=false;R.pickup();B().scrollTop=scroll;validate();};
   if(courierOK){
     const cb=document.getElementById('courierBtn');
-    cb.onclick=()=>{
+    if(cb)cb.onclick=()=>{
       const currentScroll=B().scrollTop;
       S.collection='courier';S.courier=true;
       R.pickup();
@@ -1375,15 +1410,16 @@ R.pickup=()=>{
       validate();
     };
   }
+  const editBtn=document.getElementById('pickupEditBtn');if(editBtn)editBtn.onclick=async()=>{await refreshAvailabilityRules();pickupEditing=true;R.pickup();validate();};
   B().querySelectorAll('.tslot:not(.disabled)').forEach(el=>el.onclick=()=>{S.ptime=el.dataset.tm;
     B().querySelectorAll('.tslot').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');validate();
-    requestAnimationFrame(()=>document.getElementById('courierBtn')?.scrollIntoView({behavior:'smooth',block:'center'}));
+    if(!availabilityPhase)requestAnimationFrame(()=>document.getElementById('selfCollectBtn')?.scrollIntoView({behavior:'smooth',block:'center'}));
   });
   if(pickupScrollAfterPick){
     pickupScrollAfterPick=false;
     requestAnimationFrame(()=>{
       const selected=document.getElementById('pickupSelected');
-      if(selected&&STEPS[step]==='pickup'){
+      if(selected&&(availabilityPhase||STEPS[step]==='pickup')){
         const body=B(),top=selected.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop;
         body.scrollTo({top:Math.max(0,top-5),behavior:'smooth'});
       }
@@ -1406,7 +1442,7 @@ R.email=()=>{
   B().innerHTML=head(lg("Email (Optional)","Email (Opcional)"),lg("Choose if you'd like to receive updates about workshops, new products, and special offers.","Escolha se pretende receber atualizações sobre workshops, novos produtos e ofertas especiais."))+emailSectionHTML();
   bindEmailSection();
 };
-R.policies=()=>{
+function policiesHTML(){
   const P=lang==='en'?[
     ["Quotes","After you submit this form, I'll check availability and send your quote via WhatsApp. Quotes are sent between Sunday and Wednesday until 12:00. Other days are dedicated to production."],
     ["Reservations","Your order is only secured after the 50% deposit is received and the proof of payment is sent. <span style=\"white-space:nowrap\">(No deposit = no order.)</span> Standard quotes are valid for 48 hours; rush-order quotes are valid for 6 hours. After this, availability is not guaranteed."],
@@ -1416,16 +1452,21 @@ R.policies=()=>{
     ["Reservas","A sua encomenda só fica confirmada após a receção do sinal não reembolsável de 50% e do respetivo comprovativo de pagamento. <span style=\"white-space:nowrap\">Sem sinal = sem encomenda.</span> Os orçamentos normais são válidos durante 48 horas; os orçamentos urgentes são válidos durante 6 horas. Após esse período, não é possível garantir a disponibilidade da data pretendida."],
     ["Pagamento e cancelamento","Pagamento por MB Way ou transferência bancária. Os dados serão fornecidos juntamente com o orçamento. Em caso de cancelamento, o sinal de 50% não é reembolsável."],
   ];
-  B().innerHTML=head(lg("Booking Terms & Policies","Termos e Políticas de Reserva"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+
-    `<div class="policybox">`+P.map(s=>`<div class="policysec"><h4>${s[0]}</h4><p>${s[1]}</p></div>`).join('')+`</div>`+
+  return `<div class="policybox">`+P.map(s=>`<div class="policysec"><h4>${s[0]}</h4><p>${s[1]}</p></div>`).join('')+`</div>`+
     `<button class="opt multi policy-agree ${S.agreed?'sel':''}" id="agree">
        <span class="ic"><span style="font-size:20px">📝</span></span>
        <span class="tx"><span class="tt">${lang==='en'?'Yes, I agree!':'Sim, concordo!'}</span><span class="ds">${lang==='en'?'I have read and accept the policies above.':'Confirmo que li e aceito as políticas acima.'}</span></span>
        <span class="chk">${tick()}</span></button>`;
-  document.getElementById('agree').onclick=()=>{S.agreed=!S.agreed;document.getElementById('agree').classList.toggle('sel');validate();};
+}
+function bindPolicyAgreement(){const agree=document.getElementById('agree');if(agree)agree.onclick=()=>{S.agreed=!S.agreed;agree.classList.toggle('sel');validate();};}
+R.policies=()=>{
+  B().innerHTML=head(lg("Booking Terms & Policies","Termos e Políticas de Reserva"),lg("Please read and accept before submitting.","Leia e aceite antes de enviar."))+policiesHTML();
+  bindPolicyAgreement();
 };
 function applyDiscountCode(){const input=document.getElementById('discountCodeInput'),code=String(input?.value||'').trim().toUpperCase(),match=activeDiscount(code);if(!match){S.discountCode='';S.discountError=lang==='en'?'This discount code is not valid or is outside its active dates.':'Este código de desconto não é válido ou está fora das datas ativas.';}else{S.discountCode=match.code;S.discountError='';}R.review();}
 function clearDiscountCode(){S.discountCode='';S.discountError='';R.review();}
+function reviewEditButton(key){return `<button type="button" class="review-edit" onclick="editFromReview('${key}')">${lang==='en'?'Edit':'Editar'}</button>`;}
+function editFromReview(key){const target=STEPS.indexOf(key);if(target<0)return;returnToReview=true;step=target;if(key==='pickup')pickupEditing=false;render();}
 R.review=()=>{
   const c=calc();
   const sz=sizeOpt();
@@ -1492,15 +1533,16 @@ R.review=()=>{
   const extras=[];
   if(S.candles==='yes')extras.push(lang==='en'?'🕯️ Comes with candles':'🕯️ Vem com velas');
   const photoCount=S.photoFiles.length;
+  const allergyText=S.noAllergy?(lang==='en'?'No allergies or dietary restrictions':'Sem alergias ou restrições alimentares'):esc(S.allergies);
   const photoThumbs=S.photoPreviews.slice(0,3).map((url,i)=>`<span class="review-photo-item"><img src="${url}" alt="${lang==='en'?'Uploaded inspiration photo':'Foto de inspiração carregada'} ${i+1}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><i>${photoExtension(S.photoFiles[i]?.name).toUpperCase()||'PHOTO'}</i></span>`).join('');
-  const photoProof=`<div class="rsec review-photo-proof"><div class="review-photo-copy"><span>${photoCount}/3 ${lang==='en'?(photoCount===1?'photo uploaded':'photos uploaded'):(photoCount===1?'fotografia carregada':'fotografias carregadas')}</span><span class="ok" aria-label="Confirmed">✓</span></div><div class="review-photo-thumbs">${photoThumbs}</div></div>`;
+  const photoProof=`<div class="rsec"><div class="review-label-row"><div class="review-photo-copy"><span>${photoCount}/3 ${lang==='en'?(photoCount===1?'photo uploaded':'photos uploaded'):(photoCount===1?'fotografia carregada':'fotografias carregadas')}</span><span class="ok" aria-label="Confirmed">✓</span></div>${reviewEditButton('photo')}</div><div class="review-photo-thumbs">${photoThumbs}</div></div>`;
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
   const validCode=activeDiscount(S.discountCode),showDiscount=(PUBLIC_CONFIG.discountCodes||[]).length>0;
   const discountFeedback=S.discountError?`<p class="discount-feedback error">${esc(S.discountError)}</p>`:validCode?`<p class="discount-feedback ok">${c.custom?(lang==='en'?'Code accepted. It will be recorded for your final quote.':'Código aceite. Será registado para o seu orçamento final.'):(lang==='en'?`${esc(validCode.code)} applied: you save €${Number(c.discount).toFixed(2)}.`:`${esc(validCode.code)} aplicado: poupa €${Number(c.discount).toFixed(2)}.`)} <button type="button" onclick="clearDiscountCode()" style="border:0;background:none;color:inherit;text-decoration:underline;padding:0">${lang==='en'?'Remove':'Remover'}</button></p>`:'';
   const discountEntry=showDiscount?`<div class="discount-entry"><label for="discountCodeInput">${lang==='en'?'Discount code':'Código de desconto'}</label><div class="discount-entry-row"><input id="discountCodeInput" value="${esc(S.discountCode)}" placeholder="${lang==='en'?'Enter your code':'Introduza o código'}"><button type="button" onclick="applyDiscountCode()">${lang==='en'?'Apply':'Aplicar'}</button></div>${discountFeedback}</div>`:'';
-  const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
+  const sec=(label,inner,extra='',editKey='')=>inner?`<div class="rsec ${extra}"><div class="review-label-row"><div class="rlab">${label}</div>${editKey?reviewEditButton(editKey):''}</div>${inner}</div>`:'';
   const reviewNotice=c.custom
     ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
     : (lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
@@ -1509,10 +1551,12 @@ R.review=()=>{
       <div class="rc-for">
         <span class="rc-forlbl">${lang==='en'?'Cake for':'Bolo para'}</span>
         <span class="rc-name">${esc(S.name)||'—'}</span>
+        ${reviewEditButton('contact')}
       </div>
 
       <div class="rc-hero">
         <div class="rc-summary">
+          <div style="display:flex;justify-content:flex-end;gap:2px">${reviewEditButton('size')}${reviewEditButton('flavor')}</div>
           <div class="rc-spec"><span class="rc-sk">${lang==='en'?'Size':'Tamanho'}</span>
             <span class="rc-sv">${sizeName}${portions?`<em>${portions}</em>`:''}</span></div>
           ${shapeName?`<div class="rc-spec"><span class="rc-sk">${lang==='en'?'Shape':'Forma'}</span>
@@ -1523,9 +1567,10 @@ R.review=()=>{
       </div>
 
       <div class="rc-body">
-        ${sec(lang==='en'?'Colours':'Cores',(colChips||pigChips)?`<div class="rchips">${colChips}${pigChips}</div>`:'')}
-        ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine)}
-        ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'')}
+        ${sec(lang==='en'?'Dietary restrictions':'Restrições alimentares',`<div class="rlines"><span class="rline">${allergyText}</span></div>`,'','allergies')}
+        ${sec(lang==='en'?'Colours':'Cores',(colChips||pigChips)?`<div class="rchips">${colChips}${pigChips}</div>`:'','','color')}
+        ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine,'','writing')}
+        ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'','','decor')}
         ${extras.length?`<div class="rsec"><div class="rlab">${lang==='en'?'Also included':'Também incluído'}</div>
           <div class="rlines">${extras.map(e=>`<span class="rline">${e}</span>`).join('')}</div></div>`:''}
         ${photoProof}
@@ -1534,7 +1579,7 @@ R.review=()=>{
           +(S.courier?`<div class="rcour">
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
               <span class="rc-cnote">${pickNote()}</span>
-            </div>`:''),'before-receipt')}
+            </div>`:''),'before-receipt','pickup')}
         ${discountEntry}
         ${receiptHtml}
       </div>
@@ -1544,7 +1589,9 @@ R.review=()=>{
         <span class="rc-tv">${c.discount?`<span class="rc-old-total">€${Number(c.subtotal).toFixed(2)}</span>`:''}${totalTxt}</span>
       </div>
     </div>
+    <div class="review-policies"><h2 style="font:600 20px 'Playfair Display',Georgia,serif;color:var(--brand);margin:0 0 8px">${lang==='en'?'Booking Terms & Policies':'Termos e Políticas de Reserva'}</h2>${policiesHTML()}</div>
     <p class="note soft review-note"><span class="review-note-icon" aria-hidden="true">!</span><span>${reviewNotice}</span></p>`;
+  bindPolicyAgreement();
   requestAnimationFrame(()=>{
     const body=B();
     const updateReviewScroll=()=>{
@@ -1599,7 +1646,12 @@ function armToastTimer(duration=2000){
 function missing(){
   const k=STEPS[step];const M=[];
   const add=(msg,sel)=>M.push({msg,sel});
-  if(k==='size'){
+  if(availabilityPhase){
+    if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
+    if(!S.ptime)add(lang==='en'?'Choose an available pick-up time':'Escolha uma hora de levantamento disponível','.time-grid');
+    else if(!pickupSelectionValid())add(lang==='en'?'This date or time is no longer available. Please choose another.':'Esta data ou hora já não está disponível. Escolha outra.','.time-grid');
+  }
+  else if(k==='size'){
     if(!S.size)add(lang==='en'?'Choose a cake size':'Escolha o tamanho do bolo','.opts');
     else if(!S.shape)add(lang==='en'?'Choose a cake shape':'Escolha a forma do bolo','.shape-row');
   }
@@ -1630,10 +1682,11 @@ function missing(){
     if(!S.collection)add(lang==='en'?'Choose how you will collect your cake':'Escolha como vai levantar o seu bolo','#selfCollectBtn');
     if(!S.pdate)add(lang==='en'?'Choose a pick-up date':'Escolha a data de levantamento','.fdp');
     if(!S.ptime)add(lang==='en'?'Choose a pick-up time':'Escolha a hora de levantamento','.time-grid');
-    if(S.pdate&&S.ptime){const hours=hoursForDate(S.pdate);if(hours.closed||S.ptime<hours.start||S.ptime>hours.end)add(lang==='en'?`Collection on this day is available from ${hours.start} to ${hours.end}`:`Neste dia, o levantamento está disponível das ${hours.start} às ${hours.end}`,'.time-grid');}
+    if(S.pdate&&S.ptime&&!pickupSelectionValid()){const hours=hoursForDate(S.pdate);add(lang==='en'?`Collection on this day is available from ${hours.start} to ${hours.end}`:`Neste dia, o levantamento está disponível das ${hours.start} às ${hours.end}`,'.time-grid');}
   }
   else if(k==='heard'){if(!S.heard)add(lang==='en'?'Let me know how you found me':'Diga-me como me encontrou','.opts');}
   else if(k==='policies'){if(!S.agreed)add(lang==='en'?'Please accept the booking terms to continue':'Aceite os termos para continuar','#agree');}
+  else if(k==='review'){if(!S.agreed)add(lang==='en'?'Please accept the booking terms to continue':'Aceite os termos para continuar','#agree');}
   else if(k==='email'){
     if(S.emailOptIn){
       const v=S.email.trim();
@@ -1686,21 +1739,33 @@ function showMissing(){
 }
 
 /* ---------- nav ---------- */
-function goNext(){
+async function goNext(){
+  if(availabilityPhase){
+    await refreshAvailabilityRules();
+    if(!validate()){showMissing();return;}
+    clearErrors();availabilityPhase=false;pickupEditing=false;step=0;render();return;
+  }
   if(STEPS[step]==='review'&&!reviewReachedBottom){
     showToastMessage(lang==='en'?'Scroll to the bottom to review your order before sending.':'Deslize até ao fim para rever a encomenda antes de enviar.');
     return;
   }
   if(STEPS[step]==='photo'&&!S.photo&&!photoBypass){
     photoBypassTaps++;
-    if(photoBypassTaps>=8){photoBypass=true;clearErrors();step++;render();return;}
+    if(photoBypassTaps>=8){photoBypass=true;clearErrors();if(returnToReview){returnToReview=false;step=STEPS.indexOf('review');}else step++;render();return;}
   }
+  if(STEPS[step]==='pickup')await refreshAvailabilityRules();
   if(!validate()){showMissing();return;}
   clearErrors();
-  if(step<STEPS.length-1){step++;render();}else submit();
+  if(returnToReview&&STEPS[step]!=='review'){returnToReview=false;pickupEditing=false;step=STEPS.indexOf('review');render();}
+  else if(step<STEPS.length-1){step++;if(STEPS[step]==='pickup'){await refreshAvailabilityRules();pickupEditing=false;}render();}
+  else{
+    await refreshAvailabilityRules();
+    if(!pickupSelectionValid()){pickupEditing=true;step=STEPS.indexOf('pickup');render();showToastMessage(lang==='en'?'Your selected date or time is no longer available. Please choose another.':'A data ou hora selecionada já não está disponível. Escolha outra.');return;}
+    submit();
+  }
 }
-function goBack(){if(step>0){step--;render();}}
-function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;startFormAnalytics();render();}
+function goBack(){if(availabilityPhase)return;if(returnToReview){returnToReview=false;pickupEditing=false;step=STEPS.indexOf('review');render();return;}if(step>0){step--;render();}else{availabilityPhase=true;pickupEditing=true;render();}}
+function start(l){lang=l;document.getElementById('lang').style.display='none';step=0;availabilityPhase=true;pickupEditing=true;startFormAnalytics();render();}
 function isEmbedded(){
   try{return window.parent&&window.parent!==window;}catch(e){return false;}
 }
@@ -1721,6 +1786,9 @@ function resetFormState(showLanguage=true){
   (S.photoPreviews||[]).forEach(url=>{try{URL.revokeObjectURL(url);}catch(_){}});
   S=DEF();
   step=0;
+  availabilityPhase=false;
+  pickupEditing=false;
+  returnToReview=false;
   photoBypassTaps=0;
   photoBypass=false;
   openTiers={};
@@ -1748,6 +1816,7 @@ function restart(){
       :'O seu pedido já foi enviado. Gostaria de iniciar uma nova encomenda?';
     if(!window.confirm(question))return;
     resetFormState(false);
+    availabilityPhase=true;pickupEditing=true;
     startFormAnalytics();
     render();
     return;
@@ -1958,6 +2027,7 @@ document.getElementById('privacy').addEventListener('click',function(e){if(e.tar
 let pickMonth=null;
 function pad(n){return String(n).padStart(2,'0');}
 function pickDate(iso){
+  if(S.pdate!==iso)S.ptime='';
   S.pdate=iso;
   const hours=hoursForDate(iso);
   if(S.ptime&&(hours.closed||S.ptime<hours.start||S.ptime>hours.end))S.ptime='';
