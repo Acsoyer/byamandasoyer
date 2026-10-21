@@ -901,7 +901,7 @@ function openOrder(){
   var l=document.body.dataset.lang||'pt';
   var f=document.getElementById('orderFrame');
   if(f.src.indexOf('cake-order-form')<0){
-    var q=new URLSearchParams({v:'140',lang:l,embed:'1',sid:analyticsSessionId,src:analyticsSource,med:analyticsMedium,camp:analyticsCampaign,ref:analyticsRef});
+    var q=new URLSearchParams({v:'141',lang:l,embed:'1',sid:analyticsSessionId,src:analyticsSource,med:analyticsMedium,camp:analyticsCampaign,ref:analyticsRef});
     f.src='cake-order-form.html?'+q.toString();
   }
   trackSiteEvent('order_opened');
@@ -975,8 +975,8 @@ var INSPO=[
    ================================================================
    1) YAZILI YORUM eklemek/değiştirmek için: TESTI_DATA listesi.
    2) FOTOĞRAF eklemek/değiştirmek için: TESTI_PHOTOS listesi.
-   Yorum ve fotoğraf kartları carousel'de OTOMATİK olarak sırayla
-   karışık gösterilir (1 yazı, 1 fotoğraf, 1 yazı, 1 fotoğraf ...).
+   Yorum ve fotoğraf kartları her sayfa açılışında kendi içlerinde
+   rastgele sıralanır ve dönüşümlü gösterilir (1 yazı, 1 fotoğraf ...).
    Fotoğraf sayısı yazı sayısından fazlaysa, kalan fotoğraflar
    listenin sonuna eklenir. Sıra/nokta göstergeleri/ok tuşları bu
    listelerin uzunluğuna göre KENDİLİĞİNDEN uyum sağlar — CSS veya
@@ -1164,13 +1164,22 @@ function openInspoPhoto(img){
   openCakeLightbox(img,'Custom cake by Amanda Soyer',null,false);
 }
 
-/* builds the mixed text/photo slide list: 1 review, 1 photo, 1 review, 1 photo ... any leftover
-   photos (there are more photos than reviews) are appended at the end as photo-only slides */
+/* Randomise reviews and photos independently on every page load, then keep the alternating
+   1 review / 1 photo rhythm. Any leftover photos are appended at the end. */
+function shuffledCopy(items){
+  var copy=items.slice();
+  for(var i=copy.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var temp=copy[i];copy[i]=copy[j];copy[j]=temp;
+  }
+  return copy;
+}
 function buildTestimonialSlides(){
-  var slides=[],max=Math.max(TESTI.length,TESTI_PHOTOS.length);
+  var reviews=shuffledCopy(TESTI),photos=shuffledCopy(TESTI_PHOTOS);
+  var slides=[],max=Math.max(reviews.length,photos.length);
   for(var i=0;i<max;i++){
-    if(TESTI[i])slides.push({type:'text',data:TESTI[i]});
-    if(TESTI_PHOTOS[i])slides.push({type:'photo',data:TESTI_PHOTOS[i]});
+    if(reviews[i])slides.push({type:'text',data:reviews[i]});
+    if(photos[i])slides.push({type:'photo',data:photos[i]});
   }
   return slides;
 }

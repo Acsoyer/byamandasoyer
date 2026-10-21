@@ -120,8 +120,7 @@
   .opt.policy-agree.sel .chk{background:#2F7A57;border-color:#2F7A57}
   .pickup-confirm-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:14px;margin:8px 0 15px}
   .pickup-confirm-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.pickup-confirm-copy small{color:var(--ink-soft);font-size:11px;font-weight:650}.pickup-confirm-copy strong{color:var(--brand);font-size:14px;line-height:1.35}
-  .pickup-edit-btn,.review-edit{border:0;background:transparent;color:var(--accent);font:700 12px 'Montserrat',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
-  .review-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.review-label-row .rlab{margin:0}
+  .pickup-edit-btn{border:0;background:transparent;color:var(--accent);font:700 12px 'Montserrat',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
   .review-policies{margin-top:14px}.review-policies .policybox{margin-bottom:10px}
 
   /* price band (from reference image) */
@@ -1465,8 +1464,6 @@ R.policies=()=>{
 };
 function applyDiscountCode(){const input=document.getElementById('discountCodeInput'),code=String(input?.value||'').trim().toUpperCase(),match=activeDiscount(code);if(!match){S.discountCode='';S.discountError=lang==='en'?'This discount code is not valid or is outside its active dates.':'Este código de desconto não é válido ou está fora das datas ativas.';}else{S.discountCode=match.code;S.discountError='';}R.review();}
 function clearDiscountCode(){S.discountCode='';S.discountError='';R.review();}
-function reviewEditButton(key){return `<button type="button" class="review-edit" onclick="editFromReview('${key}')">${lang==='en'?'Edit':'Editar'}</button>`;}
-function editFromReview(key){const target=STEPS.indexOf(key);if(target<0)return;returnToReview=true;step=target;if(key==='pickup')pickupEditing=false;render();}
 R.review=()=>{
   const c=calc();
   const sz=sizeOpt();
@@ -1535,14 +1532,14 @@ R.review=()=>{
   const photoCount=S.photoFiles.length;
   const allergyText=S.noAllergy?(lang==='en'?'No allergies or dietary restrictions':'Sem alergias ou restrições alimentares'):esc(S.allergies);
   const photoThumbs=S.photoPreviews.slice(0,3).map((url,i)=>`<span class="review-photo-item"><img src="${url}" alt="${lang==='en'?'Uploaded inspiration photo':'Foto de inspiração carregada'} ${i+1}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><i>${photoExtension(S.photoFiles[i]?.name).toUpperCase()||'PHOTO'}</i></span>`).join('');
-  const photoProof=`<div class="rsec"><div class="review-label-row"><div class="review-photo-copy"><span>${photoCount}/3 ${lang==='en'?(photoCount===1?'photo uploaded':'photos uploaded'):(photoCount===1?'fotografia carregada':'fotografias carregadas')}</span><span class="ok" aria-label="Confirmed">✓</span></div>${reviewEditButton('photo')}</div><div class="review-photo-thumbs">${photoThumbs}</div></div>`;
+  const photoProof=`<div class="rsec review-photo-proof"><div class="review-photo-copy"><span>${photoCount}/3 ${lang==='en'?(photoCount===1?'photo uploaded':'photos uploaded'):(photoCount===1?'fotografia carregada':'fotografias carregadas')}</span><span class="ok" aria-label="Confirmed">✓</span></div><div class="review-photo-thumbs">${photoThumbs}</div></div>`;
   const totalTxt=c.custom?t('quote'):(c.range?(lang==='en'?'from €'+c.sum:'desde €'+c.sum):'€'+c.sum);
   const totalLbl=c.custom?(lang==='en'?'Custom quote':'Orçamento personalizado')
     :(lang==='en'?'Estimated total':'Total estimado');
   const validCode=activeDiscount(S.discountCode),showDiscount=(PUBLIC_CONFIG.discountCodes||[]).length>0;
   const discountFeedback=S.discountError?`<p class="discount-feedback error">${esc(S.discountError)}</p>`:validCode?`<p class="discount-feedback ok">${c.custom?(lang==='en'?'Code accepted. It will be recorded for your final quote.':'Código aceite. Será registado para o seu orçamento final.'):(lang==='en'?`${esc(validCode.code)} applied: you save €${Number(c.discount).toFixed(2)}.`:`${esc(validCode.code)} aplicado: poupa €${Number(c.discount).toFixed(2)}.`)} <button type="button" onclick="clearDiscountCode()" style="border:0;background:none;color:inherit;text-decoration:underline;padding:0">${lang==='en'?'Remove':'Remover'}</button></p>`:'';
   const discountEntry=showDiscount?`<div class="discount-entry"><label for="discountCodeInput">${lang==='en'?'Discount code':'Código de desconto'}</label><div class="discount-entry-row"><input id="discountCodeInput" value="${esc(S.discountCode)}" placeholder="${lang==='en'?'Enter your code':'Introduza o código'}"><button type="button" onclick="applyDiscountCode()">${lang==='en'?'Apply':'Aplicar'}</button></div>${discountFeedback}</div>`:'';
-  const sec=(label,inner,extra='',editKey='')=>inner?`<div class="rsec ${extra}"><div class="review-label-row"><div class="rlab">${label}</div>${editKey?reviewEditButton(editKey):''}</div>${inner}</div>`:'';
+  const sec=(label,inner,extra='')=>inner?`<div class="rsec ${extra}"><div class="rlab">${label}</div>${inner}</div>`:'';
   const reviewNotice=c.custom
     ? (lang==='en'?`Thanks ${first}! The total price for your cake and any add-ons will be quoted. I’ll send your full quote via WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! O preço total do seu bolo e de quaisquer extras será orçamentado. Enviarei o orçamento completo por WhatsApp dentro de 24 a 48 horas.`)
     : (lang==='en'?`Thanks ${first}! This total price is an estimate — some add-ons are quoted individually. I’ll send your exact quote by WhatsApp within 24 to 48 hours.`:`Obrigada ${first}! Este preço total é uma estimativa — alguns extras são orçamentados individualmente. Enviarei o orçamento exato por WhatsApp dentro de 24 a 48 horas.`);
@@ -1551,12 +1548,10 @@ R.review=()=>{
       <div class="rc-for">
         <span class="rc-forlbl">${lang==='en'?'Cake for':'Bolo para'}</span>
         <span class="rc-name">${esc(S.name)||'—'}</span>
-        ${reviewEditButton('contact')}
       </div>
 
       <div class="rc-hero">
         <div class="rc-summary">
-          <div style="display:flex;justify-content:flex-end;gap:2px">${reviewEditButton('size')}${reviewEditButton('flavor')}</div>
           <div class="rc-spec"><span class="rc-sk">${lang==='en'?'Size':'Tamanho'}</span>
             <span class="rc-sv">${sizeName}${portions?`<em>${portions}</em>`:''}</span></div>
           ${shapeName?`<div class="rc-spec"><span class="rc-sk">${lang==='en'?'Shape':'Forma'}</span>
@@ -1567,10 +1562,10 @@ R.review=()=>{
       </div>
 
       <div class="rc-body">
-        ${sec(lang==='en'?'Dietary restrictions':'Restrições alimentares',`<div class="rlines"><span class="rline">${allergyText}</span></div>`,'','allergies')}
-        ${sec(lang==='en'?'Colours':'Cores',(colChips||pigChips)?`<div class="rchips">${colChips}${pigChips}</div>`:'','','color')}
-        ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine,'','writing')}
-        ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'','','decor')}
+        ${sec(lang==='en'?'Dietary restrictions':'Restrições alimentares',`<div class="rlines"><span class="rline">${allergyText}</span></div>`)}
+        ${sec(lang==='en'?'Colours':'Cores',(colChips||pigChips)?`<div class="rchips">${colChips}${pigChips}</div>`:'')}
+        ${sec(lang==='en'?'Message on top':'Mensagem no bolo',msgLine)}
+        ${sec(lang==='en'?'Add-ons':'Extras',addChips?`<div class="rchips">${addChips}</div>`:'')}
         ${extras.length?`<div class="rsec"><div class="rlab">${lang==='en'?'Also included':'Também incluído'}</div>
           <div class="rlines">${extras.map(e=>`<span class="rline">${e}</span>`).join('')}</div></div>`:''}
         ${photoProof}
@@ -1579,7 +1574,7 @@ R.review=()=>{
           +(S.courier?`<div class="rcour">
               <span class="rc-cline">🛵 ${lang==='en'?'I would like to arrange a Bolt/Uber courier':'Gostaria de solicitar um estafeta Bolt/Uber'}</span>
               <span class="rc-cnote">${pickNote()}</span>
-            </div>`:''),'before-receipt','pickup')}
+            </div>`:''),'before-receipt')}
         ${discountEntry}
         ${receiptHtml}
       </div>
