@@ -916,13 +916,13 @@ function openWorkshop(){
   var o=document.getElementById('orderOverlay');
   if(o.classList.contains('show'))return;
   var f=document.getElementById('orderFrame');
-  f.src='workshop-form.html?v=142&embed=1';
+  f.src='workshop-form.html?v=144&embed=1';
   o.classList.add('show');o.setAttribute('aria-hidden','false');
   lockPageForOrder();
 }
 fetch('https://ivnybivjjydihltknlmo.supabase.co/functions/v1/workshop-booking')
   .then(function(r){return r.ok?r.json():Promise.reject()})
-  .then(function(data){var btn=document.getElementById('heroWorkshopCta');if(btn&&(data.sessions||[]).some(function(s){return s.available>0}))btn.style.display=''})
+  .then(function(data){var btn=document.getElementById('heroWorkshopCta');if(btn&&data.show_homepage_button!==false&&(data.sessions||[]).some(function(s){return s.available>0}))btn.style.display=''})
   .catch(function(){});
 function closeOrder(){
   var o=document.getElementById('orderOverlay');
