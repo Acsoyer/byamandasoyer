@@ -43,6 +43,8 @@ html,body{overflow-x:hidden}
 .pay-info span{transition:color .55s ease,font-weight .55s ease,transform .55s ease}.pay-info span.copy-flash{color:var(--wine)!important;font-weight:900!important;transform:scale(1.018)}
 @media(max-width:390px){.app{padding-top:88px!important}.head{padding-left:10px!important;padding-right:10px!important;gap:6px!important}.head img{width:76px!important}.head .icon[aria-label="Reset"],.head .icon[aria-label="Close"]{flex-basis:37px!important;width:37px!important;height:37px!important}.head-step{font-size:10px!important}}
 
+</style><style id="workshop-form-v154-patch">
+.head img{width:108px!important;max-height:45px!important}.check.check-required-error{margin-left:-6px;margin-right:-6px;padding:11px 10px;border:2px solid #c6283f;border-radius:11px;background:#fff1f3}.check.check-required-error span{color:#941d32}.success-home{display:flex;align-items:center;justify-content:center;gap:9px;width:min(330px,100%);min-height:52px;margin:25px auto 0;padding:9px 15px;border:1px solid #dbc3cc;border-radius:13px;background:#fff;color:var(--wine);font-weight:800;text-decoration:none}.success-home img{width:122px;max-height:38px;object-fit:contain}@media(max-width:390px){.head img{width:98px!important}}
 </style></head><body><main class="app"><header class="head"><button class="icon" onclick="goBack()" aria-label="Back">‹</button><img src="https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/images/byAmandaSoyer_Logo_NoBackground.png" alt="by Amanda Soyer"><button class="icon" onclick="closeForm()" aria-label="Close">×</button></header><div class="progress"><i id="bar"></i></div><div id="error"></div>
 <section class="step on" data-step="1"><h1>Choose your workshop</h1><p>Select a date and the number of people attending.</p><div class="cards" id="sessions"><p>Checking available workshops…</p></div><div class="field"><label for="qty">Number of participants</label><select id="qty"></select></div></section>
 <section class="step" data-step="2"><h1>Choose the flavours</h1><p>Choose one cake flavour for each participant.</p><div class="cards" id="flavours"></div></section>
@@ -159,4 +161,9 @@ copyPayment=async function(event,text){
 document.querySelectorAll('[name="payment"]').forEach(radio=>radio.addEventListener('change',()=>{document.querySelectorAll('.pay').forEach(pay=>pay.classList.toggle('payment-selected',pay.contains(radio)&&radio.checked))}));
 draw();
 
+</script><script id="workshop-form-v154-patch">
+const v154Submit=submit;
+submit=async function(){const agreeBox=$('agree'),row=agreeBox?.closest('.check');if(agreeBox&&!agreeBox.checked){showError('');row?.classList.add('check-required-error');row?.scrollIntoView({behavior:'smooth',block:'center'});return}row?.classList.remove('check-required-error');return v154Submit()};
+$('agree')?.addEventListener('change',event=>{if(event.currentTarget.checked)event.currentTarget.closest('.check')?.classList.remove('check-required-error')});
+const successStep=document.querySelector('[data-step="5"]');if(successStep&&!successStep.querySelector('.success-home'))successStep.insertAdjacentHTML('beforeend','<a class="success-home" href="/"><span>Go Back to</span><img src="/assets/site/byAmandaSoyer-logo.png" alt="ByAmandaSoyer"></a>');
 </script></body></html>
