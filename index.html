@@ -530,7 +530,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
         <span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua Encomenda</span>
       </a>
-      <a class="cta primary" id="heroWorkshopCta" href="/workshop-form.html" onclick="openWorkshop();return false" style="display:none">
+      <a class="cta primary" id="heroWorkshopCta" href="/workshops/" style="display:none">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V8l7-4 7 4v13M9 21v-6h6v6M8 10h.01M12 10h.01M16 10h.01"/></svg>
         <span class="i-en">Book a Workshop</span><span class="i-pt">Reservar Workshop</span>
       </a>
@@ -916,7 +916,7 @@ function openWorkshop(){
   var o=document.getElementById('orderOverlay');
   if(o.classList.contains('show'))return;
   var f=document.getElementById('orderFrame');
-  f.src='workshop-form.html?v=144&embed=1';
+  f.src='workshop-form.html?v=145&embed=1';
   o.classList.add('show');o.setAttribute('aria-hidden','false');
   lockPageForOrder();
 }
