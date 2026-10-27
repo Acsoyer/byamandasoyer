@@ -52,6 +52,20 @@
 .quick-facts{width:min(850px,calc(100% - 24px));margin:0 auto;padding-top:12px}
 @media(max-width:430px){.hero{min-height:88svh}.hero-logo{top:max(20px,env(safe-area-inset-top));left:17px}.hero-logo img{width:174px}.hero-copy{padding:24px 12px 32px}.hero h1{font-size:43px}.hero p{font-size:15px}.quick-facts{gap:8px;padding-top:11px}}
 </style>
+<style id="workshops-v159-mobile">
+html{background:#eee9e6}
+body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(61,37,44,.08)}
+.hero,.wrap,.workshop-site-footer{width:100%;max-width:480px;margin-left:auto;margin-right:auto}
+.quick-facts{width:min(456px,calc(100% - 24px));max-width:456px}
+.quick-fact{min-height:96px;padding:13px 7px}
+.quick-fact svg{width:23px;height:23px;margin-bottom:8px;stroke-linecap:round;stroke-linejoin:round}
+.quick-fact strong{font-size:14px;font-weight:500}
+.quick-fact small{font-size:11px}
+.accordion-list summary{font-weight:600}
+.sticky{left:50%;right:auto;width:min(480px,100%);transform:translate(-50%,-120%)}
+.sticky.show{transform:translateX(-50%)}
+@media(min-width:481px){.hero{min-height:760px}.wrap{padding-left:20px;padding-right:20px}}
+</style>
 </head>
 <body>
   <header class="sticky" id="sticky">
@@ -71,9 +85,9 @@
   </section>
 
   <section class="quick-facts" aria-label="Workshop overview">
-    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg><strong id="quickTime">12–3 PM</strong><small id="quickDuration">3 hours</small></article>
-    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9a3 3 0 0 0 0 6v3h16v-3a3 3 0 0 0 0-6V6H4v3Z"/><path d="M12 6v12M9 9h6M9 15h6"/></svg><strong id="quickPrice">€45</strong><small>Per person</small></article>
-    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 6h8M9 4v2c0 4-2 7-5 9M7 11c1 2 3 4 6 5M15 18l3-8 3 8M16 15h4"/></svg><strong>English</strong><small>Only</small></article>
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><strong id="quickTime">12–3 PM</strong><small id="quickDuration">3 hours</small></article>
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 8V5h18v3a3 3 0 0 0 0 6v5H3v-5a3 3 0 0 0 0-6Z"/><path d="M12 5v14" stroke-dasharray="2 3"/></svg><strong id="quickPrice">€45</strong><small>Per person</small></article>
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 5h12M9 3v2M5 9c2 4 5 6 9 7M13 7c-1 4-4 8-8 10M14 20l4-10 4 10M15.5 17h5"/></svg><strong>English</strong><small>Only</small></article>
   </section>
 
   <main class="wrap">
