@@ -209,6 +209,39 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .single-booking .validation-invalid .proof-upload{border-color:#c6283f!important;background:#fff8fa!important}
 .single-booking .validation-invalid{scroll-margin-top:82px}
 </style>
+<style id="workshop-form-v166-readable-text">
+.single-booking .head-step{font-size:11px!important;line-height:1.18!important;white-space:pre-line!important;text-align:center}
+.single-booking h1{font-size:17px!important}
+.single-booking .field label,.single-booking .cap{font-size:13px}
+.single-booking .notice{font-size:12px}
+.single-booking .privacy-link{font-size:12px}
+.single-booking .cake-about b{font-size:14px}
+.single-booking .cake-about p{font-size:13px}
+.single-booking .qty-field>label{font-size:15px}
+.single-booking .custom-qty-option{font-size:14px}
+.single-booking .flavour-heading .cap{font-size:14px}
+.single-booking .flavour-prompt{font-size:13px}
+.single-booking .flavour-option{font-size:13px}
+.single-booking .ticket-total{font-size:14px}
+.single-booking .ticket-total strong{font-size:19px}
+.single-booking .payment-help{font-size:13.5px}
+.single-booking .payment-radio{font-size:14px}
+.single-booking .payment-panel-title{font-size:14px}
+.single-booking .payment-panel b{font-size:16px}
+.single-booking .payment-panel small{font-size:12px}
+.single-booking .payment-panel .iban-value{font-size:13px}
+.single-booking .copy-value{font-size:12px}
+.single-booking .proof-upload b{font-size:14px}
+.single-booking .proof-upload small{font-size:12px}
+.single-booking .booking-policies summary{font-size:13px}
+.single-booking .policy-content h3{font-size:13px}
+.single-booking .policy-content p{font-size:12.5px}
+.single-booking .check,.single-booking .policy-agreement{font-size:13px}
+.single-booking .single-submit{font-size:13px}
+.single-booking .submit-note{font-size:11.5px}
+.single-booking .inline-validation-message{font-size:13px}
+.single-booking .success p,.single-booking #reference{font-size:13px}
+</style>
 </head><body><main class="app"><header class="head"><button class="icon" onclick="goBack()" aria-label="Back">‹</button><img src="/assets/site/byAmandaSoyer-logo.png" alt="by Amanda Soyer"><button class="icon" onclick="closeForm()" aria-label="Close">×</button></header><div class="progress"><i id="bar"></i></div><div id="error"></div>
 <section class="step on" data-step="1"><h1>Choose your workshop</h1><p>Select a date and the number of people attending.</p><div class="cards" id="sessions"><p>Checking available workshops…</p></div><div class="field"><label for="qty">Number of participants</label><select id="qty"></select></div></section>
 <section class="step" data-step="2"><h1>Choose the flavours</h1><p>Choose one cake flavour for each participant.</p><div class="cards" id="flavours"></div></section>
@@ -404,9 +437,9 @@ $('qty').addEventListener('change',()=>{hold=null;holdUntil=0;flavourValues=[];b
 function workshopHeaderText(){
   if(!selected)return 'Workshop booking';
   const parts=String(selected.session_date||selected.workshop_date||'').split('-');
-  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const date=parts.length===3?Number(parts[2])+' '+months[Math.max(0,Number(parts[1])-1)]:'Workshop';
-  return date+' - '+String(selected.start_time||'').slice(0,5)+'-'+String(selected.end_time||'').slice(0,5)+' ›';
+  return date+'\n'+String(selected.start_time||'').slice(0,5)+'-'+String(selected.end_time||'').slice(0,5);
 }
 draw=function(){const done=step===5;document.body.classList.toggle('success-mode',done);document.querySelectorAll('.step').forEach(section=>section.classList.toggle('on',done?section===stepSuccess:section!==stepSuccess));$('foot').classList.add('hidden');$('timer').classList.add('hidden');const label=$('workshopStepLabel');if(label)label.textContent=done?'Complete':workshopHeaderText();if(done){window.scrollTo({top:0,behavior:'smooth'});return}updateSingleSummary()};
 showError=function(message=''){const text=message?errorText(message):'';$('error').innerHTML=text?`<div class="error">${safeText(text)}</div>`:'';if(text)smoothWorkshopScroll($('error'),'start')};
