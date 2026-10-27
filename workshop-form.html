@@ -143,6 +143,7 @@ body.single-booking{max-width:480px;margin:0 auto;background:var(--paper);box-sh
 .single-booking .payment-help{font-size:11.5px}
 .single-booking .payment-radio{font-size:13px}
 .single-booking .payment-radio input,.single-booking .check input{accent-color:var(--wine)}
+.single-booking .check input{padding:0!important;flex:0 0 17px!important}
 .single-booking .payment-panel-title{font-size:13px}
 .single-booking .payment-panel small{font-size:11px}
 .single-booking .payment-panel .iban-value{font-size:12px}
@@ -156,6 +157,29 @@ body.single-booking{max-width:480px;margin:0 auto;background:var(--paper);box-sh
 .single-booking .check{font-size:12px}
 .single-booking .single-submit{font-size:12px}
 .single-booking .submit-note{font-size:10.5px;line-height:1.5}
+</style>
+<style id="workshop-form-v161-polish">
+.single-booking .app{padding-left:18px!important;padding-right:18px!important}
+.single-booking .qty-field>label{color:#51494c;font-size:14px;font-weight:600}
+.single-booking .ticket-total{font-size:13px}
+.single-booking .ticket-total strong{font-size:18px}
+.single-booking .payment-help{font-size:12.5px}
+.single-booking .payment-choice{gap:13px;margin-top:11px;margin-bottom:12px}
+.single-booking .payment-radio{gap:11px;min-height:25px}
+.single-booking .payment-radio input{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;width:21px!important;height:21px!important;min-height:21px!important;margin:0;padding:0!important;flex:0 0 21px!important;border:2px solid #aaa3a5;border-radius:50%!important;background:#fff;cursor:pointer}
+.single-booking .payment-radio input:checked{border-color:var(--wine);background:radial-gradient(circle,#fff 0 3px,var(--wine) 3.5px 100%)}
+.single-booking .flavour-option{padding-left:32px}
+.single-booking .flavour-option:before{left:2px;width:21px;height:21px;box-sizing:border-box;border:2px solid #aaa3a5;background:#fff}
+.single-booking .flavour-option.sel:before{border:2px solid var(--wine);background:radial-gradient(circle,#fff 0 3px,var(--wine) 3.5px 100%)}
+.single-booking .payment-panel.show{grid-template-columns:1fr}
+.single-booking .payment-panel .copy-value{justify-content:center;width:100%;margin-top:3px}
+.single-booking .proof-upload.has-file{border-style:solid!important;border-color:#83bf93!important;background:#e3f5e7!important}
+.single-booking .proof-upload.has-file .proof-upload-icon{background:#caecd3}
+.single-booking .booking-policies{scroll-margin-top:78px}
+.single-booking .policy-agreement{scroll-margin-top:88px}
+.single-booking .policy-agreement.check-required-error{margin:16px 0 5px!important;padding:13px 11px!important;border:2px solid #c6283f!important;border-radius:12px!important;background:#fff1f3!important}
+.single-booking .policy-agreement.check-required-error:before{content:'';display:block;height:1px;position:absolute}
+@media(max-width:370px){.single-booking .app{padding-left:15px!important;padding-right:15px!important}}
 </style>
 </head><body><main class="app"><header class="head"><button class="icon" onclick="goBack()" aria-label="Back">‹</button><img src="/assets/site/byAmandaSoyer-logo.png" alt="by Amanda Soyer"><button class="icon" onclick="closeForm()" aria-label="Close">×</button></header><div class="progress"><i id="bar"></i></div><div id="error"></div>
 <section class="step on" data-step="1"><h1>Choose your workshop</h1><p>Select a date and the number of people attending.</p><div class="cards" id="sessions"><p>Checking available workshops…</p></div><div class="field"><label for="qty">Number of participants</label><select id="qty"></select></div></section>
@@ -275,7 +299,7 @@ draw();
 
 </script><script id="workshop-form-v154-patch">
 const v154Submit=submit;
-submit=async function(){const agreeBox=$('agree'),row=agreeBox?.closest('.check');if(agreeBox&&!agreeBox.checked){showError('');row?.classList.add('check-required-error');row?.scrollIntoView({behavior:'smooth',block:'center'});return}row?.classList.remove('check-required-error');return v154Submit()};
+submit=async function(){const agreeBox=$('agree'),row=agreeBox?.closest('.check');if(agreeBox&&!agreeBox.checked){showError('');row?.classList.add('check-required-error');if(row)smoothWorkshopScroll(row,'center');return}row?.classList.remove('check-required-error');return v154Submit()};
 $('agree')?.addEventListener('change',event=>{if(event.currentTarget.checked)event.currentTarget.closest('.check')?.classList.remove('check-required-error')});
 const successStep=document.querySelector('[data-step="5"]');if(successStep&&!successStep.querySelector('.success-home'))successStep.insertAdjacentHTML('beforeend','<a class="success-home" href="/"><span>Go Back to</span><img src="/assets/site/byAmandaSoyer-logo.png" alt="ByAmandaSoyer"></a>');
 </script><script id="workshop-form-v157-single-page">
@@ -323,9 +347,24 @@ $('qty').addEventListener('change',()=>{hold=null;holdUntil=0;flavourValues=[];b
 [$('name'),$('countryCode'),$('phone'),$('email'),$('optout'),$('agree')].filter(Boolean).forEach(input=>input.addEventListener('input',persistSingle));
 
 draw=function(){const done=step===5;document.body.classList.toggle('success-mode',done);document.querySelectorAll('.step').forEach(section=>section.classList.toggle('on',done?section===stepSuccess:section!==stepSuccess));$('foot').classList.add('hidden');$('timer').classList.add('hidden');const label=$('workshopStepLabel');if(label)label.textContent=done?'Complete':'Workshop booking';if(done){window.scrollTo({top:0,behavior:'smooth'});return}updateSingleSummary()};
-showError=function(message=''){const text=message?errorText(message):'';$('error').innerHTML=text?`<div class="error">${safeText(text)}</div>`:'';if(text)$('error').scrollIntoView({behavior:'smooth',block:'start'})};
+showError=function(message=''){const text=message?errorText(message):'';$('error').innerHTML=text?`<div class="error">${safeText(text)}</div>`:'';if(text)smoothWorkshopScroll($('error'),'start')};
 
-async function submitSingleWorkshop(){if(busy)return;const button=$('singleSubmit'),agreement=$('agree'),agreementRow=agreement.closest('.check');try{showError();agreementRow.classList.remove('check-required-error');if(!selected)throw Error('Choose an available workshop.');const quantity=Number($('qty').value||0);if(!quantity)throw Error('Choose the number of participants.');if(flavourValues.length!==quantity||flavourValues.some(value=>!value))throw Error('Choose one cake flavour for every participant.');if(!contactValid())throw Error('Enter your full name and an active WhatsApp number. If you add an email address, make sure it is valid.');const payment=document.querySelector('[name="payment"]:checked'),file=singleProofInput.files?.[0];if(!payment)throw Error('Choose MB WAY or bank transfer.');if(!file)throw Error('Upload your payment proof.');if(file.size>10485760)throw Error('Payment proof must be smaller than 10 MB.');if(!agreement.checked){const policies=agreement.closest('.booking-policies');if(policies)policies.open=true;agreementRow.classList.add('check-required-error');agreementRow.scrollIntoView({behavior:'smooth',block:'center'});return}busy=true;button.disabled=true;button.textContent='Sending…';if(!hold||!hold.token||holdUntil<=Date.now()+5000)await reserve();const form=new FormData();form.append('action','submit');form.append('hold_token',hold.token);form.append('full_name',$('name').value.trim());form.append('email',$('email').value.trim());form.append('whatsapp',`${$('countryCode').value} ${$('phone').value}`.trim());form.append('flavours',JSON.stringify(flavourValues));form.append('payment_method',payment.value);form.append('photo_opt_out',$('optout').checked);form.append('proof',file);const response=await fetch(API,{method:'POST',body:form}),result=await response.json();if(!response.ok)throw Error(errorText(result.error||result));$('reference').textContent=`Reference: ${result.reference}`;step=5;persist();draw();confetti()}catch(error){showError(errorText(error))}finally{busy=false;button.disabled=false;button.textContent='Submit registration request  →'}}
+let workshopScrollFrame=0;
+function smoothWorkshopScroll(target,align='start'){
+  if(!target)return;
+  if(workshopScrollFrame)cancelAnimationFrame(workshopScrollFrame);
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rect=target.getBoundingClientRect(),start=window.scrollY;
+  let destination=rect.top+start-78;
+  if(align==='center')destination=rect.top+start-(window.innerHeight-rect.height)/2;
+  destination=Math.max(0,Math.min(destination,document.documentElement.scrollHeight-window.innerHeight));
+  if(reduce){window.scrollTo(0,destination);return}
+  const distance=destination-start,duration=850,started=performance.now();
+  const animate=now=>{const progress=Math.min(1,(now-started)/duration),eased=progress<.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;window.scrollTo(0,start+distance*eased);if(progress<1)workshopScrollFrame=requestAnimationFrame(animate);else workshopScrollFrame=0};
+  workshopScrollFrame=requestAnimationFrame(animate);
+}
+
+async function submitSingleWorkshop(){if(busy)return;const button=$('singleSubmit'),agreement=$('agree'),agreementRow=agreement.closest('.check');try{showError();agreementRow.classList.remove('check-required-error');if(!selected)throw Error('Choose an available workshop.');const quantity=Number($('qty').value||0);if(!quantity)throw Error('Choose the number of participants.');if(flavourValues.length!==quantity||flavourValues.some(value=>!value))throw Error('Choose one cake flavour for every participant.');if(!contactValid())throw Error('Enter your full name and an active WhatsApp number. If you add an email address, make sure it is valid.');const payment=document.querySelector('[name="payment"]:checked'),file=singleProofInput.files?.[0];if(!payment)throw Error('Choose MB WAY or bank transfer.');if(!file)throw Error('Upload your payment proof.');if(file.size>10485760)throw Error('Payment proof must be smaller than 10 MB.');if(!agreement.checked){const policies=agreement.closest('.booking-policies');if(policies)policies.open=true;agreementRow.classList.add('check-required-error');smoothWorkshopScroll(agreementRow,'center');return}busy=true;button.disabled=true;button.textContent='Sending…';if(!hold||!hold.token||holdUntil<=Date.now()+5000)await reserve();const form=new FormData();form.append('action','submit');form.append('hold_token',hold.token);form.append('full_name',$('name').value.trim());form.append('email',$('email').value.trim());form.append('whatsapp',`${$('countryCode').value} ${$('phone').value}`.trim());form.append('flavours',JSON.stringify(flavourValues));form.append('payment_method',payment.value);form.append('photo_opt_out',$('optout').checked);form.append('proof',file);const response=await fetch(API,{method:'POST',body:form}),result=await response.json();if(!response.ok)throw Error(errorText(result.error||result));$('reference').textContent=`Reference: ${result.reference}`;step=5;persist();draw();confetti()}catch(error){showError(errorText(error))}finally{busy=false;button.disabled=false;button.textContent='Submit registration request  →'}}
 
 $('agree').addEventListener('change',event=>{if(event.currentTarget.checked)event.currentTarget.closest('.check').classList.remove('check-required-error');persistSingle()});
 updatePaymentPanels();draw();if(sessions.length)renderSessions();
