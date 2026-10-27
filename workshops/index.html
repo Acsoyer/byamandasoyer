@@ -40,6 +40,8 @@
     details>div{padding:0 3px 19px}details p{margin:0}details p+p{margin-top:16px}.policy-copy strong{display:block;margin-bottom:4px;color:var(--brand)}
     .booking{scroll-margin-top:74px;padding-top:8px;text-align:center}.booking>p{max-width:610px;margin:0 auto}.dates{display:grid;gap:11px;max-width:650px;margin:25px auto}.date{width:100%;padding:18px;border:1px solid var(--brand);border-radius:15px;background:var(--brand);color:#fff;text-align:left;cursor:pointer}.date strong{display:block;font-size:17px}.date span{display:block;margin-top:6px;color:#f7dce5;font-size:13px}.closed{padding:25px;border:1px dashed #c9aab5;border-radius:16px;color:var(--muted);background:#fff}
     .workshop-site-footer{margin-top:56px;padding:34px 22px calc(36px + env(safe-area-inset-bottom));background:var(--brand);color:#f3e7ec;text-align:center}.footer-logo{display:block;width:172px;margin:0 auto 17px;filter:brightness(0) invert(1)}.footer-social{display:flex;justify-content:center;gap:20px;margin:0 0 19px}.footer-social a{display:inline-flex;color:#f3e7ec}.footer-social svg{width:24px;height:24px}.workshop-site-footer p{margin:4px 0;color:#e7c6d0;font-size:12px;line-height:1.6}.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 20px;margin:18px auto 0}.footer-links a{color:#fff;font-size:12px;font-weight:800;text-underline-offset:4px}.footer-copy{margin-top:18px!important;color:#ce9aa9!important;font-size:11px!important}
+    .quick-facts{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:min(850px,calc(100% - 24px));margin:-24px auto 0}.quick-fact{display:flex;min-width:0;min-height:88px;flex-direction:column;align-items:center;justify-content:center;padding:11px 6px;border:1px solid rgba(120,7,47,.06);border-radius:14px;background:#fff;box-shadow:0 9px 28px rgba(67,33,44,.09);text-align:center}.quick-fact svg{width:19px;height:19px;margin-bottom:7px;color:var(--brand)}.quick-fact strong{color:var(--ink);font-size:12px;font-weight:500;line-height:1.25}.quick-fact small{margin-top:4px;color:var(--muted);font-size:8px;line-height:1.25}.wrap{padding-top:48px}.faq{margin-top:0!important}.faq h2{margin-bottom:17px;text-align:left}.accordion-list{display:grid;gap:10px;border:0}.accordion-list details{overflow:hidden;border:1px solid #e5d9d6;border-radius:13px;background:#fff}.accordion-list summary{padding:18px 46px 18px 18px}.accordion-list summary:after{right:18px}.accordion-list details>div{padding:0 18px 18px}.accordion-list details p{font-size:14px;line-height:1.6}.booking{margin-top:48px!important;border-top:1px solid var(--line);padding-top:45px}.booking h2{text-align:center}.hero h1{max-width:600px}.hero p{font-size:15px}.faq-answer-list{margin:8px 0 0;padding-left:20px;color:var(--muted);line-height:1.65}
+    @media(max-width:430px){.hero{min-height:90svh}.hero h1{font-size:42px}.hero-copy{padding-bottom:46px}.quick-facts{margin-top:-19px}.quick-fact{min-height:82px;padding:10px 4px}.quick-fact strong{font-size:10.5px}.quick-fact small{font-size:7.5px}.wrap{padding:43px 12px 18px}.faq h2{font-size:34px}.accordion-list summary{font-size:14px;padding-left:16px}.accordion-list details>div{padding-left:16px;padding-right:16px}}
     @media(min-width:700px){.hero-logo{left:max(24px,calc((100vw - 1040px)/2))}.hero-logo img{width:175px}.hero-copy{padding-left:max(24px,calc((100vw - 1040px)/2));padding-right:24px}.workshop-facts{grid-template-columns:1fr 1fr}.workshop-fact{grid-template-columns:105px minmax(0,1fr);padding-right:25px}.workshop-fact:nth-child(odd){border-right:1px solid var(--line)}.workshop-fact:nth-child(even){padding-left:25px}.included-list{grid-template-columns:1fr 1fr;column-gap:35px}.no-experience{padding:27px 14px}}
   </style>
 </head>
@@ -54,63 +56,31 @@
     <img src="/assets/site/Workshops_Image.webp" alt="Cake decorating workshop in Lisbon">
     <div class="hero-copy">
       <div class="eyebrow">Cake decorating · Lisbon</div>
-      <h1>Creative cake<br>decorating workshop</h1>
-      <p>Spend a relaxed afternoon learning how to decorate your own beautiful cake with Amanda.</p>
+      <h1>Cake Decorating<br>Workshop</h1>
+      <p>Enjoy a relaxed, hands-on experience where you’ll decorate your own cake using basic techniques, with step-by-step guidance. Explore your creativity and take your decorated cake home to enjoy.</p>
       <button class="cta" id="heroCta" onclick="toBooking()">Book your spot</button>
     </div>
   </section>
 
+  <section class="quick-facts" aria-label="Workshop overview">
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg><strong id="quickTime">12–3 PM</strong><small id="quickDuration">3 hours</small></article>
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9a3 3 0 0 0 0 6v3h16v-3a3 3 0 0 0 0-6V6H4v3Z"/><path d="M12 6v12M9 9h6M9 15h6"/></svg><strong id="quickPrice">€45</strong><small>Per person</small></article>
+    <article class="quick-fact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 6h8M9 4v2c0 4-2 7-5 9M7 11c1 2 3 4 6 5M15 18l3-8 3 8M16 15h4"/></svg><strong>English</strong><small>Only</small></article>
+  </section>
+
   <main class="wrap">
-    <section class="intro">
-      <h2>A creative afternoon, made by you</h2>
-      <div class="no-experience">
-        <h3>No experience needed.</h3>
-        <p>You’ll practise basic decorating techniques with guidance throughout. This is a creative activity, not a professional training course. All tools, ingredients and aprons are provided. Written recipes and technique instructions are not included.</p>
-      </div>
-
-      <dl class="workshop-facts">
-        <div class="workshop-fact"><dt>When</dt><dd id="workshopWhen">Loading workshop dates…</dd></div>
-        <div class="workshop-fact"><dt>Where</dt><dd>Entrecampos, Lisbon</dd></div>
-        <div class="workshop-fact"><dt>Duration</dt><dd>3 hours</dd></div>
-        <div class="workshop-fact"><dt>The group</dt><dd id="workshopGroup">Up to 8 participants per date</dd></div>
-      </dl>
-
-      <div class="included">
-        <h3>What you’ll enjoy</h3>
-        <ul class="included-list">
-          <li>Your own 10 cm cake to decorate and take home</li>
-          <li>All decorating tools and materials provided</li>
-          <li>Step-by-step guidance from Amanda</li>
-          <li>Your choice of vanilla or chocolate cake</li>
-          <li>Wine, juice and snacks</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="faq" aria-labelledby="faqTitle">
+    <section class="faq" id="goodToKnow" aria-labelledby="faqTitle">
       <h2 id="faqTitle">Good to know</h2>
       <div class="accordion-list">
-        <details><summary>Which cake flavours can I choose?</summary><div><p>Vanilla cake with white chocolate filling, or chocolate cake with milk chocolate filling. Choose separately for each person.</p></div></details>
-        <details><summary>Where does the workshop take place?</summary><div><p>Entrecampos, Lisbon, 1600-311. The full address is shared after your booking is confirmed.</p></div></details>
-        <details><summary>How do I pay?</summary><div><p>Once bookings open, choose MB WAY or bank transfer and upload payment proof. Amanda will check your payment before confirming your place.</p></div></details>
-      </div>
-    </section>
-
-    <section class="policies" id="policies">
-      <div class="accordion-list">
-        <details>
-          <summary>Workshop details and policies</summary>
-          <div class="policy-copy">
-            <p><strong>Who it’s for</strong>This workshop is designed for beginners and people with little or no cake decorating experience. It is a creative activity, not a professional training course. Written recipes and technique instructions are not provided.</p>
-            <p><strong>Language</strong>The workshop is in English only. You don’t need to be fluent, but you should be comfortable understanding and following instructions in English.</p>
-            <p><strong>Materials</strong>All tools, ingredients and aprons are provided. Please use them with care. You’ll take your decorated cake home. Tools, aprons and other reusable materials remain the organiser’s property unless stated otherwise.</p>
-            <p><strong>Price and payment</strong>The workshop costs €45 per person. This includes the three-hour session, decorating materials, wine, juice and snacks. Full payment is required when booking to secure your spot. Spaces are limited and confirmed in the order payments are verified.</p>
-            <p><strong>Duration</strong>The workshop lasts three hours. Please arrive on time so you don’t miss any instructions.</p>
-            <p><strong>Cancellations</strong>Cancellations made at least 5 days before the workshop are eligible for a 50% refund. Later cancellations are not refundable, but receive a credit of 50% of the amount paid toward a future cake order. No-shows are not eligible for a refund or credit.</p>
-            <p><strong>Photos and videos</strong>Photos and videos will be taken for byamandasoyer’s Instagram, Facebook and website. If you prefer not to appear, please let us know on the day of the workshop.</p>
-            <p><strong>Location</strong>Entrecampos, Lisbon, 1600-311. The full address will be shared after your booking is confirmed.</p>
-          </div>
-        </details>
+        <details><summary>Do I need experience?</summary><div><p>No. The workshop is designed for beginners and people with little or no cake decorating experience. Amanda guides you through the decorating process step by step.</p></div></details>
+        <details><summary>Can I choose my own cake flavor?</summary><div><p>Yes. Choose vanilla cake with white chocolate filling, or chocolate cake with milk chocolate filling. If you book for more than one person, each participant can choose separately.</p></div></details>
+        <details><summary>What language is the workshop?</summary><div><p>The workshop is in English only. You don’t need to be fluent, but you should be comfortable understanding and following instructions in English.</p></div></details>
+        <details><summary>Do you provide food?</summary><div><p>Wine, juice and snacks are included. Please tell Amanda about any relevant allergies or dietary concerns before the workshop.</p></div></details>
+        <details><summary>Can I come alone?</summary><div><p>Absolutely. You can book one place and join the group on your own, or reserve multiple places for friends.</p></div></details>
+        <details><summary>Where is the workshop?</summary><div><p>Entrecampos, Lisbon, 1600-311. The full address is shared after your booking and payment are confirmed.</p></div></details>
+        <details><summary>How can I pay?</summary><div><p>Choose MB WAY or bank transfer during booking and upload a screenshot, image or PDF as payment proof. Amanda checks the payment before confirming your place.</p></div></details>
+        <details><summary>What will I take home?</summary><div><p>You’ll take home your own decorated 10 cm cake. All decorating tools, ingredients and aprons are provided for use during the workshop.</p></div></details>
+        <details><summary>What if I need to cancel?</summary><div><p>Cancellations made at least 5 days before the workshop receive a 50% refund. Later cancellations are non-refundable but receive a credit worth 50% of the amount paid toward a future cake order. No-shows are not eligible for a refund or credit.</p></div></details>
       </div>
     </section>
 
@@ -131,7 +101,7 @@
     </div>
     <p>Entrecampos · Lisboa · 1600-311</p>
     <p>Wed–Fri 11:00–18:00 · Sat–Sun 11:00–13:00</p>
-    <nav class="footer-links" aria-label="Workshop footer"><a href="#policies">Workshop policies</a><a href="https://www.instagram.com/reel/Dacu5x8s8M2/" target="_blank" rel="noopener">Previous workshops</a></nav>
+    <nav class="footer-links" aria-label="Workshop footer"><a href="#goodToKnow">Workshop information</a><a href="https://www.instagram.com/reel/Dacu5x8s8M2/" target="_blank" rel="noopener">Previous workshops</a></nav>
     <p class="footer-copy">© <span id="workshopYear"></span> byAmandaSoyer · Lisbon Baking Studio</p>
   </footer>
 
@@ -142,17 +112,14 @@
     function toBooking(){if(bookingOpen)document.getElementById('booking').scrollIntoView({behavior:'smooth'})}
     function setEnabled(value){bookingOpen=value;[heroCta,stickyCta].forEach(button=>{button.disabled=!value;button.classList.toggle('disabled',!value)})}
     function formatDate(session){return new Date(`${session.session_date}T12:00:00`).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-    function renderDynamicFacts(sessions){
-      document.getElementById('workshopWhen').innerHTML=sessions.length?sessions.map(session=>`<span>${formatDate(session)}</span>`).join(''):'New dates will be announced soon.';
-      const capacities=[...new Set(sessions.map(session=>Number(session.capacity)).filter(Number.isFinite))];
-      document.getElementById('workshopGroup').innerHTML=!capacities.length?'Up to 8 participants per date':capacities.length===1?`Up to ${capacities[0]} participants per date`:sessions.map(session=>`<span>${formatDate(session)}: up to ${Number(session.capacity)} participants</span>`).join('');
-    }
+    function shortTime(value){const [hour='0',minute='00']=String(value||'').split(':'),h=Number(hour),clock=h%12||12;return `${clock}${minute==='00'?'':`:${minute}`} ${h>=12?'PM':'AM'}`}
+    function renderQuickFacts(sessions){const session=sessions[0];if(!session)return;const start=shortTime(session.start_time),end=shortTime(session.end_time),startParts=start.split(' '),endParts=end.split(' ');document.getElementById('quickTime').textContent=startParts[1]===endParts[1]?`${startParts[0]}–${endParts[0]} ${endParts[1]}`:`${start}–${end}`;document.getElementById('quickPrice').textContent=`€${Number(session.price_cents)/100}`;const startMinutes=Number(String(session.start_time).slice(0,2))*60+Number(String(session.start_time).slice(3,5)),endMinutes=Number(String(session.end_time).slice(0,2))*60+Number(String(session.end_time).slice(3,5)),duration=(endMinutes-startMinutes)/60;document.getElementById('quickDuration').textContent=Number.isInteger(duration)?`${duration} hours`:`${duration.toFixed(1)} hours`}
     fetch(API).then(response=>response.json().then(data=>({ok:response.ok,data}))).then(({ok,data})=>{
       if(!ok)throw Error(data.error||'Unable to load workshops');
       const sessions=data.sessions||[],available=sessions.filter(session=>Number(session.available)>0);
-      renderDynamicFacts(sessions);setEnabled(available.length>0);
+      renderQuickFacts(available);setEnabled(available.length>0);
       dates.innerHTML=available.length?available.map(session=>`<button class="date" onclick="location.href='../workshop-form.html?session=${encodeURIComponent(session.id)}'"><strong>${formatDate(session)}</strong><span>${String(session.start_time).slice(0,5)}–${String(session.end_time).slice(0,5)} · €${(Number(session.price_cents)/100).toFixed(2)} per person</span></button>`).join(''):'<div class="closed"><strong>Bookings are currently closed.</strong><br>Please check back soon for new workshop dates.</div>';
-    }).catch(()=>{setEnabled(false);renderDynamicFacts([]);dates.innerHTML='<div class="closed">Workshop dates cannot be loaded right now. Please try again later.</div>'});
+    }).catch(()=>{setEnabled(false);dates.innerHTML='<div class="closed">Workshop dates cannot be loaded right now. Please try again later.</div>'});
     new IntersectionObserver(([entry])=>document.getElementById('sticky').classList.toggle('show',!entry.isIntersecting),{threshold:.15}).observe(document.getElementById('hero'));
     document.getElementById('workshopYear').textContent=new Date().getFullYear();
   </script>
