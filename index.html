@@ -206,6 +206,7 @@
     font-family:var(--sans);font-weight:600;font-size:16px;padding:17px 14px;border-radius:15px;transition:transform .15s;text-decoration:none}
   .cta:active{transform:scale(.98)}
   .cta.primary{min-height:75px;background:var(--brand);color:#fff;box-shadow:0 10px 24px rgba(115,8,44,.2);font-size:17px;white-space:nowrap;padding:22px 14px}
+  .workshop-cta-icon{display:block;width:24px;height:24px;object-fit:contain;flex:0 0 24px}
   .cta.ghost{background:transparent;color:var(--brand);border:none;box-shadow:none;padding:9px;text-decoration:underline;text-underline-offset:4px;font-size:14px}
 
   @media (max-height:700px){
@@ -531,7 +532,7 @@
         <span class="i-en">Start Your Order</span><span class="i-pt">Comece a sua Encomenda</span>
       </a>
       <a class="cta primary" id="heroWorkshopCta" href="/workshops/" style="display:none">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21V8l7-4 7 4v13M9 21v-6h6v6M8 10h.01M12 10h.01M16 10h.01"/></svg>
+        <img class="workshop-cta-icon" src="/assets/site/pastry-bag_white.png" alt="" aria-hidden="true">
         <span class="i-en">Book a Workshop</span><span class="i-pt">Reservar Workshop</span>
       </a>
       <button class="cta ghost" onclick="goTo('faq')">
