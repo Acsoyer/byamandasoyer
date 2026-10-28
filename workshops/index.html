@@ -126,7 +126,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
     function formatDate(session){return new Date(`${session.session_date}T12:00:00`).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
     function shortTime(value){const [hour='0',minute='00']=String(value||'').split(':'),h=Number(hour),clock=h%12||12;return `${clock}${minute==='00'?'':`:${minute}`} ${h>=12?'PM':'AM'}`}
     function renderQuickFacts(sessions){const session=sessions[0];if(!session)return;const start=shortTime(session.start_time),end=shortTime(session.end_time),startParts=start.split(' '),endParts=end.split(' ');document.getElementById('quickTime').textContent=startParts[1]===endParts[1]?`${startParts[0]}–${endParts[0]} ${endParts[1]}`:`${start}–${end}`;document.getElementById('quickPrice').textContent=`€${Number(session.price_cents)/100}`;const startMinutes=Number(String(session.start_time).slice(0,2))*60+Number(String(session.start_time).slice(3,5)),endMinutes=Number(String(session.end_time).slice(0,2))*60+Number(String(session.end_time).slice(3,5)),duration=(endMinutes-startMinutes)/60;document.getElementById('quickDuration').textContent=Number.isInteger(duration)?`${duration} hours`:`${duration.toFixed(1)} hours`}
-    fetch(API).then(response=>response.json().then(data=>({ok:response.ok,data}))).then(({ok,data})=>{
+    fetch(`${API}?fresh=${Date.now()}`,{cache:'no-store'}).then(response=>response.json().then(data=>({ok:response.ok,data}))).then(({ok,data})=>{
       if(!ok)throw Error(data.error||'Unable to load workshops');
       const sessions=data.sessions||[],available=sessions.filter(session=>Number(session.available)>0);
       renderQuickFacts(available);setEnabled(available.length>0);
