@@ -78,6 +78,34 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
     transform: translateY(0);
   }
 }
+
+.booking-callout {
+  display: grid;
+  gap: 3px;
+  margin-top: 12px;
+  color: #fff;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px #280012;
+}
+.booking-callout strong {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.booking-callout span { font-size: 12px; }
+#heroCta {
+  animation: workshop-booking-attention .55s ease-out .25s 2;
+}
+@keyframes workshop-booking-attention {
+  0% { transform: translateX(0); box-shadow: 0 0 0 0 #ff59ac; }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); box-shadow: 0 0 0 6px #ff59acbb; }
+  100% { transform: translateX(0); box-shadow: 0 0 0 10px #ff59ac00; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #heroCta { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -94,6 +122,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
       <h1>Cake Decorating<br>Workshop</h1>
       <p>Enjoy a relaxed, hands-on experience where you’ll decorate your own cake using basic techniques, with step-by-step guidance. Explore your creativity and take your decorated cake home to enjoy.</p>
       <button class="cta" id="heroCta" onclick="toBooking()">Book your spot</button>
+      <div class="booking-callout"><strong>BOOK YOUR SPOT BEFORE IT SELLS OUT</strong><span>only 8 spots per workshop</span></div>
     </div>
   </section>
 
