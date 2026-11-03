@@ -65,6 +65,19 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
 .sticky{left:50%;right:auto;width:min(480px,100%);transform:translate(-50%,-120%)}
 .sticky.show{transform:translateX(-50%)}
 @media(min-width:481px){.hero{min-height:760px}.wrap{padding-left:20px;padding-right:20px}}
+
+@media (min-width: 800px) {
+  .sticky {
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 7px 18px;
+    transform: translateY(-120%);
+  }
+  .sticky.show {
+    transform: translateY(0);
+  }
+}
 </style>
 </head>
 <body>

@@ -242,6 +242,29 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .single-booking .inline-validation-message{font-size:13px}
 .single-booking .success p,.single-booking #reference{font-size:13px}
 .allergy-section{margin:18px 0;padding-top:17px;border-top:1px solid var(--line)}.allergy-question{margin:0 0 10px;color:var(--ink);font-size:14px;font-weight:700}.allergy-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.allergy-details textarea{width:100%;min-height:108px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font:17px/1.45 Arial,sans-serif;resize:vertical}.allergy-details small{color:var(--muted);font-size:12px;line-height:1.45}.allergy-section.validation-invalid{padding:12px;border:1px solid #c52d49;border-radius:12px;background:#fff7f8}
+
+@media (min-width: 800px) {
+  body.single-booking {
+    background: transparent;
+    box-shadow: none;
+  }
+  .single-booking .head {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 54px !important;
+    transform: none;
+    padding: 6px 18px !important;
+  }
+  .single-booking .app {
+    min-height: calc(100vh - 96px);
+    margin: 75px auto 21px;
+    padding-top: 0 !important;
+    border-radius: 28px;
+    background: var(--paper);
+    box-shadow: 0 12px 40px rgba(61, 37, 44, .12);
+  }
+}
 </style>
 </head><body><main class="app"><header class="head"><button class="icon" onclick="goBack()" aria-label="Back">‹</button><img src="/assets/site/byAmandaSoyer-logo.png" alt="by Amanda Soyer"><button class="icon" onclick="closeForm()" aria-label="Close">×</button></header><div class="progress"><i id="bar"></i></div><div id="error"></div>
 <section class="step on" data-step="1"><h1>Choose your workshop</h1><p>Select a date and the number of people attending.</p><div class="cards" id="sessions"><p>Checking available workshops…</p></div><div class="field"><label for="qty">Number of participants</label><select id="qty"></select></div></section>
