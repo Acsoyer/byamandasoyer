@@ -92,7 +92,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
   font-weight: 800;
   letter-spacing: .04em;
 }
-.booking-callout span { font-size: 12px; }
+.booking-callout span { display: block; width: 15ch; height: 20px; font: 750 14px/20px Arial, sans-serif; }
 #heroCta:not(:disabled) {
   animation: workshop-booking-attention 4s ease-out infinite;
 }
@@ -108,7 +108,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
 .booking-callout {
   transition: opacity .85s ease, transform .85s ease;
 }
-.booking-callout span[data-font="script"] { font-family: "Segoe Script", "Apple Chancery", cursive; }
+.booking-callout span[data-font="script"] { font-family: Arial, sans-serif; font-style: italic; letter-spacing: .015em; }
 .booking-callout span[data-font="serif"] { font-family: Georgia, serif; }
 .booking-callout span[data-font="sans"] { font-family: Arial, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
@@ -131,7 +131,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
       <h1>Cake Decorating<br>Workshop</h1>
       <p>Enjoy a relaxed, hands-on experience where you’ll decorate your own cake using basic techniques, with step-by-step guidance. Explore your creativity and take your decorated cake home to enjoy.</p>
       <button class="cta" id="heroCta" onclick="toBooking()">Book your spot</button>
-      <div class="booking-callout"><strong>Come decorate with us! Save your spot 💕</strong><span id="workshopCapacity" data-font="script">Only 2 spots left!!</span></div>
+      <div class="booking-callout"><strong>Join us for cake decorating before we sell out!</strong><span id="workshopCapacity" data-font="script">Only 2 spots left!!</span></div>
     </div>
   </section>
 
@@ -181,7 +181,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
       setInterval(() => {
         fontIndex = (fontIndex + 1) % fonts.length;
         capacityMessage.dataset.font = fonts[fontIndex];
-      }, 2500);
+      }, 1000);
 
       if ('IntersectionObserver' in window) {
         bookingCallout.classList.add('is-pending');
