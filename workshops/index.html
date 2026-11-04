@@ -93,18 +93,27 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
   letter-spacing: .04em;
 }
 .booking-callout span { font-size: 12px; }
-#heroCta {
-  animation: workshop-booking-attention .55s ease-out .25s 2;
+#heroCta:not(:disabled) {
+  animation: workshop-booking-attention 4s ease-out infinite;
 }
 @keyframes workshop-booking-attention {
-  0% { transform: translateX(0); box-shadow: 0 0 0 0 #ff59ac; }
-  20% { transform: translateX(-3px); }
-  40% { transform: translateX(3px); }
-  60% { transform: translateX(-2px); box-shadow: 0 0 0 6px #ff59acbb; }
-  100% { transform: translateX(0); box-shadow: 0 0 0 10px #ff59ac00; }
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  8% { box-shadow: 0 0 0 5px #ff59ac, 0 0 22px #ff59ac; }
+  24%, 99% { box-shadow: 0 0 0 10px transparent; }
 }
+.booking-callout.is-pending {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.booking-callout {
+  transition: opacity .85s ease, transform .85s ease;
+}
+.booking-callout span[data-font="script"] { font-family: "Segoe Script", "Apple Chancery", cursive; }
+.booking-callout span[data-font="serif"] { font-family: Georgia, serif; }
+.booking-callout span[data-font="sans"] { font-family: Arial, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
-  #heroCta { animation: none; }
+  #heroCta:not(:disabled) { animation: none; }
+  .booking-callout { transition: none; }
 }
 </style>
 </head>
@@ -122,7 +131,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
       <h1>Cake Decorating<br>Workshop</h1>
       <p>Enjoy a relaxed, hands-on experience where you’ll decorate your own cake using basic techniques, with step-by-step guidance. Explore your creativity and take your decorated cake home to enjoy.</p>
       <button class="cta" id="heroCta" onclick="toBooking()">Book your spot</button>
-      <div class="booking-callout"><strong>BOOK YOUR SPOT BEFORE IT SELLS OUT</strong><span>only 8 spots per workshop</span></div>
+      <div class="booking-callout"><strong>Come decorate with us! Save your spot 💕</strong><span id="workshopCapacity" data-font="script">Only 2 spots left!!</span></div>
     </div>
   </section>
 
@@ -164,6 +173,26 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
     const dates=document.getElementById('dates'),heroCta=document.getElementById('heroCta'),stickyCta=document.getElementById('stickyCta');
     let bookingOpen=false;
     function toBooking(){if(bookingOpen)document.getElementById('booking').scrollIntoView({behavior:'smooth'})}
+    const bookingCallout = document.querySelector('.booking-callout');
+    const capacityMessage = document.getElementById('workshopCapacity');
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const fonts = ['script', 'serif', 'sans'];
+      let fontIndex = 0;
+      setInterval(() => {
+        fontIndex = (fontIndex + 1) % fonts.length;
+        capacityMessage.dataset.font = fonts[fontIndex];
+      }, 2500);
+
+      if ('IntersectionObserver' in window) {
+        bookingCallout.classList.add('is-pending');
+        const observer = new IntersectionObserver(([entry]) => {
+          if (!entry.isIntersecting) return;
+          bookingCallout.classList.remove('is-pending');
+          observer.disconnect();
+        }, { threshold: .2 });
+        observer.observe(bookingCallout);
+      }
+    }
     function setEnabled(value){bookingOpen=value;[heroCta,stickyCta].forEach(button=>{button.disabled=!value;button.classList.toggle('disabled',!value)})}
     function formatDate(session){return new Date(`${session.session_date}T12:00:00`).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
     function shortTime(value){const [hour='0',minute='00']=String(value||'').split(':'),h=Number(hour),clock=h%12||12;return `${clock}${minute==='00'?'':`:${minute}`} ${h>=12?'PM':'AM'}`}
