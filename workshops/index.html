@@ -79,19 +79,6 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
   }
 }
 
-.booking-callout {
-  display: grid;
-  gap: 3px;
-  margin-top: 12px;
-  color: #fff;
-  line-height: 1.25;
-  text-shadow: 0 1px 4px #280012;
-}
-.booking-callout strong {
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: .04em;
-}
 #heroCta {
   display: inline-grid;
   place-items: center;
@@ -101,12 +88,12 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
 #heroCta span { grid-area: 1 / 1; }
 .booking-label-remaining { opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
-  #heroCta:not(:disabled) { animation: booking-glow 8s ease-in-out infinite; }
+  #heroCta:not(:disabled) { animation: booking-glow 6s ease-in-out infinite; }
   #heroCta:not(:disabled) .booking-label-default {
-    animation: booking-default 8s ease-in-out infinite;
+    animation: booking-default 6s ease-in-out infinite;
   }
   #heroCta:not(:disabled) .booking-label-remaining {
-    animation: booking-remaining 8s ease-in-out infinite;
+    animation: booking-remaining 6s ease-in-out infinite;
   }
 }
 @keyframes booking-glow {
@@ -120,16 +107,6 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
 @keyframes booking-remaining {
   0%, 5%, 61%, 100% { opacity: 0; }
   11%, 55% { opacity: 1; }
-}
-.booking-callout.is-pending {
-  opacity: 0;
-  transform: translateY(14px);
-}
-.booking-callout {
-  transition: opacity .85s ease, transform .85s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .booking-callout { transition: none; }
 }
 </style>
 </head>
@@ -146,8 +123,7 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
       <div class="eyebrow">Lisbon</div>
       <h1>Cake Decorating<br>Workshop</h1>
       <p>Enjoy a relaxed, hands-on experience where you’ll decorate your own cake using basic techniques, with step-by-step guidance. Explore your creativity and take your decorated cake home to enjoy.</p>
-      <button class="cta" id="heroCta" onclick="toBooking()" aria-label="Book your spot"><span class="booking-label-default" aria-hidden="true">Book your spot</span><span class="booking-label-remaining" aria-hidden="true">2 spots left</span></button>
-      <div class="booking-callout"><strong>Join us for cake decorating before we sell out!</strong></div>
+      <button class="cta" id="heroCta" onclick="toBooking()" aria-label="Book your spot"><span class="booking-label-default" aria-hidden="true">Book your spot</span><span class="booking-label-remaining" aria-hidden="true">2 spots left &#128293;</span></button>
     </div>
   </section>
 
@@ -189,18 +165,6 @@ body{max-width:480px;margin:0 auto;background:#fbf8f3;box-shadow:0 0 35px rgba(6
     const dates=document.getElementById('dates'),heroCta=document.getElementById('heroCta'),stickyCta=document.getElementById('stickyCta');
     let bookingOpen=false;
     function toBooking(){if(bookingOpen)document.getElementById('booking').scrollIntoView({behavior:'smooth'})}
-    const bookingCallout = document.querySelector('.booking-callout');
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      if ('IntersectionObserver' in window) {
-        bookingCallout.classList.add('is-pending');
-        const observer = new IntersectionObserver(([entry]) => {
-          if (!entry.isIntersecting) return;
-          bookingCallout.classList.remove('is-pending');
-          observer.disconnect();
-        }, { threshold: .2 });
-        observer.observe(bookingCallout);
-      }
-    }
     function setEnabled(value){bookingOpen=value;[heroCta,stickyCta].forEach(button=>{button.disabled=!value;button.classList.toggle('disabled',!value)})}
     function formatDate(session){return new Date(`${session.session_date}T12:00:00`).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
     function shortTime(value){const [hour='0',minute='00']=String(value||'').split(':'),h=Number(hour),clock=h%12||12;return `${clock}${minute==='00'?'':`:${minute}`} ${h>=12?'PM':'AM'}`}
