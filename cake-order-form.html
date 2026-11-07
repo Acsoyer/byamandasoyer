@@ -1875,6 +1875,37 @@ function buildPayload(photo_urls){
   };
 }
 
+async function optimizeReferencePhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    image.src = url;
+    await image.decode();
+    const scale = Math.min(1, 1600 / Math.max(image.naturalWidth, image.naturalHeight));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+    canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+    const webp = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', .84));
+    if (webp?.type === 'image/webp' && webp.size <= MAX_PHOTO_BYTES && (scale < 1 || webp.size < file.size)) {
+      return webp;
+    }
+    if (scale < 1) {
+      const context = canvas.getContext('2d');
+      context.globalCompositeOperation = 'destination-over';
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      const jpeg = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', .86));
+      if (jpeg?.type === 'image/jpeg' && jpeg.size <= MAX_PHOTO_BYTES) return jpeg;
+    }
+    return file;
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 async function submit(){
   const btn=document.getElementById('next');
   btn.disabled=true;btn.classList.add('sending');btn.innerHTML=`<span>${lang==='en'?'Sending':'A enviar'}</span><span class="send-spinner" aria-hidden="true"></span>`;
@@ -1884,6 +1915,9 @@ async function submit(){
     if(S.photoFiles.length>3)throw new Error(lang==='en'?"You can upload up to 3 photos.":"Pode carregar até 3 fotos.");
     if(S.photoFiles.some(file=>file.size>MAX_PHOTO_BYTES))throw new Error(lang==='en'?"Each photo must be 10 MB or less.":"Cada foto deve ter no máximo 10 MB.");
     if(totalPhotoBytes>MAX_PHOTO_TOTAL_BYTES)throw new Error(lang==='en'?"All photos together must be 15 MB or less.":"Todas as fotos juntas devem ter no máximo 15 MB.");
+    const uploadPhotos = [];
+    for (const file of S.photoFiles.slice(0, 3)) uploadPhotos.push(await optimizeReferencePhoto(file));
+    const photosToSend = uploadPhotos.reduce((sum, file) => sum + file.size, 0) <= MAX_PHOTO_TOTAL_BYTES ? uploadPhotos : S.photoFiles;
     const turnstile=await getTurnstileToken();
     /* A private submission token lets the optional survey attach after submit. */
     const payload=buildPayload([]);
@@ -1893,7 +1927,7 @@ async function submit(){
     formData.append('payload',JSON.stringify(payload));
     formData.append('turnstile_token',turnstile);
     formData.append('website',document.getElementById('companyWebsite').value||'');
-    S.photoFiles.slice(0,3).forEach(file=>formData.append('photos',file,'reference-photo'));
+    photosToSend.forEach(file=>formData.append('photos',file,'reference-photo'));
     const response=await fetch(`${SB_URL}/functions/v1/submit-order`,{
       method:'POST',
       headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`},
