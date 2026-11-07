@@ -7,7 +7,7 @@
   "background_color": "#FAF7F3",
   "theme_color": "#73082C",
   "icons": [
-    {"src": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "https://ivnybivjjydihltknlmo.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png"}
+    {"src": "https://enhucwjcanhdqvbyiqlx.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "https://enhucwjcanhdqvbyiqlx.supabase.co/storage/v1/object/public/references/icons-byas/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png"}
   ]
 }
