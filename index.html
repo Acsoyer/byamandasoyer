@@ -754,7 +754,7 @@ async function saveCakeLightboxImage(){
 function initCakeStrip(){
   if(cakeStripStarted)return;cakeStripStarted=true;
   var track=document.getElementById('cakeStrip');if(!track)return;
-  var order=shuffleCakes(Array.from({length:25},function(_,i){return i+1;}));
+  var order=shuffleCakes(Array.from({length:55},function(_,i){return i+1;}));
   cakeLightboxItems=order.map(function(n){var u=cakeImageUrl(n);return{url:u,alt:'Custom cake by Amanda Soyer '+String(n).padStart(2,'0')};});
   var doubled=order.concat(order);
   track.innerHTML=doubled.map(function(n){var u=cakeImageUrl(n),alt='Custom cake by Amanda Soyer '+String(n).padStart(2,'0');return '<button class="cake-thumb" type="button" data-url="'+u+'" aria-label="Open '+alt+'"><img data-cake-src="'+u+'" alt="'+alt+'" decoding="async"></button>';}).join('');
